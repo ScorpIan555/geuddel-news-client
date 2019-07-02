@@ -21,7 +21,7 @@ const options = {
     // Show or hide build info
     noInfo: false,
     // Tell server where to look for static files
-    contentBase: './dist',
+    contentBase: devServerConfig.devServer.contentBase,
     // If static content changes, force page reload
     watchContentBase: true,
     // configure public path

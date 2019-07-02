@@ -19,18 +19,21 @@ const config = {
         publicPath: '/',
         // the target directory for all output files
         // must be an absolute path (use the Node.js path module)
-        path: path.resolve(__dirname, 'dist'), // string
+        path: path.resolve(__dirname, 'public/dist'), // string
         // the filename template for entry chunks
         filename: 'devBundle.js'
     },
     devServer: {
-        contentBase: './dist'
+        contentBase: './public'
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: require('html-webpack-template'),
             inject: false,
             appMountId: 'app',
+            links: [
+                '/theme.scss', '/theme.css'
+            ]
           })
       ]
 };

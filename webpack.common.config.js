@@ -1,10 +1,26 @@
 const webpack = require('webpack');
 const path = require('path');
-const merge = require('webpack-merge')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const config = {
 //   entry: './src/index.js',  // webpack 4 default
+  plugins: [
+    new HtmlWebpackPlugin({
+        template: require('html-webpack-template'),
+        inject: false,
+        appMountId: 'app',
+        links: [
+          '/theme.scss', '/theme.css'
+      ]
+    }),
+    new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css'
+    })
+  ],
 
   // configuration regarding modules
   module: {
@@ -33,9 +49,24 @@ const config = {
       {
         test: /\.scss$/,
         use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
+          // 'style-loader',
+          // 'css-loader',
+          // 'sass-loader'
+
+          // {
+          //   loader: 'style-loader', options: { sourceMap: true }
+          // },
+          // {
+          //   loader: 'css-loader', options: { sourceMap: true }
+          // },
+          // {
+          //   loader: 'sass-loader', options: { sourceMap: true }
+          // }
+
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader",
+          "sass-loader"
         ]
       },
       {
