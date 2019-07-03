@@ -3,19 +3,35 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    ">.2%"
+  ],
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "es6": true,
+      "browser": true,
+      "jquery": true
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config webpack.dev.config.js",
     "build": "npm clean; webpack --config webpack.prod.config.js",
-    "start": "npm run dev; webpack-dev-server --config webpack.dev.server.js",
+    "dev": "webpack --config webpack.dev.config.js",
+    "lint": "eslint src -c .eslintrc --ext js,jsx",
     "serve-build": "npm run build; npx serve build",
     "serve-dev": "webpack-dev-server --config webpack.prod.config.js",
-    "fart": "npm run dev; webpack-dev-server --config webpack.dev.config.js"
+    "start": "npm run dev; webpack-dev-server --config webpack.dev.server.js",
+    "fart": "npm run build; webpack-dev-server --config webpack.prod.config.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.0",
@@ -24,12 +40,21 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^3.0.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-import-resolver-webpack": "^0.11.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.2",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-template": "^6.2.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^2.0.0",
@@ -39,6 +64,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.5",
     "aos": "~2.3.4",
     "bootstrap": "~4.3.1",
     "flatpickr": "~4.5.7",
@@ -47,13 +73,13 @@
     "jquery": "~3.4.1",
     "popper.js": "~1.15.0",
     "prismjs": "~1.16.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.11.1",
     "scrollmonitor": "~1.2.4",
     "smartwizard": "~4.3.1",
     "smooth-scroll": "~16.0.3",
     "socicon": "~3.0.5",
-    "zoom-vanilla.js": "~2.0.6",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-hot-loader": "^4.11.1"
+    "zoom-vanilla.js": "~2.0.6"
   }
 }

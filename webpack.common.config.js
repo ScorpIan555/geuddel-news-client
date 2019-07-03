@@ -28,8 +28,14 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            // future builds read from cache to avoid running expensive Babel recompilation process
+            cacheDirectory: true  // https://github.com/babel/babel-loader#options
+          }
+        }
       },
       {
         test: /\.png$/,
@@ -64,16 +70,18 @@ const config = {
           // }
 
           MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader"
+          // need style-loader, too????  why not????
+            "css-loader", // look up using oblect syntax to add the option in for this
+            "postcss-loader",
+            "sass-loader"
         ]
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
+        use: [ // need to add MiniCssExtract????
+          MiniCssExtractPlugin.loader,
+            'style-loader',
+            'css-loader'
         ]
       }
     ]

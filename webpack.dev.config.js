@@ -26,16 +26,13 @@ const config = {
     devServer: {
         contentBase: './public'
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: require('html-webpack-template'),
-            inject: false,
-            appMountId: 'app',
-            links: [
-                '/theme.scss', '/theme.css'
-            ]
-          })
-      ]
+    // plugins: [
+    //     new HtmlWebpackPlugin({
+    //         template: require('html-webpack-template'),
+    //         inject: false,
+    //         appMountId: 'app'
+    //       })
+    //   ]
 };
 
 module.exports = merge(common, config);
