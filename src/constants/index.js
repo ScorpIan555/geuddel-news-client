@@ -1,0 +1,4 @@
+export default {
+  TOP_HEADLINES_RECEIVED: 'TOP_HEADLINES_RECEIVED',
+  TEST: 'TEST'
+};

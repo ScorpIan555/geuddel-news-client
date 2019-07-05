@@ -1,5 +1,3 @@
-// import App from './App';
+import newsfeedReducer from './newsfeedReducer';
 
-// export {
-//     App
-// }
+export { newsfeedReducer };

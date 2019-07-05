@@ -1,5 +1,3 @@
-// import App from './App';
+import Nav from './Nav';
 
-// export {
-    
-// }
+export { Nav };

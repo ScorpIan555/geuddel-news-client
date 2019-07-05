@@ -1,28 +1,24 @@
-const webpack = require('webpack');
-const path = require('path');
-
+const template = require('html-webpack-template');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-
 const config = {
-//   entry: './src/index.js',  // webpack 4 default
+  // define and configure plugins
   plugins: [
     new HtmlWebpackPlugin({
-        template: require('html-webpack-template'),
-        inject: false,
-        appMountId: 'app',
-        links: [
-          '/theme.scss', '/theme.css'
-      ]
+      template: 'src/index.html',
+      inject: false,
+      appMountId: 'app',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      }
     }),
     new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css'
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     })
   ],
-
-  // configuration regarding modules
+  // configuration of modules
   module: {
     // rules for modules (configure loaders, parser options, etc.)
     rules: [
@@ -32,8 +28,9 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            // future builds read from cache to avoid running expensive Babel recompilation process
-            cacheDirectory: true  // https://github.com/babel/babel-loader#options
+            // future builds read from cache to avoid re-running compilation
+            // https://github.com/babel/babel-loader#options
+            cacheDirectory: true
           }
         }
       },
@@ -71,17 +68,18 @@ const config = {
 
           MiniCssExtractPlugin.loader,
           // need style-loader, too????  why not????
-            "css-loader", // look up using oblect syntax to add the option in for this
-            "postcss-loader",
-            "sass-loader"
+          'css-loader', // look up using oblect syntax to add the option in for this
+          'postcss-loader',
+          'sass-loader'
         ]
       },
       {
         test: /\.css$/,
-        use: [ // need to add MiniCssExtract????
+        use: [
+          // need to add MiniCssExtract????
           MiniCssExtractPlugin.loader,
-            'style-loader',
-            'css-loader'
+          'style-loader',
+          'css-loader'
         ]
       }
     ]
@@ -89,12 +87,8 @@ const config = {
   // options for resolving module requests
   // (does not apply to resolving to loaders)
   resolve: {
-    extensions: [
-      '.js',
-      '.jsx'
-    ]
-  },
-
-}
+    extensions: ['.js', '.jsx']
+  }
+};
 
 module.exports = config;
