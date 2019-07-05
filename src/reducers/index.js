@@ -1,3 +1,4 @@
 import newsfeedReducer from './newsfeedReducer';
+import sidebarReducer from './sidebarReducer';
 
-export { newsfeedReducer };
+export { newsfeedReducer, sidebarReducer };

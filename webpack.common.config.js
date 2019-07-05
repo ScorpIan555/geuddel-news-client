@@ -8,10 +8,10 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject: false,
-      appMountId: 'app',
-      meta: {
-        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
-      }
+      appMountId: 'app'
+      // meta: {
+      //   viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      // }
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
