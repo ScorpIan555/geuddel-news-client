@@ -1,22 +1,22 @@
 // import constants from '../constants';
 
 const initialState = {
-  sidebarTop: [
+  topLink: [
     { nameString: 'Top Headlines', pathString: 'top-headlines' },
     { nameString: 'For You', pathString: 'for-you' },
     { nameString: 'Favorites', pathString: 'favorites' },
     { nameString: 'Saved Searches', pathString: 'saved-searches' }
   ],
-  sidebarMiddle: [
+  bottomLink: [
     { name: 'US', icon: 'flag' },
-    { name: 'World', icon: 'flag' },
-    { name: 'Local', icon: 'flag' },
-    { name: 'Business', icon: 'flag' },
-    { name: 'Technology', icon: 'flag' },
-    { name: 'Entertainment', icon: 'flag' },
-    { name: 'Sports', icon: 'flag' },
-    { name: 'Science', icon: 'flag' },
-    { name: 'Health', icon: 'flag' }
+    { name: 'World', icon: 'public' },
+    { name: 'Local', icon: 'place' },
+    { name: 'Business', icon: 'domain' },
+    { name: 'Technology', icon: 'memory' },
+    { name: 'Entertainment', icon: 'theaters' },
+    { name: 'Sports', icon: 'directions_bike' },
+    { name: 'Science', icon: 'school' },
+    { name: 'Health', icon: 'fitness_center' }
   ]
 };
 

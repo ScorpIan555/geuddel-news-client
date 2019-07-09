@@ -1,6 +1,8 @@
 import React from 'react';
 
 export default props => {
+  console.log('Sidebar.props', props);
+
   return (
     <div className="col-12 col-md-auto mb-5">
       <form className="mb-4">
