@@ -29,7 +29,7 @@ export default ({ navProps }) => {
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <a href="index.html" className="nav-link">
-                    Overview
+                    POWERED BY NEWSAPI.org
                   </a>
                 </li>
                 <li className="nav-item dropdown">
