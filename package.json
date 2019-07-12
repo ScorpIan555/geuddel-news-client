@@ -22,7 +22,7 @@
     "lint": "eslint src -c .eslintrc --ext js,jsx",
     "serve-build": "npm run build; npx serve build",
     "serve-dev": "webpack-dev-server --config webpack.prod.config.js",
-    "start": "npm run dev; webpack-dev-server --config webpack.dev.server.js",
+    "start": "webpack-dev-server --config webpack.dev.server.js",
     "fart": "npm run build; webpack-dev-server --config webpack.prod.config.js"
   },
   "author": "",

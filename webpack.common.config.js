@@ -71,6 +71,9 @@ const config = {
           'css-loader', // look up using oblect syntax to add the option in for this
           'postcss-loader',
           'sass-loader'
+          // {
+          //   loader: 'css-loader', options: { sourceMap: true }
+          // },
         ]
       },
       {
