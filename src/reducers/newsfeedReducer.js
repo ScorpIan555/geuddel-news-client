@@ -7,7 +7,8 @@ export default (state = initialState, action) => {
   const payload = action.data;
 
   switch (action.type) {
-    case constants.TOP_HEADLINES_RECEIVED:
+    case constants.GET_NEWS:
+      console.log('GET_NEWS from reducer:::', payload)
       newState.articles = payload;
 
       return newState;

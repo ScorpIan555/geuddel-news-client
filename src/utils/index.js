@@ -1,5 +1,7 @@
-// import App from './App';
+import { awsConfig } from './api';
+import HTTPClient from './HTTPClient';
 
-// export {
-//     App
-// }
+export {
+    awsConfig,
+    HTTPClient
+}

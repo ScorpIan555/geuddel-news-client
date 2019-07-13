@@ -9,6 +9,11 @@ class App extends Component {
 
     componentDidMount() {
         console.log('App.componentDidMount()', this);
+        let data = {
+            fart: 'plllllffffff'
+        };
+
+        this.props.getNews(data);
     }
 
     handleClick = event => {
@@ -530,7 +535,8 @@ const stateToProps = state => {
 
 const dispatchToProps = dispatch => {
   return {
-    test: (data) => dispatch(actions.actionTest(data))
+    test: (data) => dispatch(actions.actionTest(data)),
+    getNews: (data) => dispatch(actions.actionGetNews(data))
   };
 };
 
