@@ -1,5 +1,5 @@
 import constants from '../constants';
-import { HTTPClient } from '../utils';
+import { HTTPClient, AuthClient } from '../utils';
 
 export default {
   actionTest: (...params) => {
@@ -20,6 +20,19 @@ export default {
       })
       )}
   },
+
+  actionCreateUser: user => {
+    return dispatch => {
+      return dispatch(
+        AuthClient.postAsync({
+          type: constants.CREATE_USER,
+          params
+        })
+      );
+    };
+  }
+
+
 
 
 

@@ -3,17 +3,30 @@ import { connect } from 'react-redux';
 import { Nav } from './presentation';
 import { Sidebar } from './containers';
 import actions from '../actions';
+import { API } from 'aws-amplify';
 
 class App extends Component {
     state = {};
 
     componentDidMount() {
         console.log('App.componentDidMount()', this);
-        let data = {
-            fart: 'plllllffffff'
+        let body = {
+            fart: 'plllllffffff',
+
         };
 
-        this.props.getNews(data);
+        this.props.getNews(body);
+
+
+
+        API.post('notes', '/create', body)
+        .then(res => {
+            console.log('res from API', res)
+        })
+        .catch(err => {
+            console.log('error', err);
+        })
+        
     }
 
     handleClick = event => {
