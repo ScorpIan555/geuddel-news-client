@@ -23,7 +23,8 @@ const config = {
     filename: 'devBundle.js'
   },
   devServer: {
-    contentBase: './public'
+    contentBase: './public',
+    historyApiFallback: true
   }
 };
 

@@ -20,11 +20,15 @@ const post = async(type, endpoint, body) => {
         // } catch (error) {
         //     console.log('caught error::::', error);
         // }
-        let apiPostRes = API.post('notes', "/getNews", { body: body }).then(res => {
+        let apiPostRes = API.get('gNewsNotes', "/getNews")
+        .then(res => {
             console.log('apiPostRes', res);
             return  res;
         })
         .catch(err => console.log('API.get error::::', err));
+
+        console.log('apiPostRes:::', apiPostRes);
+        
         return apiPostRes;
 }
 

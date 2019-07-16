@@ -1,0 +1,138 @@
+const dev = {
+
+
+  STRIPE_KEY: "pk_test_LGXzgY8j5yTHBrtlmvfAQIgY",
+
+  s3: {
+
+    REGION: "us-east-1",
+    BUCKET: "geuddel-news-api-dev-attachmentsbucket-1nzxgfpwfl8"
+
+  },
+  apiGateway: {
+
+    REGION: "us-east-1",
+    URL: "https://4h9ct7gvu2.execute-api.us-east-1.amazonaws.com/dev"
+
+  },
+  cognito: {
+
+    REGION: 'us-east-1',
+    USER_POOL_ID:  "us-east-1_BrEUSj1Lz",
+    APP_CLIENT_ID: "55q2ijm1fiktc96bc8volkdd9b",
+    IDENTITY_POOL_ID: "us-east-1:7815ded3-825f-4398-b93e-aaadb1450a45"
+
+  }
+};
+
+
+const prod = {  // not updated for new app
+
+  STRIPE_KEY: "pk_test_LGXzgY8j5yTHBrtlmvfAQIgY",
+
+  s3: {
+
+    REGION: "us-east-1",
+    BUCKET: "serverless-stack-notes-app-api-attachmentsbucket-real62yl8eif"
+
+  },
+  apiGateway: {
+
+    REGION: "us-east-1",
+    URL: "https://shg7osmvui.execute-api.us-east-1.amazonaws.com/prod"
+
+  },
+  cognito: {
+
+    REGION: 'us-east-1',
+    USER_POOL_ID:  "us-east-1_7Ow6cxScD",
+    APP_CLIENT_ID: "68ufohnjs9qlslhr2ejar70r2o",
+    IDENTITY_POOL_ID: "us-east-1:f0553bdc-8b49-4f94-a503-c8a9dff7c43d"
+
+  }
+};
+
+
+const config = process.env.REACT_APP_STAGE === 'prod'
+    ?  prod
+    :  dev;
+
+
+export default {
+  // Add common config values here
+  MAX_ATTACHMENT_SIZE:  5000000,
+  ...config
+
+};
+
+
+
+
+
+
+// const dev = {
+
+
+//   STRIPE_KEY: "pk_test_LGXzgY8j5yTHBrtlmvfAQIgY",
+
+//   s3: {
+
+//     REGION: "us-east-1",
+//     BUCKET: "serverless-stack-notes-app-api-attachmentsbucket-1dghsqg3dicvq"
+
+//   },
+//   apiGateway: {
+
+//     REGION: "us-east-1",
+//     URL: "https://bzuf7tgdme.execute-api.us-east-1.amazonaws.com/dev"
+
+//   },
+//   cognito: {
+
+//     REGION: 'us-east-1',
+//     USER_POOL_ID:  "us-east-1_FEhqxPsrp",
+//     APP_CLIENT_ID: "q59rulf0msam712411aa2o9qv",
+//     IDENTITY_POOL_ID: "us-east-1:f7d18fe9-96cb-4b84-92d9-573d8ccbc839"
+
+//   }
+// };
+
+
+// const prod = {
+
+//   STRIPE_KEY: "pk_test_LGXzgY8j5yTHBrtlmvfAQIgY",
+
+//   s3: {
+
+//     REGION: "us-east-1",
+//     BUCKET: "serverless-stack-notes-app-api-attachmentsbucket-real62yl8eif"
+
+//   },
+//   apiGateway: {
+
+//     REGION: "us-east-1",
+//     URL: "https://shg7osmvui.execute-api.us-east-1.amazonaws.com/prod"
+
+//   },
+//   cognito: {
+
+//     REGION: 'us-east-1',
+//     USER_POOL_ID:  "us-east-1_7Ow6cxScD",
+//     APP_CLIENT_ID: "68ufohnjs9qlslhr2ejar70r2o",
+//     IDENTITY_POOL_ID: "us-east-1:f0553bdc-8b49-4f94-a503-c8a9dff7c43d"
+
+//   }
+// };
+
+
+// const config = process.env.REACT_APP_STAGE === 'prod'
+//     ?  prod
+//     :  dev;
+
+
+// export default {
+//   // Add common config values here
+//   MAX_ATTACHMENT_SIZE:  5000000,
+//   ...config
+
+// };

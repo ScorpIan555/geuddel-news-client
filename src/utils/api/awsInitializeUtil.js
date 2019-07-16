@@ -16,7 +16,7 @@ const awsConfig = {
       API: {
         endpoints: [
           {
-            name: "notes",
+            name: "gNewsNotes",
             endpoint: config.apiGateway.URL,
             region: config.apiGateway.REGION
           },

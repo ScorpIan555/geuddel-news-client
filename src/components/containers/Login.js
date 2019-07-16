@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from '../../actions';
 
-class Signup extends Component {
+
+class Login extends Component {
     state = {
         isLoading: false,
         email: '',
@@ -11,17 +12,6 @@ class Signup extends Component {
         confirmationCode: '',
         newUser: null
     };
-
-    componentDidMount() {
-        console.log('Signup.componentDidMount()', this.props);
-        console.log('Signup.componentDidMount()', this.state);
-    }
-
-    // validateForm = () => {
-    //     return {
-    //         this.state.email.length > 0
-    //     }
-    // }
 
     handleChange = event => {
         this.setState({
@@ -54,18 +44,13 @@ class Signup extends Component {
         this.setState({ isLoading: false });
     }
 
-    // renderForm() {
-    //     return(
-            
-    //     )
-    // }
 
     render() {
         let { handleChange, handleSubmit} = this;
         let { email, password } = this.state;
 
         return (
-            <div className="Signup">
+            <div className="Login">
                 <div className="container col-md-5">
                     <div className="card">
                         <form onSubmit={handleSubmit}>
@@ -85,18 +70,20 @@ class Signup extends Component {
                                      onChange={handleChange}
                                  />
                             </div>
-                            <button className="btn-lg" type="submit" text="Sign Up" />
+                            <button className="btn-lg" type="submit" text="Log In" />
                         </form>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
+
+
 const stateToProps = (state) => {
     return {
-
+  
     }
 }
 
@@ -108,4 +95,4 @@ const dispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(stateToProps, dispatchToProps)(Signup);
+export default connect(stateToProps, dispatchToProps)(Login);

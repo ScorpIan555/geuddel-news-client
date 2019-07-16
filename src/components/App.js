@@ -1,32 +1,65 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Nav } from './presentation';
-import { Sidebar } from './containers';
+import Routes from './Routes';
+import { Nav, AppliedRoute, NotFound } from './presentation';
+import { Sidebar, Topic, Signup, Login } from './containers';
 import actions from '../actions';
-import { API } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
+import { Link, withRouter, Switch, Route } from 'react-router-dom';
+// import { Auth, API } from 'aws-amplify';
 
 class App extends Component {
-    state = {};
+    state = {
+        isAuthenticated: false
+    };
 
-    componentDidMount() {
+   async componentDidMount() {
         console.log('App.componentDidMount()', this);
         let body = {
             fart: 'plllllffffff',
-
         };
 
         this.props.getNews(body);
 
-
-
-        API.post('notes', '/create', body)
-        .then(res => {
-            console.log('res from API', res)
-        })
-        .catch(err => {
-            console.log('error', err);
-        })
         
+        let username = 'TestIan70@gmail.com';
+        let password = 'Gerrard!08';
+    
+
+        // Auth.signUp({
+        //     username,
+        //     password
+        // })
+        // .then(res => {
+        //     console.log('Auth.signup.data:::', res);
+        // })
+        // .catch(err => {
+        //     console.log('error from Auth:::', err);
+        // })
+
+
+        // API.get('gNewsNotes', '/notes')
+        // .then(res => {
+        //     console.log('res:::', res);
+        // })
+        // .catch(err => {
+        //     console.log('err:::', err);
+        // })
+        
+    }
+
+    userHasAuthenticated = authenticated => {
+        this.setState({
+            isAuthenticated: authenticated
+        });
+    }
+
+    handleLogout = async event => {
+        await Auth.signOut();
+
+        this.userHasAuthenticated(false);
+
+        this.props.history.push('/login');
     }
 
     handleClick = event => {
@@ -49,442 +82,21 @@ class App extends Component {
             handleClick
         };
 
+        let childProps = {
+            isAuthenticated: this.state.isAuthenticated,
+            userHasAuthenticated: this.userHasAuthenticated
+        }
+
         return (
         <div className="container">
             <Nav />
             
             <div className="main-container">
-            
-            <section>
-                <div className="container">
-                <div className="row">
-
-
-                <Sidebar props={sidebarChildProps} />
-
-
-
-
-                    <div className="col">
-                    <div className="card card-sm">
-                        <ul className="list-group list-group-flush">
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-sidekick-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>Sidekick</h4>
-                                    </a>
-                                    <span>Holistic fitness tracking</span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="SidekickButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="SidekickButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Health &amp; Fitness
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 221
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 14
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-pitstop-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>Pitstop</h4>
-                                    </a>
-                                    <span>Browser-based project management</span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="PitstopButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="PitstopButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Productivity
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 90
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 34
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-pipeline-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>pipeline.js</h4>
-                                    </a>
-                                    <span>
-                                    Snappy UI interaction library with flexible
-                                    API
-                                    </span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="pipeline.jsButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="pipeline.jsButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Development
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 84
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 25
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-paydar-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>Paydar</h4>
-                                    </a>
-                                    <span>Location based touch payments</span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="PaydarButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="PaydarButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Productivity
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 253
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 19
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-kin-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>Kin</h4>
-                                    </a>
-                                    <span>The digital fashion assistant</span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="KinButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="KinButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Lifestyle
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 84
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 21
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-
-                        <li className="list-group-item">
-                            <div className="media align-items-center">
-                            <a href="#" className="mr-4">
-                                <img
-                                alt="Image"
-                                src="assets/img/graphic-product-bench-thumb.jpg"
-                                className="rounded avatar avatar-lg"
-                                />
-                            </a>
-                            <div className="media-body">
-                                <div className="d-flex justify-content-between mb-2">
-                                <div>
-                                    <a href="#" className="mb-1">
-                                    <h4>Bench</h4>
-                                    </a>
-                                    <span>Accounting for creative people</span>
-                                </div>
-                                <div className="dropdown">
-                                    <button
-                                    className="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow"
-                                    type="button"
-                                    id="BenchButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    <i className="icon-dots-three-horizontal" />
-                                    </button>
-                                    <div
-                                    className="dropdown-menu dropdown-menu-sm"
-                                    aria-labelledby="BenchButton"
-                                    >
-                                    <a className="dropdown-item" href="#">
-                                        Save
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Share
-                                    </a>
-                                    <a className="dropdown-item" href="#">
-                                        Comment
-                                    </a>
-                                    <div className="dropdown-divider" />
-                                    <a className="dropdown-item" href="#">
-                                        Report
-                                    </a>
-                                    </div>
-                                </div>
-                                </div>
-                                <a
-                                className="badge badge-secondary badge-pill mb-2"
-                                href="#"
-                                >
-                                Productivity
-                                </a>
-                                <div className="text-small">
-                                <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                    <i className="icon-heart" /> 373
-                                    </li>
-                                    <li className="list-inline-item">
-                                    <i className="icon-message" /> 62
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                            </div>
-                        </li>
-                        </ul>
-                    </div>
-                    </div>
+                <div>
+                <Routes childProps={childProps} />
                 </div>
-                </div>
-            </section>
-
+                
+                
             <footer className="footer-short">
                 <div className="container">
                 <hr />
@@ -553,4 +165,4 @@ const dispatchToProps = dispatch => {
   };
 };
 
-export default connect(stateToProps, dispatchToProps)(App);
+export default connect(stateToProps, dispatchToProps)(withRouter(App));
