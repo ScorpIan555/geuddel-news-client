@@ -1,5 +1,6 @@
+import { AppliedRoute } from './routes';
 import Nav from './Nav';
 import NotFound from './NotFound';
-import { AppliedRoute } from './routes'
+import Footer from './Footer';
 
-export { Nav, AppliedRoute, NotFound };
+export { Nav, AppliedRoute, NotFound, Footer };
