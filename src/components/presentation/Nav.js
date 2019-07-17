@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button } from 'bootstrap';
 import { NavLink } from 'react-router-dom';
 
-export default ({ navProps }) => {
+export default ({ props }) => {
+
+  let { isAuthenticated, userHasAuthenticated } = props;
+
   return (
     <div className="navbar-container">
             
@@ -32,24 +35,37 @@ export default ({ navProps }) => {
               </form>
 
               <ul className="navbar-nav">
+              { (isAuthenticated) ?
+                <Fragment>
+                  <li className="nav-item">
+                    <NavLink 
+                      to='/logout'
+                    >
+                      logout
+                    </NavLink>
+                  </li>
+                </Fragment>
+                  :
+                <Fragment>
+                  <li className="nav-item">
+                    <NavLink 
+                      to='/signup'
+                    >
+                      Signup
+                    </NavLink>
+                  </li>
+
+                  <li className="nav-item">
+                    <NavLink 
+                      to='/login'
+                    >
+                      Login
+                    </NavLink>
+                  </li>
+                </Fragment>
+              
+              }
                 
-                <li className="nav-item">
-                  <NavLink 
-                    to='/signup'
-                  >
-                    Signup
-                  </NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink 
-                    to='/login'
-                  >
-                    Login
-                  </NavLink>
-                </li>
-
-
               </ul>
             </div>
           </nav>

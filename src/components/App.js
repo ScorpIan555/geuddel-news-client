@@ -21,21 +21,7 @@ class App extends Component {
 
         this.props.getNews(body);
 
-        
-        let username = 'TestIan70@gmail.com';
-        let password = 'Gerrard!08';
-    
-
-        // Auth.signUp({
-        //     username,
-        //     password
-        // })
-        // .then(res => {
-        //     console.log('Auth.signup.data:::', res);
-        // })
-        // .catch(err => {
-        //     console.log('error from Auth:::', err);
-        // })
+        this.props.getNews();
 
 
         // API.get('gNewsNotes', '/notes')
@@ -72,28 +58,31 @@ class App extends Component {
     
     render() {
         // desconstruct and assign class methods
-        let { handleClick } = this;
-        // deconstruct and assign props to be passed into the sidebar component
+        let { handleClick, userHasAuthenticated } = this;
+        // deconstruct and assign state
+        let { isAuthenticated } = this.state;
+        // deconstruct and assign props
         let { sidebarTop, sidebarBottom } = this.props;
         // create childProps object to be passed into sidebar component
-        const sidebarChildProps = {
+        const sidebarChildProps = {  // @TODO 
             sidebarTop,
             sidebarBottom,
             handleClick
         };
 
         let childProps = {
-            isAuthenticated: this.state.isAuthenticated,
-            userHasAuthenticated: this.userHasAuthenticated
+            isAuthenticated: isAuthenticated,
+            userHasAuthenticated: userHasAuthenticated
         }
 
         return (
         <div className="container">
-            <Nav />
+
+            <Nav props={childProps} />
             
             <div className="main-container">
                 <div>
-                <Routes childProps={childProps} />
+                    <Routes childProps={childProps} />
                 </div>
                 
                 <Footer />
@@ -116,7 +105,9 @@ const stateToProps = state => {
 const dispatchToProps = dispatch => {
   return {
     test: (data) => dispatch(actions.actionTest(data)),
-    getNews: (data) => dispatch(actions.actionGetNews(data))
+    getNews: (data) => dispatch(actions.actionGetNews(data)),
+    getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
+    signOut: () => dispatch(action.actionSignOutUser())
   };
 };
 
