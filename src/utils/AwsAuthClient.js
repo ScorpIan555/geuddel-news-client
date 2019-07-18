@@ -3,39 +3,49 @@ import { Auth } from 'aws-amplify';
 const get = async pkg => {
   if (pkg.type === 'GET_CURRENT_USER') {
     try {
-      const user = await Auth.currentSession()
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
+      // invoke async GET to AWS via Auth module
+      const user = await Auth.currentAuthenticatedUser()
+      // the authReducer returns a nested user object t/b passed 
+       
       console.log('currentUser from Auth:::', user);
-      return user;
+      let currentUser = user.attributes.email
+      return currentUser;
     } catch (err) {
+      // if no user is authenticated, will pass a 'not authenticated' error
       console.log('err::', err);
+      if(err === 'not authenticated') {
+        const noCurrentUser = {
+          email: 'No current user'
+        };
+        
+        return noCurrentUser
+      }
     }
   }
 };
 
 const post = async pkg => {
   if (pkg.type === 'CREATE_USER') {
+    console.log('pkg.SIGN_UP:::', pkg);
+    let { username, password } = pkg.user;
     try {
-      const user = await Auth.signUp(
-        pkg.params[0].username,
-        pkg.params[0].password
-      );
+      const user = await Auth.signUp(username, password);
 
       console.log('AwsAuth.util.post.CREATE_USER', user);
-
       return user;
+
     } catch (err) {
       console.log('err', err);
+      alert(err);
     }
   }
 
   if (pkg.type === 'SIGN_IN_USER') {
+
+    console.log('pkg.SIGN_IN:::', pkg);
+    let { username, password } = pkg.user;
     try {
-      const user = await Auth.signIn(
-        pkg.params[0].username,
-        pkg.params[0].password
-      );
+      const user = await Auth.signIn(username, password);
 
       console.log('AwsAuth.util.post.SIGN_IN_USER', user);
 

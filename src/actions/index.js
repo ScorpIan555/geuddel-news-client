@@ -21,12 +21,13 @@ export default {
     )}
   },
 
-  actionCreateUser: (...params) => {
+  actionCreateUser: (user) => {
+    console.log('actionSigninUser.user', user);
     return dispatch => {
       return dispatch(
         AwsAuthClient.postAsync({
           type: constants.CREATE_USER,
-          params
+          user
         })
       );
     };
@@ -43,18 +44,20 @@ export default {
     };
   },
 
-  actionSignInUser: (...params) => {
+  actionSignInUser: (user) => { // sending obj w/ username/password to AWS
+    console.log('actionSigninUser.user', user);
     return dispatch => {
       return dispatch(
         AwsAuthClient.postAsync({
           type: constants.SIGN_IN_USER,
-          params
+          user
         })
       );
     };
   },
 
   actionSignOutUser: () => {
+    console.log('actionSignoutUser::::' )
     return dispatch => {
       return dispatch(
         AwsAuthClient.deleteAsync({

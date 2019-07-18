@@ -1,3 +1,5 @@
 import AppliedRoute from './AppliedRoute';
+import AuthenticatedRoute from './AuthenticatedRoute';
+import UnauthenticatedRoute from './UnauthenticatedRoute';
 
-export { AppliedRoute };
+export { AppliedRoute, AuthenticatedRoute, UnauthenticatedRoute };

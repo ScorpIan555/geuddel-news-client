@@ -2,7 +2,7 @@ import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { newsfeedReducer, sidebarReducer } from '../reducers';
+import { newsfeedReducer, sidebarReducer, authReducer } from '../reducers';
 
 let store = [];
 export const history = createBrowserHistory();
@@ -11,7 +11,8 @@ export default {
   configure: initialState => {
     const reducers = combineReducers({
       newsfeed: newsfeedReducer,
-      sidebar: sidebarReducer
+      sidebar: sidebarReducer,
+      auth: authReducer
     });
 
     if (initialState) {

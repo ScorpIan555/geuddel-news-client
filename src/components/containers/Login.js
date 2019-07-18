@@ -1,98 +1,116 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Button, Form, Card } from "react-bootstrap";
 import { connect } from 'react-redux';
+import { LoaderButton } from "../presentation";
 import actions from '../../actions';
-
+import style from '../../../public/theme/scss/theme.scss';
 
 class Login extends Component {
     state = {
-        isLoading: false,
-        email: '',
-        password: '',
-        confirmPassword: '',
-        confirmationCode: '',
-        newUser: null
+      isLoading: false,
+      email: "",
+      password: ""
     };
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id] : event.target.value
-        })
+  validateForm = () => {
+    console.log('validateForm - this.state:::', this.state);
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
+
+  handleChange = event => {
+    // form input fields are components controlled by this container
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+
+    this.setState({ isLoading: true });
+
+    try {
+      // destructure state object
+      let { email, password } = this.state;
+      // create data object to fit AWS Auth module specs (username & password)
+      let user = {
+        username: email,
+        password
+      };
+      await this.props.signInUser(user);
+
+    
+      this.props.userHasAuthenticated(true);
+      this.props.history.push('/');
+
+    } catch (e) {
+
+      alert(e.message);
+
+      this.setState({ isLoading: false });
     }
-
-    handleSubmit = async event => {
-        event.preventDefault();
-
-        // destructure and assgin from state object
-        let { email, password } = this.state;
-
-        this.setState({ isLoading: true });
-
-        try {
-            let user = {
-                username: email,
-                password: password
-            }
-            // make redux call
-            await this.props.createUser(user);
-            let newUser = this.props.user.currentUser;
-            this.setState({ newUser });
-
-        } catch (error) {
-            console.log('error', error);
-            alert(error);
-        }
-        this.setState({ isLoading: false });
-    }
+  }
 
 
-    render() {
-        let { handleChange, handleSubmit} = this;
-        let { email, password } = this.state;
+  render() {
+    // deconstruct class methods
+    let { handleChange, handleSubmit, validateForm } = this;
+    // deconstruct properties from state object
+    let { email, password, isLoading } = this.state;
 
-        return (
-            <div className="Login">
-                <div className="container col-md-5">
-                    <div className="card">
-                        <form onSubmit={handleSubmit}>
-                            <div id="email" className="form-group" variant="large">
-                                <div className="form-label">Email</div>
-                                <div className="form-control"
-                                    type="email"
-                                     value={email}
-                                     onChange={handleChange}
-                                 />
-                            </div>
-                            <div id="password" className="form-group" variant="large">
-                                <div className="form-label">Password</div>
-                                <div className="form-control"
-                                    type="password"
-                                     value={password}
-                                     onChange={handleChange}
-                                 />
-                            </div>
-                            <button className="btn-lg" type="submit" text="Log In" />
-                        </form>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div className="container col-md-5">
+        <Card className={style.Aligner} >
+          <Card.Body>
+            <form onSubmit={handleSubmit}>
+            <Form.Group controlId="email" variant="large">
+              <Form.Label className="label login-form-label">Email</Form.Label>
+              <Form.Control
+                autoFocus
+                type="email"
+                value={email}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="password" variant="large">
+              <Form.Label className="label login-form-label">Password</Form.Label>
+              <Form.Control
+                value={password}
+                onChange={handleChange}
+                type="password"
+              />
+            </Form.Group>
+            <LoaderButton
+              block
+              className="btn-lg"
+              disabled={!validateForm()}
+              type="submit"
+              isLoading={isLoading}
+              text="Login"
+              loadingText="Loggin in…"
+            >
+              Login
+            </LoaderButton>
+          </form>
+          </Card.Body>
+        </Card>
+
+      </div>
+    );
+  }
 }
 
-
-
 const stateToProps = (state) => {
-    return {
-  
-    }
+  return {
+    // user: state.user
+  }
 }
 
 const dispatchToProps = (dispatch) => {
-    return {
-        createUser: (...params) => dispatch(actions.actionCreateUser(...params)),
-        confirmUser: (...params) => dispatch(actions.actionConfirmUser(...params)),
-        signInUser: (...params) => dispatch(actions.actionSignInUser(...params))
-    }
+  return {
+
+    signInUser: (...params) => dispatch(actions.actionSignInUser(...params))
+  }
 }
 
-export default connect(stateToProps, dispatchToProps)(Login);
+export default connect(stateToProps, dispatchToProps)(Login)

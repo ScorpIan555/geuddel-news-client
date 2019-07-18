@@ -6,33 +6,44 @@ import { Nav, Footer } from './presentation';
 import actions from '../actions';
 import { Auth } from 'aws-amplify';
 import { withRouter } from 'react-router-dom';
+import { join } from 'path';
 // import { Auth, API } from 'aws-amplify';
 
 class App extends Component {
     state = {
-        isAuthenticated: false
+        isAuthenticated: false,
+        isAuthenticating: true,
     };
 
    async componentDidMount() {
-        console.log('App.componentDidMount()', this);
-        let body = {
-            fart: 'plllllffffff',
-        };
 
-        this.props.getNews(body);
+        // when user navigates to the app, this component will always need to mount, therefore
+        // we want the component to check for a currentUser
+        try {
+            await this.props.getCurrentUser();
+            console.log('App.componentDidMount()', this); // delete after dev
+            console.log('App.componentDidMount.currentUser', this.props.currentUser); // delte after dev
+            
+            if(this.props.currentUser.email !== 'No current user') {
+                console.log('testing this.props.user.currentUser:::', this.props.currentUser);
+                this.userHasAuthenticated(true);
+            }
+            
+        } catch (error) {
+            console.log('error:::', error);
+        }
+
+        this.setState({isAuthenticating: false});
 
         this.props.getNews();
-
-
-        // API.get('gNewsNotes', '/notes')
-        // .then(res => {
-        //     console.log('res:::', res);
-        // })
-        // .catch(err => {
-        //     console.log('err:::', err);
-        // })
-        
+        console.log('App.componentDidMount()', this);
     }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.currentUser != this.props.currentUser) {
+            this.props.getNews();
+        }
+      }
 
     userHasAuthenticated = authenticated => {
         this.setState({
@@ -45,7 +56,7 @@ class App extends Component {
 
         this.userHasAuthenticated(false);
 
-        this.props.history.push('/login');
+        // this.props.history.push('/');
     }
 
     handleClick = event => {
@@ -58,7 +69,7 @@ class App extends Component {
     
     render() {
         // desconstruct and assign class methods
-        let { handleClick, userHasAuthenticated } = this;
+        let { handleClick, userHasAuthenticated, handleLogout } = this;
         // deconstruct and assign state
         let { isAuthenticated } = this.state;
         // deconstruct and assign props
@@ -71,8 +82,9 @@ class App extends Component {
         };
 
         let childProps = {
-            isAuthenticated: isAuthenticated,
-            userHasAuthenticated: userHasAuthenticated
+            isAuthenticated,
+            userHasAuthenticated,
+            handleLogout
         }
 
         return (
@@ -95,10 +107,13 @@ class App extends Component {
 
 const stateToProps = state => {
   const { topLink, bottomLink } = state.sidebar;
+  const { currentUser } = state.auth;
 
   return {
     sidebarTop: topLink,
-    sidebarBottom: bottomLink
+    sidebarBottom: bottomLink,
+    user: state.auth,
+    currentUser: currentUser
   };
 };
 

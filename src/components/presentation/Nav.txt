@@ -3,24 +3,22 @@ import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 
-export default ({ props }) => {
-  let { handleLogout, isAuthenticated } = props;
-
+export default ({ navProps }) => {
   return (
     <div className="navbar-container balls">
       <Navbar expand="md">
         <Navbar.Brand as="ul" className="app-header" href="#home">
-          <Link to="/">G-News</Link>
+          <Link to="/">Scratch</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav className="">
-            {isAuthenticated ? (
+            {navProps.isAuthenticated ? (
               <Fragment>
                 <LinkContainer to="/settings">
                   <Nav.Link>Settings</Nav.Link>
                 </LinkContainer>
-                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                <Nav.Link onClick={navProps.handleLogout}>Logout</Nav.Link>
               </Fragment>
             ) : (
               <Fragment>

@@ -1,111 +1,233 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Form, Card } from "react-bootstrap";
 import { connect } from 'react-redux';
+import { LoaderButton } from "../presentation";
+import style from '../../../public/theme/scss/theme.scss';
 import actions from '../../actions';
 
-class Signup extends Component {
+
+ class Signup extends Component {
+    // initialize state for form fields this component will control
     state = {
-        isLoading: false,
-        email: '',
-        password: '',
-        confirmPassword: '',
-        confirmationCode: '',
-        newUser: null
+      isLoading: false,
+      email: "",
+      password: "",
+      confirmPassword: "",
+      confirmationCode: "",
+      newUser: null
     };
 
-    componentDidMount() {
-        console.log('Signup.componentDidMount()', this.props);
-        console.log('Signup.componentDidMount()', this.state);
+  componentDidMount() {
+    console.log('Signup.componentDidMount() :::', this.props);
+    console.log('Signup.componentDidMount() :::', this.state);
+  }
+
+ 
+  validateForm = () => {
+    // submit button stays in disabled state until these conditions are TRUE
+    return (
+      this.state.email.length > 0 &&
+      this.state.password.length > 0 &&
+      this.state.password === this.state.confirmPassword
+    );
+  }
+
+  validateConfirmationForm = () => {
+    // submit button stays in disabled state until this condition is TRUE
+    console.log('confirmationCode:::', this.state.confirmationCode);
+    return this.state.confirmationCode.length > 0;
+  }
+
+  handleChange = event => {
+    // form input fields whose change is controlled by this container are handled here
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSubmit = async event => {
+    // prevent default submit event/action
+    event.preventDefault();
+    // trigger submit button's async-only state from initialization of async call until a value is returned
+    this.setState({ isLoading: true });
+    // async call
+    try {
+      // destructure state object
+      let { email, password } = this.state;
+      // state fields controlled by this container are packaged to be passed into async function
+      let user = {
+        username: email,
+        password
+      };
+      // async redux action called from here 
+      await this.props.createUser(user);
+      // response to async redux call flows from redux cycle into this component's props
+      //  capture the new current user value to be used locally and passed into component's state to trigger rerender
+      let newUser = this.props.currentUser;
+      console.log(' after action call ::: Signup.newUser --- ', newUser);
+      // trigger re-render by calling setState() method 
+      this.setState({
+        newUser
+      });
+
+    } catch (e) {
+      console.log('error.this', this);
+      console.log('e::::', e);
+      // inform user of error during signup process
+      alert(e);
     }
+    // with async redux action/call now complete, exit loader button's async-only state
+    this.setState({ isLoading: false });
+  }
+  
 
-    // validateForm = () => {
-    //     return {
-    //         this.state.email.length > 0
-    //     }
-    // }
+  handleConfirmationSubmit = async event => {
+    event.preventDefault();
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id] : event.target.value
-        })
+    this.setState({ isLoading: true });
+
+    try {
+
+      let user = {
+        username: this.state.email,
+        confirmationCode: this.state.confirmationCode || null,
+        password: this.state.password || null
+      }
+
+      await this.props.confirmUser(user);
+
+      await this.props.signInUser(user);
+
+      this.props.userHasAuthenticated(true);
+
+      this.props.history.push("/");
+
+    } catch (e) {
+      alert(e.message);
+      this.setState({ isLoading: false });
     }
+  }
 
-    handleSubmit = async event => {
-        event.preventDefault();
+  renderConfirmationForm = () => {
+    // deconstruct class methods
+    let { handleChange, validateConfirmationForm, handleConfirmationSubmit } = this;
+    // deconstruct properties from state object
+    let { isLoading, confirmationCode } = this.state;
 
-        // destructure and assgin from state object
-        let { email, password } = this.state;
+    return (
+      <div className="container col-md-5">
+      <Card className="" >
+        <Card.Body>
+          <form onSubmit={handleConfirmationSubmit}>
+            <Form.Group controlId="confirmationCode" variant="large">
+              <Form.Label>Confirmation Code</Form.Label>
+              <Form.Control
+                autoFocus
+                type="tel"
+                value={confirmationCode}
+                onChange={handleChange}
+              />
+              <Form.Text className="text-muted">Please check your email for the code.</Form.Text>
+            </Form.Group>
+            <LoaderButton
+              block
+              className="btn-lg"
+              disabled={!validateConfirmationForm()}
+              type="submit"
+              isLoading={isLoading}
+              text="Verify"
+              loadingText="Verifying…"
+            />
+          </form>
+          </Card.Body>
+        </Card>
 
-        this.setState({ isLoading: true });
+      </div>
+    );
+  }
 
-        try {
-            let user = {
-                username: email,
-                password: password
-            }
-            // make redux call
-            await this.props.createUser(user);
-            let newUser = this.props.user.currentUser;
-            this.setState({ newUser });
+  renderForm = () => {
+     // deconstruct class methods
+     let { handleChange, handleSubmit, validateForm } = this;
+     // deconstruct properties from state object
+     let { email, password, isLoading, confirmPassword } = this.state;
+    
+    return (
+      <div className="container col-md-5">
+      <Card className={style.Aligner} >
+        <Card.Body>
+            <form onSubmit={handleSubmit}>
+              <Form.Group controlId="email" variant="large">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  autoFocus
+                  type="email"
+                  value={email}
+                  onChange={handleChange}
+                />
+            </Form.Group>
+              <Form.Group controlId="password" variant="large">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  value={password}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </Form.Group>
+              <Form.Group controlId="confirmPassword" variant="large">
+                <Form.Label>Confirm A Password</Form.Label>
+                <Form.Control
+                  value={confirmPassword}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </Form.Group>
+              <LoaderButton
+                block
+                className="btn-lg"
+                disabled={!validateForm()}
+                type="submit"
+                isLoading={isLoading}
+                text="Signup"
+                loadingText="Signing up…"
+              />
+            </form>
+            </Card.Body>
+        </Card>
 
-        } catch (error) {
-            console.log('error', error);
-            alert(error);
-        }
-        this.setState({ isLoading: false });
-    }
+      </div>
+    );
+  }
 
-    // renderForm() {
-    //     return(
-            
-    //     )
-    // }
+  render() {
+     // deconstruct class methods
+     let { renderForm, renderConfirmationForm } = this;
+     // deconstruct properties from state object
+     let { newUser } = this.state;
 
-    render() {
-        let { handleChange, handleSubmit} = this;
-        let { email, password } = this.state;
-
-        return (
-            <div className="Signup">
-                <div className="container col-md-5">
-                    <div className="card">
-                        <form onSubmit={handleSubmit}>
-                            <div id="email" className="form-group" variant="large">
-                                <div className="form-label">Email</div>
-                                <div className="form-control"
-                                    type="email"
-                                     value={email}
-                                     onChange={handleChange}
-                                 />
-                            </div>
-                            <div id="password" className="form-group" variant="large">
-                                <div className="form-label">Password</div>
-                                <div className="form-control"
-                                    type="password"
-                                     value={password}
-                                     onChange={handleChange}
-                                 />
-                            </div>
-                            <button className="btn-lg" type="submit" text="Sign Up" />
-                        </form>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className="Signup">
+        {newUser === null
+          ? renderForm()
+          : renderConfirmationForm()}
+      </div>
+    );
+  }
 }
 
 const stateToProps = (state) => {
-    return {
-
-    }
+  return {
+    user: state.user,
+    currentUser: state.currentUser
+  }
 }
 
 const dispatchToProps = (dispatch) => {
-    return {
-        createUser: (...params) => dispatch(actions.actionCreateUser(...params)),
-        confirmUser: (...params) => dispatch(actions.actionConfirmUser(...params)),
-        signInUser: (...params) => dispatch(actions.actionSignInUser(...params))
-    }
+  return {
+    createUser: (...params) => dispatch(actions.actionCreateUser(...params)),
+    confirmUser: (...params) => dispatch(actions.actionConfirmUser(...params)),
+    signInUser: (...params) => dispatch(actions.actionSignInUser(...params)),
+  }
 }
 
 export default connect(stateToProps, dispatchToProps)(Signup);

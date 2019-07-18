@@ -17,7 +17,8 @@ export default (state = initialState, action) => {
 
     case constants.CREATE_USER:
       console.log('USER_CREATED!::', payload);
-      newState.currentUser = payload;
+      newState.currentUser = payload.user.email;
+      console.log('newState.currentUser', newState.currentUser);
 
       return newState;
 
@@ -25,17 +26,23 @@ export default (state = initialState, action) => {
       console.log('USER_SIGNED_IN!::', payload);
       newState.currentUser = payload;
 
+      console.log('USER_SIGNED_IN!:::', newState.currentUser);
+
       return newState;
 
     case constants.SIGN_OUT_USER:
       console.log('USER_SIGNED_OUT');
-      newState.currentUser = [];
-
-      return newState;
+      const noCurrentUser = {
+        email: 'No current user'
+      };
+      
+      return noCurrentUser
 
     case constants.GET_CURRENT_USER:
       console.log('GET_CURRENT_USER!:::', payload);
       newState.currentUser = payload;
+
+      console.log('GET_CURRENT_USER!:::', newState.currentUser);
 
       return newState;
 
