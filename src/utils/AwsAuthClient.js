@@ -8,7 +8,7 @@ const get = async pkg => {
       // the authReducer returns a nested user object t/b passed 
        
       console.log('currentUser from Auth:::', user);
-      let currentUser = user.attributes.email
+      let currentUser = user.attributes.email;
       return currentUser;
     } catch (err) {
       // if no user is authenticated, will pass a 'not authenticated' error

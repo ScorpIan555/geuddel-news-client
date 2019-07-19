@@ -84,14 +84,15 @@ import actions from '../../actions';
   handleConfirmationSubmit = async event => {
     event.preventDefault();
 
-    this.setState({ isLoading: true });
-
+    // async call
     try {
-
+      // destructure state object
+      let { email, password, confirmationCode } = this.state;
+      // state fields controlled by this container are packaged to be passed into async function
       let user = {
-        username: this.state.email,
-        confirmationCode: this.state.confirmationCode || null,
-        password: this.state.password || null
+        username: email,
+        confirmationCode: confirmationCode || null,
+        password: password || null
       }
 
       await this.props.confirmUser(user);

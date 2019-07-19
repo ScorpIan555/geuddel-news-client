@@ -109,7 +109,7 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
   return {
 
-    signInUser: (...params) => dispatch(actions.actionSignInUser(...params))
+    signInUser: (user) => dispatch(actions.actionSignInUser(user))
   }
 }
 
