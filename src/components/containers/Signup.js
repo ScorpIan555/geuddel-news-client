@@ -14,7 +14,8 @@ import actions from '../../actions';
       password: "",
       confirmPassword: "",
       confirmationCode: "",
-      newUser: null
+      newUser: null,
+      wasError: false
     };
 
   componentDidMount() {
@@ -48,12 +49,12 @@ import actions from '../../actions';
   handleSubmit = async event => {
     // prevent default submit event/action
     event.preventDefault();
+    // destructure state object
+    let { email, password, wasError, newUser } = this.state;
     // trigger submit button's async-only state from initialization of async call until a value is returned
     this.setState({ isLoading: true });
     // async call
     try {
-      // destructure state object
-      let { email, password } = this.state;
       // state fields controlled by this container are packaged to be passed into async function
       let user = {
         username: email,
@@ -63,18 +64,25 @@ import actions from '../../actions';
       await this.props.createUser(user);
       // response to async redux call flows from redux cycle into this component's props
       //  capture the new current user value to be used locally and passed into component's state to trigger rerender
-      let newUser = this.props.currentUser;
-      console.log(' after action call ::: Signup.newUser --- ', newUser);
-      // trigger re-render by calling setState() method 
-      this.setState({
-        newUser
-      });
+      // let newUser = this.props.currentUser;
+    
 
     } catch (e) {
       console.log('error.this', this);
       console.log('e::::', e);
       // inform user of error during signup process
       alert(e);
+      // this tells the component not to render the confirmation form because their was an error in the Signup process
+      this.setState({
+        wasError: true
+      });
+    }
+
+    // 
+    if(wasError !== true) {
+      this.setState({
+        newUser: 'new user created'
+      })
     }
     // with async redux action/call now complete, exit loader button's async-only state
     this.setState({ isLoading: false });

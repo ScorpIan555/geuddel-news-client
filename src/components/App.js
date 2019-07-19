@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routes from './Routes';
 import { Nav, Footer } from './presentation';
-// import { Sidebar, Topic, Signup, Login } from './containers';
+// import { Sidebar, Topic, Signup, Login } from './containers';  // delete when done w/ dev
 import actions from '../actions';
-import { Auth } from 'aws-amplify';
 import { withRouter } from 'react-router-dom';
-import { join } from 'path';
-// import { Auth, API } from 'aws-amplify';
 
 class App extends Component {
     state = {
@@ -16,31 +13,32 @@ class App extends Component {
     };
 
    async componentDidMount() {
-
         // when user navigates to the app, this component will always need to mount, therefore
         // we want the component to check for a currentUser
         try {
             await this.props.getCurrentUser();
             console.log('App.componentDidMount()', this); // delete after dev
             console.log('App.componentDidMount.currentUser', this.props.currentUser); // delte after dev
-            
+            // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
             if(this.props.currentUser.email !== 'No current user') {
                 console.log('testing this.props.user.currentUser:::', this.props.currentUser);
                 this.userHasAuthenticated(true);
             }
-            
+        // error handler    
         } catch (error) {
             console.log('error:::', error);
         }
-
+        // intial authentication process complete
         this.setState({isAuthenticating: false});
-
+        // make call for newsfeed items
         this.props.getNews();
         console.log('App.componentDidMount()', this);
     }
 
     componentDidUpdate(prevProps) {
+        // if component updates
         if(prevProps.currentUser != this.props.currentUser) {
+            console.log('componentDidUpdate.this', this);
             this.props.getNews();
         }
       }
@@ -120,7 +118,7 @@ const dispatchToProps = dispatch => {
     test: (data) => dispatch(actions.actionTest(data)),
     getNews: (data) => dispatch(actions.actionGetNews(data)),
     getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
-    signOut: () => dispatch(action.actionSignOutUser())
+    signOut: () => dispatch(actions.actionSignOutUser())
   };
 };
 

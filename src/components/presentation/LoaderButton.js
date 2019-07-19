@@ -10,7 +10,6 @@ export default ({
   disabled = false,
   ...props
 }) => {
-  console.log('LoaderButton.props', props);
 
   return (
     <Button

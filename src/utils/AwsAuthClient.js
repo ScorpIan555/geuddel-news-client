@@ -36,7 +36,8 @@ const post = async pkg => {
 
     } catch (err) {
       console.log('err', err);
-      alert(err);
+      alert(err.message);
+      return;
     }
   }
 
