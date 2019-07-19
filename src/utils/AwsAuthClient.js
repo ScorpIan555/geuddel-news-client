@@ -104,16 +104,19 @@ export default {
             'post.asyncResForDispatchToStore::::',
             responseFromThunkFunction
           );
-          if (pkg.type != null) {
-            dispatch({
-              type: pkg.type,
-              data: responseFromThunkFunction
-            });
+          if(responseFromThunkFunction != undefined) {
+            if (pkg.type != null) {
+              console.log('check the conditional')
+              dispatch({
+                type: pkg.type,
+                data: responseFromThunkFunction
+              });
+            }
           }
           console.log('res', responseFromThunkFunction);
           return responseFromThunkFunction;
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('err', err));
   },
 
   deleteAsync: pkg => {

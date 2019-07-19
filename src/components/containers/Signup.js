@@ -61,11 +61,25 @@ import actions from '../../actions';
         password
       };
       // async redux action called from here 
-      await this.props.createUser(user);
+      await this.props.createUser(user)
+              .then(res => {
+                console.log('res', res)
+                if(res == undefined) {
+                  this.setState({
+                    wasError: true
+                  });
+                }
+              })
+              .catch(err => { 
+                console.log('err', err);
+                this.setState({
+                  wasError: true
+                });
+              });
       // response to async redux call flows from redux cycle into this component's props
       //  capture the new current user value to be used locally and passed into component's state to trigger rerender
       // let newUser = this.props.currentUser;
-    
+      console.log('signup.this', this);
 
     } catch (e) {
       console.log('error.this', this);
@@ -79,11 +93,17 @@ import actions from '../../actions';
     }
 
     // 
-    if(wasError !== true) {
+    if(this.state.wasError === true) {
+      this.setState({
+        newUser: null
+      })
+    }// 
+    if(this.state.wasError === false) {
       this.setState({
         newUser: 'new user created'
       })
     }
+    console.log('signup finished:::', this);
     // with async redux action/call now complete, exit loader button's async-only state
     this.setState({ isLoading: false });
   }
