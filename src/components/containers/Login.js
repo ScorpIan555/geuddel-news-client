@@ -13,7 +13,7 @@ class Login extends Component {
     };
 
   validateForm = () => {
-    console.log('validateForm - this.state:::', this.state);
+    // console.log('validateForm - this.state:::', this.state);
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
@@ -39,7 +39,6 @@ class Login extends Component {
       };
       await this.props.signInUser(user);
 
-    
       this.props.userHasAuthenticated(true);
       this.props.history.push('/');
 

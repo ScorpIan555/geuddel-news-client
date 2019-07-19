@@ -73,12 +73,12 @@ const post = async pkg => {
 };
 
 const deleteReq = async pkg => {
-  let type = pkg['type'];
+  console.log('deleteReq:::', pkg);
 
-  if (type === 'USER_SIGNED_OUT') {
-    await Auth.signOut({
-      global: false
-    });
+  if (pkg.type === 'SIGN_OUT_USER') {
+    await Auth.signOut({ global: false })
+    .then(res => console.log('res::::', res))
+    .catch(err => console.log('err::', err))
   }
 };
 
@@ -123,6 +123,7 @@ export default {
     return dispatch => {
       deleteReq(pkg)
         .then(responseFromThunkFunction => {
+          console.log('deleteAsync', responseFromThunkFunction);
           if (pkg.type != null) {
             dispatch({
               type: pkg.type,

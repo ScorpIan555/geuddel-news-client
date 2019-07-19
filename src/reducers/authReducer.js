@@ -9,11 +9,6 @@ export default (state = initialState, action) => {
   const payload = action.data;
 
   switch (action.type) {
-    case constants.TEST_REDUX:
-      newState.test = payload;
-      console.log('TEST SUCCESS!', newState);
-
-      return newState;
 
     case constants.CREATE_USER:
       console.log('USER_CREATED!::', payload);

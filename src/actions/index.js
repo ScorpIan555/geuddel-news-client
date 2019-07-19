@@ -13,7 +13,7 @@ export default {
     console.log('actionGetNews!!::: ', body);
     return dispatch => {
       console.log('actionGetNews2!!::: ', body);
-      return dispatch(HTTPClient.asyncPost({
+      return dispatch(HTTPClient.getAsync({
         type: constants.GET_NEWS, 
         endpoint: '/getNews',
         body: body

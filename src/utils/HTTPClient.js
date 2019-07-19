@@ -1,15 +1,26 @@
 import { API } from 'aws-amplify';
 
-const get = async(type, endpoint, data) => {
+const get = async pkg => {
 
-    if(type == 'GET_NEWS') {
-        console.log('GETTING NEWS!:::', type, endpoint, data);
+    if(pkg.type == 'GET_NEWS') {
+        console.log('GETTING NEWS!:::', pkg);
+
+        const hopefullyNewsResults = await API.get('gNewsNotes', '/getNews')
+                    .then(response => {
+                        console.log('response from Aws API module:::', response)
+                    })
+                    .catch(error => {
+                        console.log('error from AWS API module', error);
+                    })
+                console.log('hopefullyNewsResults', hopefullyNewsResults);
+        return hopefullyNewsResults;
+
     }
-    console.log('DIDNt match GET NEWS:::', type, endpoint, data );
+    console.log('DIDNt match GET NEWS:::', pkg );
     return;
 }
 
-const post = async(type, endpoint, body) => {
+const post = async pkg => {
     console.log('GETTING NEWS!:::', type, endpoint, body);
     // if(type == 'GET_NEWS') {
         console.log('GETTING NEWS!:::', type, endpoint, body);
@@ -33,17 +44,29 @@ const post = async(type, endpoint, body) => {
 }
 
 export default {
-    asyncGet: async(pkg) => {
-        console.log('AsyncGet.pkg:::', pkg);
+    // asyncGet: async pkg => {
+    //     console.log('AsyncGet.pkg:::', pkg);
 
-        try {
-            console.log('get(pkg):::', get(pkg));
+    //     try {
+    //         console.log('get(pkg):::', get(pkg));
             
             
-        } catch (error) {
-            console.log('caught error::::', error);
-        }
-    },
+    //     } catch (error) {
+    //         console.log('caught error::::', error);
+    //     }
+    // },
+    getAsync: pkg => {
+        return dispatch =>
+          get(pkg).then(responseFromThunkFunction => {
+            console.log('responseFromThunkFunction:::', responseFromThunkFunction);
+            if (pkg.type != null) {
+              dispatch({
+                type: pkg.type,
+                data: responseFromThunkFunction
+              });
+            }
+          });
+      },
 
     asyncPost: (type, endpoint, body) => {
         console.log('AsyncPost.pkg:::', type, endpoint, body);
