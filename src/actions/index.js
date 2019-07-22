@@ -75,6 +75,18 @@ export default {
         })
       );
     };
+  },
+
+  actionGetUserLocation: (params) => {
+    return dispatch => {
+      console.log('actionGetLocation!!::: ');
+      return dispatch(
+        HTTPClient.getAsync({
+          type: constants.GET_USER_LOCATION,
+          query: params
+        })
+      );
+    };
   }
 
 };

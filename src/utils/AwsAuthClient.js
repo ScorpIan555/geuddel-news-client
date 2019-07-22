@@ -18,7 +18,7 @@ const get = async pkg => {
           email: 'No current user'
         };
         
-        return noCurrentUser
+        return noCurrentUser;
       }
     }
   }
@@ -57,6 +57,7 @@ const post = async pkg => {
   }
 
   if (pkg.type === 'CONFIRM_USER') {
+    console.log('CONFIRM_USER:::', pkg);
     try {
       const user = await Auth.confirmSignUp(
         pkg.params[0].username,

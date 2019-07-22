@@ -1,0 +1,12 @@
+npx aws-api-gateway-cli-test \
+--username='vandaleyindustriesllc@gmail.com' \
+--password='Gerrard!08' \
+--user-pool-id='us-east-1_BrEUSj1Lz' \
+--app-client-id='55q2ijm1fiktc96bc8volkdd9b' \
+--cognito-region='us-east-1' \
+--identity-pool-id='us-east-1:7815ded3-825f-4398-b93e-aaadb1450a45' \
+--invoke-url='https://4h9ct7gvu2.execute-api.us-east-1.amazonaws.com/dev' \
+--api-gateway-region='us-east-1' \
+--path-template='/notes' \
+--method='POST' \
+--body='{"content":"hello world","attachment":"hello.jpg"}'

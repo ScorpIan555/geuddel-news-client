@@ -2,22 +2,35 @@ import { API } from 'aws-amplify';
 
 const get = async pkg => {
 
+    if(pkg.type == 'GET_USER_LOCATION') {
+        console.log('GET_USER_LOCATION!:::', pkg);
+
+        await API.get('gNewsNotes', '/getPublicIp/fish')
+                    .then(response => {
+                        console.log('response from Aws API module(location):::', response);
+                        return response;
+                    })
+                    .catch(error => {
+                        console.log('error from AWS API module(location)', error);
+                        return error;
+                    });
+    }
+
     if(pkg.type == 'GET_NEWS') {
         console.log('GETTING NEWS!:::', pkg);
 
-        const hopefullyNewsResults = await API.get('gNewsNotes', '/getNews')
-                    .then(response => {
-                        console.log('response from Aws API module:::', response)
+        await API.get('gNewsNotes', '/getNews')
+                   .then(response => {
+                        console.log('response from Aws API module(news):::', response);
+                        return response;
                     })
                     .catch(error => {
-                        console.log('error from AWS API module', error);
-                    })
-                console.log('hopefullyNewsResults', hopefullyNewsResults);
-        return hopefullyNewsResults;
-
+                        console.log('error from AWS API module(news)', error);
+                        return error;
+                    });
     }
-    console.log('DIDNt match GET NEWS:::', pkg );
-    return;
+    // console.log('DIDNt match GET NEWS:::', pkg );
+    // return;
 }
 
 const post = async pkg => {
@@ -31,7 +44,7 @@ const post = async pkg => {
         // } catch (error) {
         //     console.log('caught error::::', error);
         // }
-        let apiPostRes = API.get('gNewsNotes', "/getNews")
+        let apiPostRes = API.get('gNewsNotes', "/getNewsapi")
         .then(res => {
             console.log('apiPostRes', res);
             return  res;

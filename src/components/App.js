@@ -33,6 +33,8 @@ class App extends Component {
         // make call for newsfeed items
         this.props.getNews();
         console.log('App.componentDidMount()', this);
+        // make call for user location
+        this.props.getUserLocation();
     }
 
     componentDidUpdate(prevProps) {
@@ -109,7 +111,8 @@ const stateToProps = state => {
     sidebarTop: topLink,
     sidebarBottom: bottomLink,
     user: state.auth,
-    currentUser: currentUser
+    currentUser: currentUser,
+    location: state.userLocation
   };
 };
 
@@ -118,7 +121,8 @@ const dispatchToProps = dispatch => {
     test: (data) => dispatch(actions.actionTest(data)),
     getNews: (data) => dispatch(actions.actionGetNews(data)),
     getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
-    signOut: () => dispatch(actions.actionSignOutUser())
+    signOut: () => dispatch(actions.actionSignOutUser()),
+    getUserLocation: () => dispatch(actions.actionGetUserLocation())
   };
 };
 

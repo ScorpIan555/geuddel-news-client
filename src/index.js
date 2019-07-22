@@ -7,8 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // import configuration object for AWS Amplify
 import Amplify from 'aws-amplify';
 import { awsConfig } from './utils'; // uncomment when client-api troubleshooting is done
-// import config from './utils/api/awsAmplifyConfig';
-import config from './config';
 // import Redux store
 import store from './stores';
 // import static assets
