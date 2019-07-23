@@ -22,6 +22,59 @@ const get = async pkg => {
       }
     }
   }
+
+  if(pkg.type == 'AUTH_ANONYMOUS_USER') {
+    console.log('AUTH_ANONYMOUS_USER!:::', pkg);
+    try {
+      // invoke async GET to AWS via Auth module
+      const user = await Auth.currentCredentials();
+      // the authReducer returns a nested user object t/b passed 
+       
+      console.log('anon user from Auth:::', user);
+      // let currentUser = user.attributes.email;  // from GET_CURRENT_USER
+      let currentUser = user;  // from GET_CURRENT_USER
+      return currentUser;
+    } catch (err) {
+      // if no user is authenticated, will pass a 'not authenticated' error
+      console.log('err::', err);
+      if(err === 'not authenticated') {
+        const noCurrentUser = {
+          email: 'No current user'
+        };
+        
+        return noCurrentUser;
+      }
+    }
+  }
+
+  if(pkg.type == 'GET_CURRENT_SESSION') {
+    console.log('GET_CURRENT_SESSION!:::', pkg);
+    try {
+      // invoke async GET to AWS via Auth module
+      const user = await Auth.currentSession();
+      // the authReducer returns a nested user object t/b passed 
+       
+      console.log('current session from Auth:::', user);
+      // let currentUser = user.attributes.email;  // from GET_CURRENT_USER
+      let currentUser = user;  // from GET_CURRENT_USER
+      return currentUser;
+    } catch (err) {
+      // if no user is authenticated, will pass a 'not authenticated' error
+      console.log('err::', err);
+      if(err === 'No current user') {
+        console.log('No current user:::', err);
+        // const noCurrentUser = {
+        //   email: 'No current user'
+        // };
+        
+        return {
+          message: 'No current user'
+        };
+      }
+    }
+  }
+
+
 };
 
 const post = async pkg => {
@@ -86,15 +139,20 @@ const deleteReq = async pkg => {
 export default {
   getAsync: pkg => {
     return dispatch =>
-      get(pkg).then(responseFromThunkFunction => {
-        console.log('responseFromThunkFunction:::', responseFromThunkFunction);
+      get(pkg)
+      .then(responseFromThunkFunction => {
+        console.log('responseFromThunkFunction:::', this, responseFromThunkFunction);
         if (pkg.type != null) {
           dispatch({
             type: pkg.type,
             data: responseFromThunkFunction
           });
         }
-      });
+      })
+      .catch(err => {
+        console.log('error from Thunk function::::', err);
+        return;
+      })
   },
 
   postAsync: pkg => {

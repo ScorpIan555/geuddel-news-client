@@ -13,10 +13,11 @@ export default {
     console.log('actionGetNews!!::: ', body);
     return dispatch => {
       console.log('actionGetNews2!!::: ', body);
-      return dispatch(HTTPClient.getAsync({
-        type: constants.GET_NEWS, 
-        endpoint: '/getNews',
-        body: body
+      return dispatch(
+        HTTPClient.getAsync({
+          type: constants.GET_NEWS, 
+          endpoint: '/getNews',
+          body: body
       })
     )}
   },
@@ -84,6 +85,28 @@ export default {
         HTTPClient.getAsync({
           type: constants.GET_USER_LOCATION,
           query: params
+        })
+      );
+    };
+  },
+
+  actionsCallCurrentCredentials: () => {
+    return dispatch => {
+      console.log('actionsCallCurrentCredentials:::')
+      return dispatch(
+        AwsAuthClient.getAsync({
+          type: constants.AUTH_ANONYMOUS_USER
+        })
+      );
+    };
+  },
+
+  actionsGetCurrentSession: () => {
+    return dispatch => {
+      console.log('actionsGetCurrentSession:::')
+      return dispatch(
+        AwsAuthClient.getAsync({
+          type: constants.GET_CURRENT_SESSION
         })
       );
     };

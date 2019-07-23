@@ -29,16 +29,32 @@ export default (state = initialState, action) => {
       const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
         email: 'No current user'
       };
+      newState.currentUser = noCurrentUser;
 
       console.log('USER_SIGNED_OUT', noCurrentUser);
       
-      return noCurrentUser;
+      return newState;
 
     case constants.GET_CURRENT_USER:
       console.log('GET_CURRENT_USER!:::', payload);
       newState.currentUser = payload;
 
       console.log('GET_CURRENT_USER!:::', newState.currentUser);
+
+      return newState;
+
+    case constants.AUTH_ANONYMOUS_USER:
+      
+      newState.currentUser = payload; // check and see if this works
+      newState.anonymousUser = payload;
+      console.log('AUTH_ANONYMOUS_USER:::', newState);
+
+      return newState;
+
+    case constants.GET_CURRENT_SESSION:
+      
+      newState.currentSession = payload;
+      console.log('GET_CURRENT_SESSION:::', newState);
 
       return newState;
 

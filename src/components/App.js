@@ -16,13 +16,20 @@ class App extends Component {
         // when user navigates to the app, this component will always need to mount, therefore
         // we want the component to check for a currentUser
         try {
+            this.props.getCurrentSession()
             await this.props.getCurrentUser();
             console.log('App.componentDidMount()', this); // delete after dev
             console.log('App.componentDidMount.currentUser', this.props.currentUser); // delte after dev
             // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
             if(this.props.currentUser.email !== 'No current user') {
-                console.log('testing this.props.user.currentUser:::', this.props.currentUser);
+                console.log('testing this.props.user.currentUser:::', this.props.currentUser);                
                 this.userHasAuthenticated(true);
+            }
+            if(this.props.currentUser.email === 'No current user') {
+                console.log('testing this.props.user.currentUser:::', this.props.currentUser);
+                const anonymousUser = await this.props.callCurrentCredentials();
+                console.log('testing this.props.user.currentUser:::', anonymousUser);
+                // this.userHasAuthenticated(false);  // s/b false already
             }
         // error handler    
         } catch (error) {
@@ -122,7 +129,9 @@ const dispatchToProps = dispatch => {
     getNews: (data) => dispatch(actions.actionGetNews(data)),
     getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
     signOut: () => dispatch(actions.actionSignOutUser()),
-    getUserLocation: () => dispatch(actions.actionGetUserLocation())
+    getUserLocation: () => dispatch(actions.actionGetUserLocation()),
+    callCurrentCredentials: () => dispatch(actions.actionsCallCurrentCredentials()), // auth to allow non-logged in users access to api calls
+    getCurrentSession: () => dispatch(actions.actionsGetCurrentSession()),
   };
 };
 

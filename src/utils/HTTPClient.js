@@ -29,8 +29,7 @@ const get = async pkg => {
                         return error;
                     });
     }
-    // console.log('DIDNt match GET NEWS:::', pkg );
-    // return;
+    
 }
 
 const post = async pkg => {
