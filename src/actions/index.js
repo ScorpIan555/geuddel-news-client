@@ -9,15 +9,15 @@ export default {
     };
   },
 
-  actionGetNews: body => {
-    console.log('actionGetNews!!::: ', body);
+  actionGetNews: query => {
+    console.log('actionGetNews!!::: ', query);
     return dispatch => {
-      console.log('actionGetNews2!!::: ', body);
+      console.log('actionGetNews2!!::: ', query);
       return dispatch(
         HTTPClient.getAsync({
           type: constants.GET_NEWS, 
           endpoint: '/getNews',
-          body: body
+          query: query
       })
     )}
   },

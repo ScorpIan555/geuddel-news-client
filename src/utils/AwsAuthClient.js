@@ -37,13 +37,13 @@ const get = async pkg => {
     } catch (err) {
       // if no user is authenticated, will pass a 'not authenticated' error
       console.log('err::', err);
-      if(err === 'not authenticated') {
-        const noCurrentUser = {
-          email: 'No current user'
-        };
+      // if(err === 'not authenticated') {
+      //   const noCurrentUser = {
+      //     email: 'No current user'
+      //   };
         
-        return noCurrentUser;
-      }
+      //   return noCurrentUser;
+      // }
     }
   }
 

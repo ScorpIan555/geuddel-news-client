@@ -5,29 +5,47 @@ const get = async pkg => {
     if(pkg.type == 'GET_USER_LOCATION') {
         console.log('GET_USER_LOCATION!:::', pkg);
 
-        await API.get('gNewsNotes', '/getPublicIp/fish')
+        const usersCountryCode = await API.get('gNewsNotes', '/getPublicIp/fish')
                     .then(response => {
                         console.log('response from Aws API module(location):::', response);
-                        return response;
+                        const countryCode = response.data.countryCode.toLowerCase();
+                        console.log('countryCode:::', countryCode);
+                        return countryCode;
                     })
                     .catch(error => {
                         console.log('error from AWS API module(location)', error);
                         return error;
                     });
+        console.log('cC:::', usersCountryCode);
+        return usersCountryCode;
     }
 
     if(pkg.type == 'GET_NEWS') {
         console.log('GETTING NEWS!:::', pkg);
+        
 
-        await API.get('gNewsNotes', '/getNews')
-                   .then(response => {
-                        console.log('response from Aws API module(news):::', response);
-                        return response;
-                    })
-                    .catch(error => {
-                        console.log('error from AWS API module(news)', error);
-                        return error;
-                    });
+        if(pkg.query !== undefined ) {
+            let userLocation = pkg.query.userLocation;
+            console.log('userLocation', userLocation);
+
+
+            const articles = await API.get('gNewsNotes', '/getNews', {
+                'queryStringParameters': {
+                    'userLocation': userLocation
+                }
+            }).then(response => {
+                            console.log('response from Aws API module(news):::', response);
+                            const apiNewsResults = response.data;
+                            return apiNewsResults;
+                        })
+                        .catch(error => {
+                            console.log('error from AWS API module(news)', error);
+                            return error;
+                        });
+    
+            return articles;
+        }
+        
     }
     
 }
@@ -68,8 +86,10 @@ export default {
     //     }
     // },
     getAsync: pkg => {
+        console.log('getAsync.pkg:::', pkg);
         return dispatch =>
-          get(pkg).then(responseFromThunkFunction => {
+          get(pkg)
+          .then(responseFromThunkFunction => {
             console.log('responseFromThunkFunction:::', responseFromThunkFunction);
             if (pkg.type != null) {
               dispatch({
@@ -80,8 +100,8 @@ export default {
           });
       },
 
-    asyncPost: (type, endpoint, body) => {
-        console.log('AsyncPost.pkg:::', type, endpoint, body);
+    postAsync: (pkg) => {
+        console.log('postAsync.pkg:::', type, endpoint, body);
         return dispatch => post(type, endpoint, body)
         .then(response => {
             console.log('asyncPost.response::', response);

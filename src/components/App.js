@@ -37,11 +37,15 @@ class App extends Component {
         }
         // intial authentication process complete
         this.setState({isAuthenticating: false});
-        // make call for newsfeed items
-        this.props.getNews();
+        
         console.log('App.componentDidMount()', this);
         // make call for user location
-        this.props.getUserLocation();
+        await this.props.getUserLocation();
+
+        console.log('this.props.location after call:::', this.props.userLocation);
+
+        // make call for newsfeed items
+        this.props.getNews(this.props.userLocation);
     }
 
     componentDidUpdate(prevProps) {
@@ -119,7 +123,7 @@ const stateToProps = state => {
     sidebarBottom: bottomLink,
     user: state.auth,
     currentUser: currentUser,
-    location: state.userLocation
+    userLocation: state.userLocation
   };
 };
 

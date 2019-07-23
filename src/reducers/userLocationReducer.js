@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
     case constants.GET_USER_LOCATION:
       console.log('GET_USER_LOCATION!::', payload);
       newState.userLocation = payload;
-      console.log('newState.currentUser', newState.currentUser);
+      console.log('newState.currentUser', newState);
 
       return newState;
 
