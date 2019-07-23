@@ -22,13 +22,12 @@ class App extends Component {
             console.log('App.componentDidMount.currentUser', this.props.currentUser); // delte after dev
             // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
             if(this.props.currentUser.email !== 'No current user') {
-                console.log('testing this.props.user.currentUser:::', this.props.currentUser);                
+                console.log('App.componentDidMount.currentUser:::', this.props.currentUser);                
                 this.userHasAuthenticated(true);
             }
             if(this.props.currentUser.email === 'No current user') {
-                console.log('testing this.props.user.currentUser:::', this.props.currentUser);
-                const anonymousUser = await this.props.callCurrentCredentials();
-                console.log('testing this.props.user.currentUser:::', anonymousUser);
+                console.log('App.componentDidMount.No current user:::', this.props.currentUser);
+                await this.props.callCurrentCredentials();
                 // this.userHasAuthenticated(false);  // s/b false already
             }
         // error handler    
@@ -47,6 +46,7 @@ class App extends Component {
         // make call for newsfeed items
         this.props.getNews(this.props.userLocation);
     }
+    
 
     componentDidUpdate(prevProps) {
         // if component updates

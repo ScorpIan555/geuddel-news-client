@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify';
 
-const get = async pkg => {
-  if (pkg.type === 'GET_CURRENT_USER') {
+const get = async req => {
+  if (req.type === 'GET_CURRENT_USER') {
     try {
       // invoke async GET to AWS via Auth module
       const user = await Auth.currentAuthenticatedUser()
@@ -23,8 +23,8 @@ const get = async pkg => {
     }
   }
 
-  if(pkg.type == 'AUTH_ANONYMOUS_USER') {
-    console.log('AUTH_ANONYMOUS_USER!:::', pkg);
+  if(req.type == 'AUTH_ANONYMOUS_USER') {
+    console.log('AUTH_ANONYMOUS_USER!:::', req);
     try {
       // invoke async GET to AWS via Auth module
       const user = await Auth.currentCredentials();
@@ -47,8 +47,8 @@ const get = async pkg => {
     }
   }
 
-  if(pkg.type == 'GET_CURRENT_SESSION') {
-    console.log('GET_CURRENT_SESSION!:::', pkg);
+  if(req.type == 'GET_CURRENT_SESSION') {
+    console.log('GET_CURRENT_SESSION!:::', req);
     try {
       // invoke async GET to AWS via Auth module
       const user = await Auth.currentSession();
@@ -59,28 +59,25 @@ const get = async pkg => {
       let currentUser = user;  // from GET_CURRENT_USER
       return currentUser;
     } catch (err) {
-      // if no user is authenticated, will pass a 'not authenticated' error
-      console.log('err::', err);
+      // if no user is authenticated, pass the error
       if(err === 'No current user') {
-        console.log('No current user:::', err);
-        // const noCurrentUser = {
-        //   email: 'No current user'
-        // };
-        
+        // if no user is logged in, handle error with message
         return {
           message: 'No current user'
         };
       }
+      if(err !== 'No current user') {
+        console.log('AwsAuthClient unexpected error', err);
+        alert('unexpected error' + err);
+      }
     }
   }
-
-
 };
 
-const post = async pkg => {
-  if (pkg.type === 'CREATE_USER') {
-    console.log('pkg.SIGN_UP:::', pkg);
-    let { username, password } = pkg.user;
+const post = async req => {
+  if (req.type === 'CREATE_USER') {
+    console.log('req.SIGN_UP:::', req);
+    let { username, password } = req.user;
     try {
       const user = await Auth.signUp(username, password);
 
@@ -94,10 +91,10 @@ const post = async pkg => {
     }
   }
 
-  if (pkg.type === 'SIGN_IN_USER') {
+  if (req.type === 'SIGN_IN_USER') {
 
-    console.log('pkg.SIGN_IN:::', pkg);
-    let { username, password } = pkg.user;
+    console.log('req.SIGN_IN:::', req);
+    let { username, password } = req.user;
     try {
       const user = await Auth.signIn(username, password);
 
@@ -109,12 +106,12 @@ const post = async pkg => {
     }
   }
 
-  if (pkg.type === 'CONFIRM_USER') {
-    console.log('CONFIRM_USER:::', pkg);
+  if (req.type === 'CONFIRM_USER') {
+    console.log('CONFIRM_USER:::', req);
     try {
       const user = await Auth.confirmSignUp(
-        pkg.params[0].username,
-        pkg.params[0].confirmationCode
+        req.params[0].username,
+        req.params[0].confirmationCode
       );
 
       console.log('AwsAuth.util.post.CONFIRM_USER:::', user);
@@ -126,10 +123,10 @@ const post = async pkg => {
   }
 };
 
-const deleteReq = async pkg => {
-  console.log('deleteReq:::', pkg);
+const deleteReq = async req => {
+  console.log('deleteReq:::', req);
 
-  if (pkg.type === 'SIGN_OUT_USER') {
+  if (req.type === 'SIGN_OUT_USER') {
     await Auth.signOut({ global: false })
     .then(res => console.log('res::::', res))
     .catch(err => console.log('err::', err))
@@ -137,14 +134,14 @@ const deleteReq = async pkg => {
 };
 
 export default {
-  getAsync: pkg => {
+  getAsync: req => {
     return dispatch =>
-      get(pkg)
+      get(req)
       .then(responseFromThunkFunction => {
         console.log('responseFromThunkFunction:::', this, responseFromThunkFunction);
-        if (pkg.type != null) {
+        if (req.type != null) {
           dispatch({
-            type: pkg.type,
+            type: req.type,
             data: responseFromThunkFunction
           });
         }
@@ -155,19 +152,19 @@ export default {
       })
   },
 
-  postAsync: pkg => {
+  postAsync: req => {
     return dispatch =>
-      post(pkg)
+      post(req)
         .then(responseFromThunkFunction => {
           console.log(
             'post.asyncResForDispatchToStore::::',
             responseFromThunkFunction
           );
           if(responseFromThunkFunction != undefined) {
-            if (pkg.type != null) {
+            if (req.type != null) {
               console.log('check the conditional')
               dispatch({
-                type: pkg.type,
+                type: req.type,
                 data: responseFromThunkFunction
               });
             }
@@ -178,14 +175,14 @@ export default {
         .catch(err => console.log('err', err));
   },
 
-  deleteAsync: pkg => {
+  deleteAsync: req => {
     return dispatch => {
-      deleteReq(pkg)
+      deleteReq(req)
         .then(responseFromThunkFunction => {
           console.log('deleteAsync', responseFromThunkFunction);
-          if (pkg.type != null) {
+          if (req.type != null) {
             dispatch({
-              type: pkg.type,
+              type: req.type,
               data: responseFromThunkFunction
             });
           }

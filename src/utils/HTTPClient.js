@@ -1,9 +1,9 @@
 import { API } from 'aws-amplify';
 
-const get = async pkg => {
+const get = async req => {
 
-    if(pkg.type == 'GET_USER_LOCATION') {
-        console.log('GET_USER_LOCATION!:::', pkg);
+    if(req.type == 'GET_USER_LOCATION') {
+        console.log('GET_USER_LOCATION!:::', req);
 
         const usersCountryCode = await API.get('gNewsNotes', '/getPublicIp/fish')
                     .then(response => {
@@ -20,20 +20,43 @@ const get = async pkg => {
         return usersCountryCode;
     }
 
-    if(pkg.type == 'GET_NEWS') {
-        console.log('GETTING NEWS!:::', pkg);
+    if(req.type == 'GET_NEWS') {
+        console.log('GETTING NEWS!:::', req);
         
+        if(req.query !== undefined ) {
+            // let userLocation = req.query.userLocation;
+            console.log('getNews.req.query', req.query);
 
-        if(pkg.query !== undefined ) {
-            let userLocation = pkg.query.userLocation;
-            console.log('userLocation', userLocation);
 
+            let queryStringParameters = {
+                country: req.query.userLocation,
+                sources: req.query.sources,
+                q: req.query.searchTerms,
+                category: req.query.topic,
+                language: req.query.language
+            };
 
-            const articles = await API.get('gNewsNotes', '/getNews', {
-                'queryStringParameters': {
-                    'userLocation': userLocation
-                }
-            }).then(response => {
+            let myInit = {
+                queryStringParameters
+            };
+            console.log('myInit:::', myInit);
+
+            const articles = await API.get('gNewsNotes', '/getNews', myInit
+            // {
+            //     // // headers: {
+
+            //     // // },
+            //     // 'pathParameters': {
+            //     //     country: queryObject.country,
+            //     //     sources: queryObject.sources,
+            //     //     q: queryObject.q,
+            //     //     category: queryObject.category,
+            //     //     language: queryObject.language
+
+            //     // }
+            //     queryPathParameters
+            // }
+            ).then(response => {
                             console.log('response from Aws API module(news):::', response);
                             const apiNewsResults = response.data;
                             return apiNewsResults;
@@ -50,58 +73,58 @@ const get = async pkg => {
     
 }
 
-const post = async pkg => {
-    console.log('GETTING NEWS!:::', type, endpoint, body);
-    // if(type == 'GET_NEWS') {
-        console.log('GETTING NEWS!:::', type, endpoint, body);
+// const post = async req => {
+//     console.log('GETTING NEWS!:::', type, endpoint, body);
+//     // if(type == 'GET_NEWS') {
+//         console.log('GETTING NEWS!:::', type, endpoint, body);
         
-        // try {
-        //    let response = await API.post('getNews', "/getNews", { body: body })
-        //     console.log('HTTPClient.post response:::', response);
-        // } catch (error) {
-        //     console.log('caught error::::', error);
-        // }
-        let apiPostRes = API.get('gNewsNotes', "/getNewsapi")
-        .then(res => {
-            console.log('apiPostRes', res);
-            return  res;
-        })
-        .catch(err => console.log('API.get error::::', err));
+//         // try {
+//         //    let response = await API.post('getNews', "/getNews", { body: body })
+//         //     console.log('HTTPClient.post response:::', response);
+//         // } catch (error) {
+//         //     console.log('caught error::::', error);
+//         // }
+//         let apiPostRes = API.get('gNewsNotes', "/getNewsapi")
+//         .then(res => {
+//             console.log('apiPostRes', res);
+//             return  res;
+//         })
+//         .catch(err => console.log('API.get error::::', err));
 
-        console.log('apiPostRes:::', apiPostRes);
+//         console.log('apiPostRes:::', apiPostRes);
         
-        return apiPostRes;
-}
+//         return apiPostRes;
+// }
 
 export default {
-    // asyncGet: async pkg => {
-    //     console.log('AsyncGet.pkg:::', pkg);
+    // asyncGet: async req => {
+    //     console.log('AsyncGet.req:::', req);
 
     //     try {
-    //         console.log('get(pkg):::', get(pkg));
+    //         console.log('get(req):::', get(req));
             
             
     //     } catch (error) {
     //         console.log('caught error::::', error);
     //     }
     // },
-    getAsync: pkg => {
-        console.log('getAsync.pkg:::', pkg);
+    getAsync: req => {
+        console.log('getAsync.req:::', req);
         return dispatch =>
-          get(pkg)
-          .then(responseFromThunkFunction => {
-            console.log('responseFromThunkFunction:::', responseFromThunkFunction);
-            if (pkg.type != null) {
+          get(req)
+          .then(res => {
+            console.log('responseFromThunkFunction:::', res);
+            if (req.type != null) {
               dispatch({
-                type: pkg.type,
-                data: responseFromThunkFunction
+                type: req.type,
+                data: res
               });
             }
           });
       },
 
-    postAsync: (pkg) => {
-        console.log('postAsync.pkg:::', type, endpoint, body);
+    postAsync: (req) => {
+        console.log('postAsync.:::', type, endpoint, body);
         return dispatch => post(type, endpoint, body)
         .then(response => {
             console.log('asyncPost.response::', response);
@@ -119,7 +142,7 @@ export default {
         })
 
         // try {
-        //     console.log('get(pkg):::', post(pkg));
+        //     console.log('get():::', post());
             
 
         //     console.log('asyncResponse', asyncResponse);

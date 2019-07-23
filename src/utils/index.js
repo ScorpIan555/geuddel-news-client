@@ -1,4 +1,4 @@
-import { awsConfig } from './api';
+import { awsConfig } from './awsConfig';
 import HTTPClient from './HTTPClient';
 import AwsAuthClient from './AwsAuthClient';
 
