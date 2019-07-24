@@ -9,8 +9,11 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case constants.GET_NEWS:
       console.log('GET_NEWS from reducer:::', payload)
-      newState.articles = payload;
-
+      newState.newsapiResponse = payload;
+      if(payload != undefined) {
+        newState.articles = payload.articles;
+      }
+      
       return newState;
 
     case constants.TEST:

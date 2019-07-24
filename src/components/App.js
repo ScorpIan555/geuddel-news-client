@@ -42,19 +42,25 @@ class App extends Component {
         await this.props.getUserLocation();
 
         console.log('this.props.location after call:::', this.props.userLocation);
-
-        // make call for newsfeed items
-        this.props.getNews(this.props.userLocation);
+        if(this.props.newsapiResponse == undefined) {
+            console.log('this.props.newsapiRespons was undefined', this.props.userLocation);
+            await this.props.getNews(this.props.userLocation);
+        }
+        if(this.props.newsapiResponse !== undefined) {
+            console.log('DIDNT MAKE A CALL DUE TO CONDITIONAL!!!!', this.props.newsapiResponse);
+            
+        }
+        
     }
     
 
-    componentDidUpdate(prevProps) {
-        // if component updates
-        if(prevProps.currentUser != this.props.currentUser) {
-            console.log('componentDidUpdate.this', this);
-            this.props.getNews();
-        }
-      }
+    // componentDidUpdate(prevProps) {
+    //     // if component updates
+    //     // if(prevProps.currentUser != this.props.currentUser) {
+    //     //     console.log('componentDidUpdate.this', this);
+    //     //     this.props.getNews();
+    //     // }
+    //   }
 
     userHasAuthenticated = authenticated => {
         this.setState({
@@ -82,7 +88,7 @@ class App extends Component {
         // deconstruct and assign state
         let { isAuthenticated } = this.state;
         // deconstruct and assign props
-        let { sidebarTop, sidebarBottom } = this.props;
+        let { sidebarTop, sidebarBottom, newsapiResponse } = this.props;
         // create childProps object to be passed into sidebar component
         const sidebarChildProps = {  // @TODO 
             sidebarTop,
@@ -93,7 +99,8 @@ class App extends Component {
         let childProps = {
             isAuthenticated,
             userHasAuthenticated,
-            handleLogout
+            handleLogout,
+            newsapiResponse
         }
 
         return (
@@ -117,19 +124,20 @@ class App extends Component {
 const stateToProps = state => {
   const { topLink, bottomLink } = state.sidebar;
   const { currentUser } = state.auth;
+  const userLocation = state.userLocation;
+  const { newsapiResponse } = state.newsfeed;
 
   return {
     sidebarTop: topLink,
     sidebarBottom: bottomLink,
-    user: state.auth,
     currentUser: currentUser,
-    userLocation: state.userLocation
+    userLocation: userLocation,
+    newsapiResponse: newsapiResponse
   };
 };
 
 const dispatchToProps = dispatch => {
   return {
-    test: (data) => dispatch(actions.actionTest(data)),
     getNews: (data) => dispatch(actions.actionGetNews(data)),
     getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
     signOut: () => dispatch(actions.actionSignOutUser()),

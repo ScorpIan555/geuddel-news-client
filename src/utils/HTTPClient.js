@@ -27,7 +27,6 @@ const get = async req => {
             // let userLocation = req.query.userLocation;
             console.log('getNews.req.query', req.query);
 
-
             let queryStringParameters = {
                 country: req.query.userLocation,
                 sources: req.query.sources,
@@ -41,30 +40,22 @@ const get = async req => {
             };
             console.log('myInit:::', myInit);
 
-            const articles = await API.get('gNewsNotes', '/getNews', myInit
-            // {
-            //     // // headers: {
+            const articles = await API.get('gNewsNotes', '/getNews', myInit)
+            .then(response => {
+                console.log('response from Aws API module(news):::', response);
+                const apiNewsResults = response.data;
+                return apiNewsResults;
+            })
+            .catch(error => {
+                console.log('error from AWS API module(news)', error);
+                return error;
+            });
 
-            //     // // },
-            //     // 'pathParameters': {
-            //     //     country: queryObject.country,
-            //     //     sources: queryObject.sources,
-            //     //     q: queryObject.q,
-            //     //     category: queryObject.category,
-            //     //     language: queryObject.language
-
-            //     // }
-            //     queryPathParameters
-            // }
-            ).then(response => {
-                            console.log('response from Aws API module(news):::', response);
-                            const apiNewsResults = response.data;
-                            return apiNewsResults;
-                        })
-                        .catch(error => {
-                            console.log('error from AWS API module(news)', error);
-                            return error;
-                        });
+            // let articles = [
+            //     ['articleOne',  { object1: 'fake object'}],
+            //     ['articleTwo',  { object2: 'fake object'}],
+            //     ['articleThree',  { object3: 'fake object'}]
+            // ]
     
             return articles;
         }
@@ -97,17 +88,7 @@ const get = async req => {
 // }
 
 export default {
-    // asyncGet: async req => {
-    //     console.log('AsyncGet.req:::', req);
 
-    //     try {
-    //         console.log('get(req):::', get(req));
-            
-            
-    //     } catch (error) {
-    //         console.log('caught error::::', error);
-    //     }
-    // },
     getAsync: req => {
         console.log('getAsync.req:::', req);
         return dispatch =>
