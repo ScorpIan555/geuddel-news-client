@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routes from './Routes';
 import { Nav, Footer } from './presentation';
+import { Sidebar } from './containers';  // delete when done w/ dev
 // import { Sidebar, Topic, Signup, Login } from './containers';  // delete when done w/ dev
 import actions from '../actions';
 import { withRouter } from 'react-router-dom';
@@ -109,10 +110,16 @@ class App extends Component {
             <Nav props={childProps} />
             
             <div className="main-container">
-                <div>
-                    <Routes childProps={childProps} />
-                </div>
+                <section>
+                    <div className="container">
+                        <div className="row">
+                        <Sidebar props={sidebarChildProps} />
                 
+                    <Routes childProps={childProps} />
+                
+                </div>
+                    </div>
+                </section>
                 <Footer />
 
             </div>

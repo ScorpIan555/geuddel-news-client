@@ -74,12 +74,10 @@ class Topic extends Component {
         //   console.log('articlesWithThumbnails:::', typeof(articlesWithImgThumbnails));
 
         return(
-            <Fragment> 
-                <section>
-                    
-                        <div className="row">
+            
+                
 
-                            <Sidebar props={sidebarChildProps} />
+                            
 
                             <div className="col">
                                 <div className="card card-sm">
@@ -115,10 +113,8 @@ class Topic extends Component {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
-                    
-                </section>
-            </Fragment>
+                        
+            
         );
     }
 }

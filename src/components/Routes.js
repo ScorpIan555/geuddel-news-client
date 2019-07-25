@@ -10,6 +10,8 @@ export default ({ childProps }) => {
             <AppliedRoute exact path='/' component={Topic} props={childProps} />
             <AppliedRoute exact path='/signup' component={Signup} props={childProps} />
             <AppliedRoute exact path='/login' component={Login} props={childProps} />
+            {/* <AppliedRoute exact path='/topic/' component={Login} props={childProps} /> */}
+
             <Route component={NotFound} />
         </Switch>
     )
