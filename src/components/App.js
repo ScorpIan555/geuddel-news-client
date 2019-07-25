@@ -80,7 +80,7 @@ class App extends Component {
         let data = {
             isItWorking: 'yes, it is working'
         };
-        this.props.test(data);
+        console.log('Click'), data;
     }
     
     render() {
@@ -101,7 +101,9 @@ class App extends Component {
             isAuthenticated,
             userHasAuthenticated,
             handleLogout,
-            newsapiResponse
+            newsapiResponse,
+            sidebarTop,
+            sidebarBottom,
         }
 
         return (
