@@ -38,7 +38,7 @@ class App extends Component {
         // intial authentication process complete
         this.setState({isAuthenticating: false});
         
-        console.log('App.componentDidMount()', this);
+        
         // make call for user location
         await this.props.getUserLocation();
 
@@ -51,6 +51,8 @@ class App extends Component {
             console.log('DIDNT MAKE A CALL DUE TO CONDITIONAL!!!!', this.props.newsapiResponse);
             
         }
+
+        console.log('App.componentDidMount().articles', this.props.articles);
         
     }
     
@@ -76,11 +78,12 @@ class App extends Component {
     }
 
     handleClick = event => {
+        event.preventDefault()
         console.log('Click');
         let data = {
             isItWorking: 'yes, it is working'
         };
-        console.log('Click'), data;
+        // console.log('Click', data);
     }
     
     render() {
@@ -109,20 +112,22 @@ class App extends Component {
         return (
         <div className="container">
 
-            <Nav props={childProps} />
+                        <Nav props={childProps} />
             
             <div className="main-container">
                 <section>
                     <div className="container">
                         <div className="row">
+
                         <Sidebar props={sidebarChildProps} />
                 
-                    <Routes childProps={childProps} />
+                        <Routes childProps={childProps} />
                 
-                </div>
+                        </div>
                     </div>
                 </section>
-                <Footer />
+                
+                        <Footer />
 
             </div>
         </div>
