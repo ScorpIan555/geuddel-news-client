@@ -6,28 +6,25 @@ const get = async req => {
       // invoke async GET to AWS via Auth module
       const user = await Auth.currentAuthenticatedUser()
       // the authReducer returns a nested user object t/b passed 
-      console.log('GET_CURRENT_USER.res::', user);
+      // console.log('GET_CURRENT_USER.res::', user);
       if(user.authenticated === true) {
-        console.log('currentUser from Auth:::', user);
+        // console.log('currentUser from Auth:::', user);
         let currentUser = user.attributes.email;
         return currentUser;
       }
       if(user.authenticated === false) {
-        console.log('currentUser from Auth:::', user);
+        // console.log('currentUser from Auth:::', user);
         let currentUser = {
           email: 'No current user'
         };
         return currentUser;
       }
-      
     } catch (err) {
       // if no user is authenticated, will pass a 'not authenticated' error
-      console.log('err::', err);
       if(err === 'not authenticated') {
         const noCurrentUser = {
           email: 'No current user'
         };
-        
         return noCurrentUser;
       }
     }
@@ -139,11 +136,9 @@ const deleteReq = async req => {
   if (req.type === 'SIGN_OUT_USER') {
     await Auth.signOut({ global: false })
     .then(res => {
-      console.log('res::::', res);
-      const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
+      const noCurrentUser = { 
         email: 'No current user'
       };
-      console.log('res::::', noCurrentUser);
       return noCurrentUser;
     })
     .catch(err => {
@@ -198,7 +193,6 @@ export default {
     return dispatch => {
       deleteReq(req)
         .then(responseFromThunkFunction => {
-          console.log('deleteAsync', responseFromThunkFunction);
           const noCurrentUser = {  
             email: 'No current user'
           };

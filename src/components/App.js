@@ -51,22 +51,22 @@ class App extends Component {
             // fetch the current session data
             this.fetchCurrentSession();
             // check for and return a logged in user, or return anonymously auth'd credentials (for guest users)
-            // await this.handleInitialAuthentication();
+            await this.handleInitialAuthentication();
 
-              // async call backend Aws-Amplify Auth module 
-              await this.props.getCurrentUser();
-              // handle negative response from Auth call, create anonymous auth credentials to allow guest users to see results
-              if(this.props.currentUser.email === 'No current user') {
-                  console.log('App.componentDidMount.No current user:::', this.props.currentUser);
-                  await this.props.callCurrentCredentials();
-                  // this.userHasAuthenticated(false);  // s/b false already
-              }
-              // handle positive response from Auth call
-              if(this.props.currentUser.email !== 'No current user') {
-                  // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
-                  console.log('App.componentDidMount.currentUser:::', this.props.currentUser);                
-                  this.userHasAuthenticated(true);
-              }
+            //   // async call backend Aws-Amplify Auth module 
+            //   await this.props.getCurrentUser();
+            //   // handle negative response from Auth call, create anonymous auth credentials to allow guest users to see results
+            //   if(this.props.currentUser.email === 'No current user') {
+            //       console.log('App.componentDidMount.No current user:::', this.props.currentUser);
+            //       await this.props.callCurrentCredentials();
+            //       // this.userHasAuthenticated(false);  // s/b false already
+            //   }
+            //   // handle positive response from Auth call
+            //   if(this.props.currentUser.email !== 'No current user') {
+            //       // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
+            //       console.log('App.componentDidMount.currentUser:::', this.props.currentUser);                
+            //       this.userHasAuthenticated(true);
+            //   }
 
         // error handler    
         } catch (error) {
@@ -100,10 +100,10 @@ class App extends Component {
     }
 
     async shouldComponentUpdate(nextProps, nextState, snapshot) {
-        console.log('shouldComponentUpdate.this.props:::', this.props);
-        console.log('shouldComponentUpdate.nextProps.:::', nextProps);
-        console.log('shouldComponentUpdate.nextState:::', nextState);
-        console.log('shouldComponentUpdate.snapshot:::', snapshot);
+        // console.log('shouldComponentUpdate.this.props:::', this.props);
+        // console.log('shouldComponentUpdate.nextProps.:::', nextProps);
+        // console.log('shouldComponentUpdate.nextState:::', nextState);
+        // console.log('shouldComponentUpdate.snapshot:::', snapshot);
 
         // if(this.props.location.pathname !== nextProps.location.pathname) {
         //     console.log('PASSED SHOULD COMPONENT UPDATE CONDITIONAL -- TRUE');
@@ -159,25 +159,25 @@ class App extends Component {
     
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log('prevProps:::', prevProps);
-        console.log('prevState:::', prevState);
-        console.log('snapshot:::', snapshot);
+        // console.log('prevProps:::', prevProps);
+        // console.log('prevState:::', prevState);
+        // console.log('snapshot:::', snapshot);
 
-        let pathArray = this.props.location.pathname.split('/');
-        console.log('pathArray:::', pathArray);
-        console.log('pathArray:::', pathArray[2]);
+        // let pathArray = this.props.location.pathname.split('/');
+        // console.log('pathArray:::', pathArray);
+        // console.log('pathArray:::', pathArray[2]);
 
-        try {
-            // let oldTopic = this.state.oldTopic
-            let newTopic = {
-                topic: pathArray[2]
-            };
+        // try {
+        //     // let oldTopic = this.state.oldTopic
+        //     let newTopic = {
+        //         topic: pathArray[2]
+        //     };
 
-            // await this.props.actionGetNewsByTopic(newTopic);
-            // console.log('')
-        } catch (error) {
-            console.log('error:::', error);
-        }
+        //     // await this.props.actionGetNewsByTopic(newTopic);
+        //     // console.log('')
+        // } catch (error) {
+        //     console.log('error:::', error);
+        // }
 
         
 

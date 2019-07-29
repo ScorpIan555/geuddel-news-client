@@ -18,14 +18,13 @@ export default ({props}) => {
         />
       </form>
       <nav className="nav flex-md-column">
-        
 
         {
           sidebarBottom.map((link, i) => {
             let topic = sidebarBottom[i].name.toLowerCase();
 
             return (
-              <a key={i*Math.random()*100000000} href={`/topic/${topic}`} className="nav-link">
+              <div key={i*Math.random()*100000000} href={`/topic/${topic}`} className="nav-link">
                 <i className="material-icons mr-1">{props.sidebarBottom[i].icon}</i>
                 
                   <LinkContainer
@@ -39,7 +38,7 @@ export default ({props}) => {
                   
                     
                   </LinkContainer>
-                </a>
+                </div>
                 
               
             )
