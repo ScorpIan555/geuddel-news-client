@@ -105,55 +105,6 @@ class App extends Component {
         // console.log('shouldComponentUpdate.nextState:::', nextState);
         // console.log('shouldComponentUpdate.snapshot:::', snapshot);
 
-        // if(this.props.location.pathname !== nextProps.location.pathname) {
-        //     console.log('PASSED SHOULD COMPONENT UPDATE CONDITIONAL -- TRUE');
-        //     return true;
-        // }
-
-        // if(this.props.location.pathname === nextProps.location.pathname) {
-        //     console.log('PASSED SHOULD COMPONENT UPDATE CONDITIONAL -- FALSE');
-        //     return false;
-        // }
-
-        // // if(this.props.location !== nextProps.location) {
-        //     if(nextProps.location.pathname !== '/') {
-        //         let pathArray = nextProps.location.pathname.split('/');
-        //         console.log('pathArray:::', pathArray);
-        //         console.log('pathArray:::', pathArray[2]);
-
-        //         let oldTopic = this.state.oldTopic
-        //         let newTopic = pathArray[2];
-
-        //         this.setState({
-        //             oldTopic: oldTopic,
-        //             currentTopic: newTopic
-
-        //         });
-
-        //         if(oldTopic !== newTopic) {
-        //             if(this.state.articles !== nextProps.articles) {
-        //                 console.log('this.state.articles:::', this.state.articles);
-        //                 console.log('this.state.articles:::', nextProps.articles);
-        //                 console.log('this.state.articles:::', this.state.articles);
-    
-        //                 if(nextProps.location.pathname !== '/' ) {
-        //                     let query = {
-        //                         topic: this.state.topic
-        //                     };
-        //                 }
-        //                 await this.props.getNews(query);
-        //                 console.log('App.componentDidMount().articles', this.props.articles);
-        //                 this.setState({
-        //                     articles: this.props.articles,
-        //                     oldTopic: this.state.currentTopic
-        //                 });
-        //             }
-        //         }
-                
-                
-            // }
-            
-        // }
         return true;
     }
     
@@ -162,30 +113,6 @@ class App extends Component {
         // console.log('prevProps:::', prevProps);
         // console.log('prevState:::', prevState);
         // console.log('snapshot:::', snapshot);
-
-        // let pathArray = this.props.location.pathname.split('/');
-        // console.log('pathArray:::', pathArray);
-        // console.log('pathArray:::', pathArray[2]);
-
-        // try {
-        //     // let oldTopic = this.state.oldTopic
-        //     let newTopic = {
-        //         topic: pathArray[2]
-        //     };
-
-        //     // await this.props.actionGetNewsByTopic(newTopic);
-        //     // console.log('')
-        // } catch (error) {
-        //     console.log('error:::', error);
-        // }
-
-        
-
-        // if component updates
-        // if(prevProps.currentUser != this.props.currentUser) {
-        //     console.log('componentDidUpdate.this', this);
-        //     this.props.getNews();
-        // }
       }
 
     userHasAuthenticated = authenticated => {

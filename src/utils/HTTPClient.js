@@ -1,6 +1,6 @@
 import { API } from 'aws-amplify';
-import articles from './cannedResults';
-import topicArticles from './topicResults';
+// import articles from './cannedResults';
+// import topicArticles from './topicResults';
 
 const get = async req => {
 
@@ -8,16 +8,16 @@ const get = async req => {
         console.log('GET_USER_LOCATION!:::', req);
 
         const usersCountryCode = await API.get('gNewsNotes', '/getPublicIp/fish')
-                    .then(response => {
-                        console.log('response from Aws API module(location):::', response);
-                        const countryCode = response.data.countryCode.toLowerCase();
-                        console.log('countryCode:::', countryCode);
-                        return countryCode;
-                    })
-                    .catch(error => {
-                        console.log('error from AWS API module(location)', error);
-                        return error;
-                    });
+                                        .then(response => {
+                                            console.log('response from Aws API module(location):::', response);
+                                            const countryCode = response.data.countryCode.toLowerCase();
+                                            console.log('countryCode:::', countryCode);
+                                            return countryCode;
+                                        })
+                                        .catch(error => {
+                                            console.log('error from AWS API module(location)', error);
+                                            return error;
+                                        });
         console.log('cC:::', usersCountryCode);
         return usersCountryCode;
     }
@@ -42,25 +42,22 @@ const get = async req => {
             };
             console.log('myInit:::', myInit);
 
-            // const articles = await API.get('gNewsNotes', '/getNews', myInit)
-            // .then(response => {
-            //     console.log('response from Aws API module(news):::', response);
-            //     const apiNewsResults = response.data;
-            //     return apiNewsResults;
-            // })
-            // .catch(error => {
-            //     console.log('error from AWS API module(news)', error);
-            //     return error;
-            // });
+            const articles = await API.get('gNewsNotes', '/getNews', myInit)
+            .then(response => {
+                console.log('response from Aws API module(news):::', response);
+                const apiNewsResults = response.data;
+                return apiNewsResults;
+            })
+            .catch(error => {
+                console.log('error from AWS API module(news)', error);
+                return error;
+            });
 
-            // let articles = [
-            //     ['articleOne',  { object1: 'fake object'}],
-            //     ['articleTwo',  { object2: 'fake object'}],
-            //     ['articleThree',  { object3: 'fake object'}]
-            // ]
             
-            console.log('canned articles:::', articles);
+            // uncomment these after commenting out the above to use dummy api data
+            // console.log('canned articles:::', articles);
     
+            // return articles
             return articles;
         }
     }
@@ -85,26 +82,23 @@ const get = async req => {
             };
             console.log('myInit:::', myInit);
 
-            // const articles = await API.get('gNewsNotes', '/getNews', myInit)
-            // .then(response => {
-            //     console.log('response from Aws API module(news):::', response);
-            //     const apiNewsResults = response.data;
-            //     return apiNewsResults;
-            // })
-            // .catch(error => {
-            //     console.log('error from AWS API module(news)', error);
-            //     return error;
-            // });
+            const articles = await API.get('gNewsNotes', '/getNews', myInit)
+            .then(response => {
+                console.log('response from Aws API module(news):::', response);
+                const apiNewsResults = response.data;
+                return apiNewsResults;
+            })
+            .catch(error => {
+                console.log('error from AWS API module(news)', error);
+                return error;
+            });
 
-            // let articles = [
-            //     ['articleOne',  { object1: 'fake object'}],
-            //     ['articleTwo',  { object2: 'fake object'}],
-            //     ['articleThree',  { object3: 'fake object'}]
-            // ]
+            return articles;
+
             
-            console.log('canned articles:::', topicArticles);
-    
-            return topicArticles;
+            // uncomment these after commenting out the above to use dummy api data
+            // console.log('canned articles:::', topicArticles);
+            // return topicArticles;
         }
 
 
