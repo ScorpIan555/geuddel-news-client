@@ -7,21 +7,23 @@ export default ({ childProps }) => {
 
     const sidebarTop = childProps.sidebarTop
     const sidebarBottom = childProps.sidebarBottom
+    // let topic = sidebarBottom[i].name.toLowerCase();
 
     return(
         <Switch>
             <AppliedRoute exact path='/' component={Topic} props={childProps} />
             <AppliedRoute exact path='/signup' component={Signup} props={childProps} />
             <AppliedRoute exact path='/login' component={Login} props={childProps} />
-            <AppliedRoute exact path='/topic/business' component={Topic} props={childProps} />
+            {/* <AppliedRoute exact path={`/topic/${topic}`} component={Topic} props={childProps} /> */}
             
-            {/* { sidebarTop.map((link, i) => {
+            { sidebarBottom.map((link, i) => {
                 let topic = sidebarBottom[i].name.toLowerCase();
                 return <AppliedRoute path={`/topic/${topic}`}
                             key={i*Math.random()*100000000}
                             pageTitle={link.name}
                             exact
-                            childProps={childProps}
+                            cProps={childProps}
+                            component={Topic}
                             render={props => {
                                 <Topic
                                     pageTitle={sidebarBottom[i].name}
@@ -30,7 +32,7 @@ export default ({ childProps }) => {
                             }}
                         />
             }) 
-            } */}
+            }
 
             <Route component={NotFound} />
         </Switch>

@@ -1,4 +1,6 @@
 import { API } from 'aws-amplify';
+import articles from './cannedResults';
+import topicArticles from './topicResults';
 
 const get = async req => {
 
@@ -40,28 +42,73 @@ const get = async req => {
             };
             console.log('myInit:::', myInit);
 
-            const articles = await API.get('gNewsNotes', '/getNews', myInit)
-            .then(response => {
-                console.log('response from Aws API module(news):::', response);
-                const apiNewsResults = response.data;
-                return apiNewsResults;
-            })
-            .catch(error => {
-                console.log('error from AWS API module(news)', error);
-                return error;
-            });
+            // const articles = await API.get('gNewsNotes', '/getNews', myInit)
+            // .then(response => {
+            //     console.log('response from Aws API module(news):::', response);
+            //     const apiNewsResults = response.data;
+            //     return apiNewsResults;
+            // })
+            // .catch(error => {
+            //     console.log('error from AWS API module(news)', error);
+            //     return error;
+            // });
 
             // let articles = [
             //     ['articleOne',  { object1: 'fake object'}],
             //     ['articleTwo',  { object2: 'fake object'}],
             //     ['articleThree',  { object3: 'fake object'}]
             // ]
+            
+            console.log('canned articles:::', articles);
     
             return articles;
         }
-        
     }
+
+    if(req.type == 'GET_NEWS_BY_TOPIC') {
+        console.log('GET_NEWS_BY_TOPIC:::', req);
+
+        if(req.query !== undefined ) {
+            // let userLocation = req.query.userLocation;
+            console.log('getNewsByTopic.req.query', req.query);
+
+            let queryStringParameters = {
+                country: req.query.userLocation,
+                sources: req.query.sources,
+                q: req.query.searchTerms,
+                category: req.query.topic,
+                language: req.query.language
+            };
+
+            let myInit = {
+                queryStringParameters
+            };
+            console.log('myInit:::', myInit);
+
+            // const articles = await API.get('gNewsNotes', '/getNews', myInit)
+            // .then(response => {
+            //     console.log('response from Aws API module(news):::', response);
+            //     const apiNewsResults = response.data;
+            //     return apiNewsResults;
+            // })
+            // .catch(error => {
+            //     console.log('error from AWS API module(news)', error);
+            //     return error;
+            // });
+
+            // let articles = [
+            //     ['articleOne',  { object1: 'fake object'}],
+            //     ['articleTwo',  { object2: 'fake object'}],
+            //     ['articleThree',  { object3: 'fake object'}]
+            // ]
+            
+            console.log('canned articles:::', topicArticles);
     
+            return topicArticles;
+        }
+
+
+    }
 }
 
 // const post = async req => {

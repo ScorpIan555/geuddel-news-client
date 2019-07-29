@@ -22,6 +22,19 @@ export default {
     )}
   },
 
+  actionGetNewsByTopic: query => {
+    console.log('actionGetNewsByTopic!!::: ', query);
+    return dispatch => {
+      console.log('actionGetNewsByTopic!!::: ', query);
+      return dispatch(
+        HTTPClient.getAsync({
+          type: constants.GET_NEWS_BY_TOPIC, 
+          endpoint: '/getNews',
+          query: query
+      })
+    )}
+  },
+
   actionCreateUser: (user) => {
     console.log('actionSigninUser.user', user);
     return dispatch => {

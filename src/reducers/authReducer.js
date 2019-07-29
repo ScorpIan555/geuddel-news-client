@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case constants.CREATE_USER:  // @TODO fix this
-      console.log('USER_CREATED!::', payload);
+      // console.log('USER_CREATED!::', payload);
       newState.currentUser = payload.user.email;
       console.log('newState.currentUser', newState.currentUser);
 
@@ -25,13 +25,14 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.SIGN_OUT_USER:  // @TODO fix this
+      console.log('USER_SIGNED_OUT', payload);
       
-      const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
-        email: 'No current user'
-      };
-      newState.currentUser = noCurrentUser;
+      // const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
+      //   email: 'No current user'
+      // };
+      newState.currentUser = payload;
 
-      console.log('USER_SIGNED_OUT', noCurrentUser);
+      console.log('USER_SIGNED_OUT', newState);
       
       return newState;
 
@@ -44,8 +45,7 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.AUTH_ANONYMOUS_USER:
-      
-      newState.currentUser = payload; // check and see if this works
+      // store results for guest user session, not current user b/c that overrides other functionality
       newState.anonymousUser = payload;
       console.log('AUTH_ANONYMOUS_USER:::', newState);
 

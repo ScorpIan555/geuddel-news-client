@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { FormatUnixTimestamp } from '../../utils';
 
 export default (props) => {
-    console.log('Article.props:::', props);
+    // console.log('Article.props:::', props);
     // console.log('Article.props:::', typeof(props));
     // console.log('Article.props.url:::', props.url);
     // console.log('Article.props.description:::', props.description);

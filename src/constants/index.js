@@ -2,6 +2,7 @@ export default {
   /* 3rd-party API contants */
   GET_NEWS: 'GET_NEWS',
   GET_USER_LOCATION: 'GET_USER_LOCATION',
+  GET_NEWS_BY_TOPIC: 'GET_NEWS_BY_TOPIC',
 
 
   /* Authentication constants */

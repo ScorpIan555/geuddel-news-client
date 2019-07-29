@@ -26,8 +26,10 @@ class Topic extends Component {
         // this.props.getNews(this.props.userLocation);
     }
 
+    
 
-    async componentDidUpdate(prevProps) {
+
+    async componentDidUpdate(prevProps, prevState) {
         // if component updates
         if(prevProps.currentUser != this.props.currentUser) {
             console.log('Topic.componentDidUpdate.currentUser', this.props.currentUser);
@@ -46,6 +48,7 @@ class Topic extends Component {
 
         console.log('articles:::', this.props.newsapiResponse);
       }
+
 
       getUserLocation = async () => {
         console.log('Topic.componentDidUpdate.userLocation', this.props.userLocation);
@@ -75,44 +78,41 @@ class Topic extends Component {
 
         return(
             
-                
 
-                            
+            <div className="col">
+                <div className="card card-sm">
+                    <ul className="list-group list-group-flush">
 
-                            <div className="col">
-                                <div className="card card-sm">
-                                    <ul className="list-group list-group-flush">
+                    { 
+                        articlesWithImgThumbnails.map((article, i) => {
+                            let childProps = {
+                                url: article.url,
+                                title: article.title,
+                                urlToImage: article.urlToImage,
+                                description: article.description,
+                                publishedAt: article.publishedAt,
+                                source: article.source
+                            }
 
-                                    { 
-                                        articlesWithImgThumbnails.map((article, i) => {
-                                            let childProps = {
-                                                url: article.url,
-                                                title: article.title,
-                                                urlToImage: article.urlToImage,
-                                                description: article.description,
-                                                publishedAt: article.publishedAt,
-                                                source: article.source
-                                            }
+                            return <Article 
+                                        key={i* Math.random()} 
+                                        userLocation={userLocation}
+                                        url={article.url} 
+                                        title={article.title}
+                                        urlToImage={article.urlToImage}
+                                        description={article.description}
+                                        publishedAt={article.publishedAt}
+                                        source={article.source.name}
+                                        author={article.author}
+                                        publishedAt={article.publishedAt}
+                                    />
+                        })
 
-                                            return <Article 
-                                                        key={i* Math.random()} 
-                                                        userLocation={userLocation}
-                                                        url={article.url} 
-                                                        title={article.title}
-                                                        urlToImage={article.urlToImage}
-                                                        description={article.description}
-                                                        publishedAt={article.publishedAt}
-                                                        source={article.source.name}
-                                                        author={article.author}
-                                                        publishedAt={article.publishedAt}
-                                                    />
-                                        })
+                    }
 
-                                    }
-
-                                    </ul>
-                                </div>
-                            </div>
+                    </ul>
+                </div>
+            </div>
                         
             
         );
