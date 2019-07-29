@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.SIGN_OUT_USER:  // @TODO fix this
-      console.log('USER_SIGNED_OUT', payload);
+      // console.log('USER_SIGNED_OUT', payload);
       
       // const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
       //   email: 'No current user'
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.GET_CURRENT_USER:
-      console.log('GET_CURRENT_USER!:::', payload);
+      // console.log('GET_CURRENT_USER!:::', payload);
       newState.currentUser = payload;
 
       console.log('GET_CURRENT_USER!:::', newState.currentUser);

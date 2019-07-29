@@ -200,13 +200,27 @@ class App extends Component {
         this.userHasAuthenticated(false);
     }
 
-    handleClick = event => {
+    handleClick = async event => {
         event.preventDefault()
-        console.log('Click');
-        let data = {
-            isItWorking: 'yes, it is working'
-        };
-        // console.log('Click', data);
+        console.log('Click', event.target);
+        console.log('Click.this.props', this);
+        
+        let pathArray = event.target.href.split('/');
+        console.log('pathArray:::', pathArray);
+        console.log('pathArray:::', pathArray[4]);
+
+        try {
+            // let oldTopic = this.state.oldTopic
+            let query = {
+                topic: pathArray[4],
+                userLocation: this.props.userLocation.userLocation
+            };
+
+            let topicResults = await this.props.actionGetNewsByTopic(query);
+            console.log('topicResults', topicResults);
+        } catch (error) {
+            console.log('error:::', error);
+        }
     }
     
     render() {
@@ -242,7 +256,11 @@ class App extends Component {
                     <div className="container">
                         <div className="row">
 
-                        <Sidebar props={sidebarChildProps} />
+                        <Sidebar 
+                                props={sidebarChildProps}
+                                handleClick={handleClick}
+
+                        />
                 
                         <Routes childProps={childProps} />
                 

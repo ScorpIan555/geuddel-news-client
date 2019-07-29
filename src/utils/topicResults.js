@@ -250,3 +250,5 @@ let topicResults = {
         'Una lluvia de meteoros iluminará el cielo la noche del domingo al lunes, con hasta 20 estrellas fugaces en una hora. RT le ofrece las claves para poder disfrutar de este espectacular fenómeno astronómico.\r\n¿Qué es?\r\nSe trata de la Delta Acuáridas, una lluvia … [+1279 chars]' }
         ] 
 }
+
+export default topicResults;

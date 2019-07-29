@@ -32,6 +32,7 @@ export default ({props}) => {
                     to={`/topic/${topic}`}
                     activeClassName="active"
                     name={sidebarBottom[i].nam}
+                    onClick={handleClick}
                   >
                     
                     <a className="ml-1">{ sidebarBottom[i].name }</a>
