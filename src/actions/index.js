@@ -188,7 +188,7 @@ export default {
       console.log('actionsPostNote', req);
       return dispatch(
         HTTPClient.postAsync({
-          type: constants.UPDATE_USER_DB_DATA,
+          type: constants.UPDATE_USER_DB_INFO,
           endpoint: '/create',
           body: req
         })

@@ -7,6 +7,7 @@ const path = require('path');
 // webpack dev server config object
 // https://webpack.js.org/configuration/
 const config = {
+  // entry: ['react-hot-loader/patch', './src/index.js'],
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
   //  https://webpack.js.org/guides/development/
   mode: 'development',
@@ -24,11 +25,7 @@ const config = {
     filename: 'devBundle.js'
   },
   devServer: {
-    contentBase: [
-      './public',
-      './src'
-    ]
-    // contentBase: './public/dist',
+    contentBase: './public',
     // historyApiFallback: true,
     // hot: true
   },

@@ -26,7 +26,7 @@ const options = {
   watchContentBase: true,
   // configure public path
   publicPath: devServerConfig.output.publicPath,
-  // to use React Router < v4, set historyApiFallback to true
+  // to use React Router > v4, set historyApiFallback to true
   historyApiFallback: true,
   //  to execute custom middleware options/commmands, use after()
   after() {

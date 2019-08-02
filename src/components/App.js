@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routes from './Routes';
@@ -181,7 +182,7 @@ class App extends Component {
         <div className="container">
 
                         <Nav props={childProps} />
-                        <button onClick={this.postNote}>POST NOTE!!!!!!</button>
+                        <button onClick={this.postNote}>POST NOTEss!!!!</button>
             
             <div className="main-container">
                 <section>
@@ -237,4 +238,4 @@ const dispatchToProps = dispatch => {
   };
 };
 
-export default connect(stateToProps, dispatchToProps)(withRouter(App));
+export default hot(connect(stateToProps, dispatchToProps)(withRouter(App)));

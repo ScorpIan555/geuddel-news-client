@@ -21,7 +21,8 @@
     "clean": "rm -rf dist/*",
     "dev": "webpack --config webpack.dev.config.js",
     "lint": "eslint src -c .eslintrc --ext js,jsx",
-    "start": "npm run dev; node webpack.dev.server.js",
+    "start": "node webpack.dev.server.js",
+    "start-dev": "webpack-dev-server --config webpack.dev.server.js",
     "prod": "npm run build; node webpack.prod.config.js"
   },
   "author": "",

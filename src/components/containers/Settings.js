@@ -36,7 +36,57 @@ class Settings extends Component {
         });
       }
 
-    handleSubmit = async event => {
+      handleSubmitUserInfo = async event => {
+        event.preventDefault();
+
+        console.log('event:::', event);
+        console.log('event.target:::', event.target);
+        console.log('event.target.id:::', event.target.id);
+        console.log('event.currentTarget:::', event.currentTarget);
+        console.log('event.type:::', event.type);
+        console.log('this.props:::', this);
+
+        if(event.target != null || undefined ) {
+            if(event.target.id === 'userSettings') {
+                console.log('this.props:::', this);
+                try{
+                    let { country, language, category } = this.state;
+                    let email = this.props.currentUser;
+                    let userData = {
+                        email,
+                        country,
+                        language,
+                        category
+                    }
+                    console.log('userData:::', userData);
+    
+                    let res = await this.props.updateUserData(userData);
+                    console.log('res:::', res)
+                    return;
+    
+                } catch (error) {
+                    alert(error);
+                    console.log('error:::', error);
+                }
+            }
+        }
+        
+        // if(event.target != null || undefined) {
+        //     if(event.target.id === 'changePassword') {
+        //         let currentUser = this.props.currentUser;
+        //         let { oldPassword, confirmPassword } = this.state;
+        //         let changePasswordRequest = {
+        //             currentUser,
+        //             oldPassword,
+        //             confirmPassword
+        //         }
+        //         await this.props.changeUserPassword(changePasswordRequest);
+        //     }
+        // }
+    }
+
+
+    handleSubmitPasswordChangeRequest = async event => {
         event.preventDefault();
 
         console.log('event:::', event);
@@ -45,29 +95,51 @@ class Settings extends Component {
         console.log('event.currentTarget:::', event.currentTarget);
         console.log('event.type:::', event.type);
 
-        if(event.target.id === 'userSettings') {
-            await this.props.updateUserData();
-        }
-        if(event.target.id === 'changePassword') {
-            let currentUser = this.props.currentUser;
-            let { oldPassword, confirmPassword } = this.state;
-            let changePasswordRequest = {
-                currentUser,
-                oldPassword,
-                confirmPassword
+        // if(event.target != null || undefined ) {
+        //     if(event.target.id === 'userSettings') {
+        //         try{
+        //             let { country, language, category } = this.state;
+        //             let email = this.props.currentUser.email;
+        //             let userData = {
+        //                 email,
+        //                 country,
+        //                 language,
+        //                 category
+        //             }
+    
+        //             let res = await this.props.updateUserData(userData);
+        //             console.log('res:::', res)
+        //             return;
+    
+        //         } catch (error) {
+        //             alert(error);
+        //             console.log('error:::', error);
+        //         }
+        //     }
+        // }
+        
+        if(event.target != null || undefined) {
+            if(event.target.id === 'changePassword') {
+                let currentUser = this.props.currentUser;
+                let { oldPassword, confirmPassword } = this.state;
+                let changePasswordRequest = {
+                    currentUser,
+                    oldPassword,
+                    confirmPassword
+                }
+                await this.props.changeUserPassword(changePasswordRequest);
             }
-            await this.props.changeUserPassword(changePasswordRequest);
         }
-
     }
 
     validateChangeSettingsForm = () => {
         // submit button stays in disabled state until these conditions are TRUE
-        return (
-          this.state.email.length > 0
-        //   this.state.password.length > 0 &&
-        //   this.state.password === this.state.confirmPassword
-        );
+        // return (
+        // //   this.state.email.length > 0
+        // //   this.state.password.length > 0 &&
+        // //   this.state.password === this.state.confirmPassword
+        // );
+        return
       }
 
     validateChangePasswordForm = () => {
@@ -82,7 +154,7 @@ class Settings extends Component {
 
     render() {
     // deconstruct class methods
-     let { handleChange, handleSubmit, validateChangeSettingsForm, validateChangePasswordForm } = this;
+     let { handleChange, handleSubmitUserInfo, handleSubmitPasswordChangeRequest, validateChangeSettingsForm, validateChangePasswordForm } = this;
      // deconstruct properties from state object
      let { email, password, oldPassword, country, language, category, isLoading, confirmPassword } = this.state;
 
@@ -92,8 +164,16 @@ class Settings extends Component {
       <div className="container col-md-5">
         <Card className={style.Aligner} >
             <Card.Body>
-                <form onSubmit={handleSubmit} id="userSettings">
-                
+                <form onSubmit={handleSubmitUserInfo} id="userSettings">
+                <Form.Group controlId="email" variant="large">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                    autoFocus
+                    type="email"
+                    value={currentUser}
+                    onChange={handleChange}
+                    />
+                </Form.Group>
                 <Form.Group controlId="country" variant="large">
                     <Form.Label>Country</Form.Label>
                     <Form.Control
@@ -121,7 +201,6 @@ class Settings extends Component {
                 <LoaderButton
                     block
                     className="btn-lg"
-                    disabled={!validateChangeSettingsForm()}
                     type="submit"
                     isLoading={isLoading}
                     text="Update Info"
@@ -132,8 +211,8 @@ class Settings extends Component {
             </Card>
         <Card className={style.Aligner} >
             <Card.Body>
-                <form onSubmit={handleSubmit} id="changePassword">
-               
+                <form onSubmit={handleSubmitPasswordChangeRequest} id="changePassword">
+                
                 <Form.Group controlId="oldPassword" variant="large">
                     <Form.Label>Old Password</Form.Label>
                     <Form.Control

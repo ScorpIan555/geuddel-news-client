@@ -20,5 +20,6 @@ export default {
 
   /* Test constant for development */
   POST_NOTE: 'POST_NOTE',
+  UPDATE_USER_DB_INFO: 'UPDATE_USER_DB_INFO'
 
 };

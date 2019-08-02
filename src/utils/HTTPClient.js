@@ -132,24 +132,44 @@ const get = async req => {
 const post = async req => {
     console.log('post:::', req);
 
-    // let body = req.body;
+    // if(req.type === 'POST_NOTE') {
+    //     const response = await API.post('gNewsNotes', '/notes', {
+    //         body: {
+    //             userId: req.body.userId,
+    //             noteId: req.body.noteId
+    //         }
+    //     });
+    //     // .then(res => {
+    //     //     console.log('API.post response:::', res);
+    //     // })
+    //     // .catch(err => {
+    //     //     console.log('err:::', err);
+    //     // })
+    
+    //     console.log('response:::', response);
+    
+    //     return response;
+    // }
 
-    const response = await API.post('gNewsNotes', '/notes', {
-        body: {
-            userId: req.body.userId,
-            noteId: req.body.noteId
-        }
-    });
-    // .then(res => {
-    //     console.log('API.post response:::', res);
-    // })
-    // .catch(err => {
-    //     console.log('err:::', err);
-    // })
-
-    console.log('response:::', response);
-
-    return response;
+   if(req.type === 'UPDATE_USER_DB_INFO') {
+    console.log('post:::', req);
+    console.log('post:::', req.body.email);
+    console.log('post:::', req.body.language);
+    console.log('post:::', req.body.country);
+    console.log('post:::', req.body.category);
+       const response = await API.post('gNewsNotes', '/notes', {
+           body: {
+              userId: req.body.email,
+              noteId: 'user setting',
+              language: req.body.language,
+              country: req.body.country,
+              category: req.body.category
+           }
+       })
+        console.log('response:::', response);
+    
+        return response;
+   }
 
 }
 
