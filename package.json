@@ -18,12 +18,11 @@
   },
   "scripts": {
     "build": "npm clean; webpack --config webpack.prod.config.js",
+    "clean": "rm -rf dist/*",
     "dev": "webpack --config webpack.dev.config.js",
     "lint": "eslint src -c .eslintrc --ext js,jsx",
-    "serve-build": "npm run build; npx serve build",
-    "serve-dev": "webpack-dev-server --config webpack.prod.config.js",
-    "start": "npm run dev; webpack-dev-server --config webpack.dev.server.js",
-    "fart": "npm run build; webpack-dev-server --config webpack.prod.config.js"
+    "start": "npm run dev; node webpack.dev.server.js",
+    "prod": "npm run build; node webpack.prod.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -40,6 +39,7 @@
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.0.0",
     "eslint": "^6.0.1",
     "eslint-config-airbnb": "^17.1.1",

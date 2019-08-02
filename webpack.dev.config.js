@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.config.js');
 const path = require('path');
 
+
 // webpack dev server config object
 // https://webpack.js.org/configuration/
 const config = {
@@ -23,9 +24,17 @@ const config = {
     filename: 'devBundle.js'
   },
   devServer: {
-    contentBase: './public',
-    historyApiFallback: true
-  }
+    contentBase: [
+      './public',
+      './src'
+    ]
+    // contentBase: './public/dist',
+    // historyApiFallback: true,
+    // hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
 };
 
 module.exports = merge(common, config);

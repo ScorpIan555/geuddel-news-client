@@ -35,7 +35,7 @@ const options = {
 };
 
 // configure webpack development server application with config & server options at entry points
-WebpackDevServer.addDevServerEntrypoints(devServerConfig, options);
+WebpackDevServer.addDevServerEntrypoints(devServerConfig, options);  // double check that this isn't duplicating/interfering
 // load compiler with configuration
 const compiler = webpack(devServerConfig);
 // instantiate dev server object with compiler library + options

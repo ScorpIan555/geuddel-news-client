@@ -181,7 +181,7 @@ class App extends Component {
         <div className="container">
 
                         <Nav props={childProps} />
-                        <button onClick={this.postNote}>POST NOTE!!!!</button>
+                        <button onClick={this.postNote}>POST NOTE!!!!!!</button>
             
             <div className="main-container">
                 <section>
@@ -191,7 +191,6 @@ class App extends Component {
                         <Sidebar 
                                 props={sidebarChildProps}
                                 handleClick={handleClick}
-
                         />
                 
                         <Routes childProps={childProps} />

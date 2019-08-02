@@ -93,15 +93,7 @@ class Settings extends Component {
         <Card className={style.Aligner} >
             <Card.Body>
                 <form onSubmit={handleSubmit} id="userSettings">
-                <Form.Group controlId="email" variant="large">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                    autoFocus
-                    type="email"
-                    value={currentUser}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
+                
                 <Form.Group controlId="country" variant="large">
                     <Form.Label>Country</Form.Label>
                     <Form.Control
@@ -141,15 +133,7 @@ class Settings extends Component {
         <Card className={style.Aligner} >
             <Card.Body>
                 <form onSubmit={handleSubmit} id="changePassword">
-                <Form.Group controlId="email" variant="large">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                    autoFocus
-                    type="email"
-                    value={currentUser}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
+               
                 <Form.Group controlId="oldPassword" variant="large">
                     <Form.Label>Old Password</Form.Label>
                     <Form.Control
