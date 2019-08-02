@@ -38,10 +38,12 @@ class Login extends Component {
         password
       };
       await this.props.signInUser(user);
-
-      this.props.userHasAuthenticated(true);
-      this.props.history.push('/');
-
+      
+      if(this.props.currentUser.email !== 'No current user') { // fix error
+        this.props.userHasAuthenticated(true);
+        this.props.history.push('/');
+      }
+     
     } catch (e) {
 
       alert(e.message);
@@ -99,11 +101,13 @@ class Login extends Component {
   }
 }
 
-const stateToProps = (state) => {
+const stateToProps = state => {
+  const { currentUser } = state.auth;
+
   return {
-    // user: state.user
-  }
-}
+    currentUser: currentUser
+  };
+};
 
 const dispatchToProps = (dispatch) => {
   return {

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Form, Card } from "react-bootstrap";
 import { connect } from 'react-redux';
 import { LoaderButton } from "../presentation";
@@ -121,7 +121,7 @@ import actions from '../../actions';
         username: email,
         confirmationCode: confirmationCode || null,
         password: password || null
-      }
+      };
 
       await this.props.confirmUser(user);
 
@@ -182,7 +182,7 @@ import actions from '../../actions';
      let { email, password, isLoading, confirmPassword } = this.state;
     
     return (
-      <div className="container col-md-5">
+      <div className="container col-md-8">
       <Card className={style.Aligner} >
         <Card.Body>
             <form onSubmit={handleSubmit}>
@@ -235,11 +235,11 @@ import actions from '../../actions';
      let { newUser } = this.state;
 
     return (
-      <div className="Signup">
+      <Fragment>
         {newUser === null
           ? renderForm()
           : renderConfirmationForm()}
-      </div>
+      </Fragment>
     );
   }
 }

@@ -6,9 +6,9 @@ const get = async req => {
       // invoke async GET to AWS via Auth module
       const user = await Auth.currentAuthenticatedUser()
       // the authReducer returns a nested user object t/b passed 
-      // console.log('GET_CURRENT_USER.res::', user);
-      if(user.authenticated === true) {
-        // console.log('currentUser from Auth:::', user);
+      console.log('GET_CURRENT_USER.res::', user);
+      if(user.authenticationFlowType === 'USER_SRP_AUTH') {
+        console.log('currentUser from Auth:::', user);
         let currentUser = user.attributes.email;
         return currentUser;
       }
@@ -109,7 +109,9 @@ const post = async req => {
 
       return user;
     } catch (err) {
+      alert(err.message);
       console.log('err::', err);
+      return err;
     }
   }
 
@@ -120,6 +122,61 @@ const post = async req => {
         req.params[0].username,
         req.params[0].confirmationCode
       );
+
+      console.log('AwsAuth.util.post.CONFIRM_USER:::', user);
+
+      return user;
+    } catch (err) {
+      console.log('err', err);
+    }
+  }
+
+  if (req.type === 'CHANGE_USER_PASSWORD') {
+    
+    
+    try {
+      console.log('CONFIRM_USER:::', req);
+      let { oldPassword, confirmPassword } = req.changePasswordRequest;
+      console.log('CONFIRM_USER:::', req.changePasswordRequest);
+      console.log('CONFIRM_USER:::', req.changePasswordRequest.oldPassword);
+      console.log('CONFIRM_USER:::', oldPassword, confirmPassword);
+      const res = Auth.currentAuthenticatedUser()
+      .then((user, oldPassword, confirmPassword) => {
+          console.log('currentAuthenticatedUser:::', user);
+          console.log('currentAuthenticatedUser.req:::', req);
+          console.log('currentAuthenticatedUser:::', oldPassword, confirmPassword);
+          return Auth.changePassword(user, req.changePasswordRequest.oldPassword, req.changePasswordRequest.confirmPassword );
+      })
+      .then(data => console.log(data => {
+        if(data === 'SUCCESS') {
+          let response = {
+            message: 'Successfully changed password'
+          };
+          return response;
+        }
+        
+      }))
+      .catch(err => console.log(err));
+
+      console.log('AwsAuth.util.post.CONFIRM_USER:::', res);
+
+      return res;
+    } catch (err) {
+      console.log('err', err);
+    }
+  }
+
+  if (req.type === 'FORGOT_USER_PASSWORD') {
+    console.log('CONFIRM_USER:::', req);
+    try {
+      Auth.forgotPassword(username)
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+
+    // Collect confirmation code and new password, then
+      Auth.forgotPasswordSubmit(username, code, new_password)
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
 
       console.log('AwsAuth.util.post.CONFIRM_USER:::', user);
 
@@ -169,22 +226,38 @@ export default {
   postAsync: req => {
     return dispatch =>
       post(req)
-        .then(responseFromThunkFunction => {
+        .then(response => {
           console.log(
-            'post.asyncResForDispatchToStore::::',
-            responseFromThunkFunction
+            'post.asyncRes::::',
+            response
           );
-          if(responseFromThunkFunction != undefined) {
+          if(response != undefined) {
             if (req.type != null) {
-              console.log('check the conditional')
+              console.log('check the conditional', response);
               dispatch({
                 type: req.type,
-                data: responseFromThunkFunction
+                data: response
               });
             }
           }
-          console.log('res', responseFromThunkFunction);
-          return responseFromThunkFunction;
+          if(response.message === 'Successfully changed password') {
+            alert(response.message);
+            console.log('check the conditional', response);
+              dispatch({
+                type: req.type,
+                data: response
+              });
+          }
+          if(response.message === 'Incorrect username or password.') {
+            alert(response.message);
+            console.log('check the conditional', response);
+              dispatch({
+                type: 'INCORRECT_PASSWORD',
+                data: response
+              });
+          }
+          console.log('res', response);
+          return response;
         })
         .catch(err => console.log('err', err));
   },

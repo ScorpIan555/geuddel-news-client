@@ -2,12 +2,6 @@ import constants from '../constants';
 import { HTTPClient, AwsAuthClient } from '../utils';
 
 export default {
-  actionTest: (...params) => {
-    return {
-      type: constants.TEST,
-      data: params
-    };
-  },
 
   actionGetNews: query => {
     console.log('actionGetNews!!::: ', query);
@@ -22,18 +16,18 @@ export default {
     )}
   },
 
-  actionGetNewsByTopic: query => {
-    console.log('actionGetNewsByTopic!!::: ', query);
-    return dispatch => {
-      console.log('actionGetNewsByTopic!!::: ', query);
-      return dispatch(
-        HTTPClient.getAsync({
-          type: constants.GET_NEWS_BY_TOPIC, 
-          endpoint: '/getNews',
-          query: query
-      })
-    )}
-  },
+  // actionGetNewsByTopic: query => { // delete if not needed
+  //   console.log('actionGetNewsByTopic!!::: ', query);
+  //   return dispatch => {
+  //     console.log('actionGetNewsByTopic!!::: ', query);
+  //     return dispatch(
+  //       HTTPClient.getAsync({
+  //         type: constants.GET_NEWS_BY_TOPIC, 
+  //         endpoint: '/getNews',
+  //         query: query
+  //     })
+  //   )}
+  // },
 
   actionCreateUser: (user) => {
     console.log('actionSigninUser.user', user);
@@ -70,6 +64,30 @@ export default {
     };
   },
 
+  actionChangeUserPassword: (changePasswordRequest) => { // sending obj w/ username/password to AWS
+    console.log('actionSigninUser.user', changePasswordRequest);
+    return dispatch => {
+      return dispatch(
+        AwsAuthClient.postAsync({
+          type: constants.CHANGE_USER_PASSWORD,
+          changePasswordRequest
+        })
+      );
+    };
+  },
+
+  actionUserForgotPassword: (user) => { // sending obj w/ username/password to AWS
+    console.log('actionSigninUser.user', user);
+    return dispatch => {
+      return dispatch(
+        AwsAuthClient.postAsync({
+          type: constants.FORGOT_USER_PASSWORD,
+          user
+        })
+      );
+    };
+  },
+
   actionSignOutUser: () => {
     console.log('actionSignoutUser::::' )
     return dispatch => {
@@ -81,11 +99,12 @@ export default {
     };
   },
 
-  actionGetCurrentUser: () => {
+  actionGetCurrentUser: (user) => {
     return dispatch => {
       return dispatch(
         AwsAuthClient.getAsync({
-          type: constants.GET_CURRENT_USER
+          type: constants.GET_CURRENT_USER,
+          user
         })
       );
     };
@@ -123,6 +142,58 @@ export default {
         })
       );
     };
-  }
+  },
+
+  actionsPostNote: (req) => {
+    return dispatch => {
+      console.log('actionsPostNote', req);
+      return dispatch(
+        HTTPClient.postAsync({
+          type: constants.POST_NOTE,
+          endpoint: '/create',
+          body: req
+        })
+      )
+    }
+  },
+
+  actionGetCurrentUserDbInfo: (req) => {
+    return dispatch => {
+      console.log('actionsGetUserData', req);
+      return dispatch(
+        HTTPClient.getAsync({
+          type: constants.GET_CURRENT_USER_DB_INFO,
+          endpoint: '/user',
+          data: req
+        })
+      )
+    }
+  },
+
+  actionsPostUserDbData: (req) => {
+    return dispatch => {
+      console.log('actionsPostNote', req);
+      return dispatch(
+        HTTPClient.postAsync({
+          type: constants.POST_USER_DB_DATA,
+          endpoint: '/create',
+          body: req
+        })
+      )
+    }
+  },
+
+  actionsUpdateUserDbData: (req) => {
+    return dispatch => {
+      console.log('actionsPostNote', req);
+      return dispatch(
+        HTTPClient.postAsync({
+          type: constants.UPDATE_USER_DB_DATA,
+          endpoint: '/create',
+          body: req
+        })
+      )
+    }
+  },
 
 };

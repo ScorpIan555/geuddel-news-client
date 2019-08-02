@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { AppliedRoute, NotFound } from './presentation';
-import { Topic, Signup, Login } from './containers';
+import { AppliedRoute, AuthenticatedRoute, NotFound } from './presentation';
+import { Topic, Signup, Login, Settings, ForgotPassword } from './containers';
 
 export default ({ childProps }) => {
 
@@ -14,6 +14,8 @@ export default ({ childProps }) => {
             <AppliedRoute exact path='/' component={Topic} props={childProps} />
             <AppliedRoute exact path='/signup' component={Signup} props={childProps} />
             <AppliedRoute exact path='/login' component={Login} props={childProps} />
+            <AuthenticatedRoute exact path='/settings' component={Settings} props={childProps} />
+            <AuthenticatedRoute exact path='/forgot-password' component={ForgotPassword} props={childProps} />
             {/* <AppliedRoute exact path={`/topic/${topic}`} component={Topic} props={childProps} /> */}
             
             { sidebarBottom.map((link, i) => {

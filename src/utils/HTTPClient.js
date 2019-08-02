@@ -8,17 +8,18 @@ const get = async req => {
         console.log('GET_USER_LOCATION!:::', req);
 
         const usersCountryCode = await API.get('gNewsNotes', '/getPublicIp/fish')
-                                        .then(response => {
-                                            console.log('response from Aws API module(location):::', response);
-                                            const countryCode = response.data.countryCode.toLowerCase();
-                                            console.log('countryCode:::', countryCode);
-                                            return countryCode;
-                                        })
-                                        .catch(error => {
-                                            console.log('error from AWS API module(location)', error);
-                                            return error;
-                                        });
+        .then(response => {
+            console.log('response from Aws API module(location):::', response);
+            const countryCode = response.data.countryCode.toLowerCase();
+            console.log('countryCode:::', countryCode);
+            return countryCode;
+        })
+        .catch(error => {
+            console.log('error from AWS API module(location)', error);
+            return error;
+        });
         console.log('cC:::', usersCountryCode);
+        // return 
         return usersCountryCode;
     }
 
@@ -62,47 +63,47 @@ const get = async req => {
         }
     }
 
-    if(req.type == 'GET_NEWS_BY_TOPIC') {
-        console.log('GET_NEWS_BY_TOPIC:::', req);
+    // if(req.type == 'GET_NEWS_BY_TOPIC') {  // delete if not needed
+    //     console.log('GET_NEWS_BY_TOPIC:::', req);
 
-        if(req.query !== undefined ) {
-            // let userLocation = req.query.userLocation;
-            console.log('getNewsByTopic.req.query', req.query);
+    //     if(req.query !== undefined ) {
+    //         // let userLocation = req.query.userLocation;
+    //         console.log('getNewsByTopic.req.query', req.query);
 
-            let queryStringParameters = {
-                country: req.query.userLocation,
-                sources: req.query.sources,
-                q: req.query.searchTerms,
-                category: req.query.topic,
-                language: req.query.language
-            };
+    //         let queryStringParameters = {
+    //             country: req.query.userLocation,
+    //             sources: req.query.sources,
+    //             q: req.query.searchTerms,
+    //             category: req.query.topic,
+    //             language: req.query.language
+    //         };
 
-            let myInit = {
-                queryStringParameters
-            };
-            console.log('myInit:::', myInit);
+    //         let myInit = {
+    //             queryStringParameters
+    //         };
+    //         console.log('myInit:::', myInit);
 
-            const articles = await API.get('gNewsNotes', '/getNews', myInit)
-            .then(response => {
-                console.log('response from Aws API module(news):::', response);
-                const apiNewsResults = response.data;
-                return apiNewsResults;
-            })
-            .catch(error => {
-                console.log('error from AWS API module(news)', error);
-                return error;
-            });
+    //         const articles = await API.get('gNewsNotes', '/getNews', myInit)
+    //         .then(response => {
+    //             console.log('response from Aws API module(news):::', response);
+    //             const apiNewsResults = response.data;
+    //             return apiNewsResults;
+    //         })
+    //         .catch(error => {
+    //             console.log('error from AWS API module(news)', error);
+    //             return error;
+    //         });
 
-            return articles;
+    //         return articles;
 
             
-            // uncomment these after commenting out the above to use dummy api data
-            // console.log('canned articles:::', topicArticles);
-            // return topicArticles;
-        }
+    //         // uncomment these after commenting out the above to use dummy api data
+    //         // console.log('canned articles:::', topicArticles);
+    //         // return topicArticles;
+    //     }
 
 
-    }
+    // }
 }
 
 // const post = async req => {
@@ -128,6 +129,30 @@ const get = async req => {
 //         return apiPostRes;
 // }
 
+const post = async req => {
+    console.log('post:::', req);
+
+    // let body = req.body;
+
+    const response = await API.post('gNewsNotes', '/notes', {
+        body: {
+            userId: req.body.userId,
+            noteId: req.body.noteId
+        }
+    });
+    // .then(res => {
+    //     console.log('API.post response:::', res);
+    // })
+    // .catch(err => {
+    //     console.log('err:::', err);
+    // })
+
+    console.log('response:::', response);
+
+    return response;
+
+}
+
 export default {
 
     getAsync: req => {
@@ -146,13 +171,13 @@ export default {
       },
 
     postAsync: (req) => {
-        console.log('postAsync.:::', type, endpoint, body);
-        return dispatch => post(type, endpoint, body)
+        console.log('postAsync.:::', req);
+        return dispatch => post(req)
         .then(response => {
             console.log('asyncPost.response::', response);
             // if(type != null ) {
                 dispatch({
-                    type: type.type,
+                    type: req.type,
                     data: response
                 });
             // }
