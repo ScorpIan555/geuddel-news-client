@@ -125,7 +125,7 @@ const stateToProps = state => {
     const { topLink, bottomLink } = state.sidebar;
     const { currentUser } = state.auth;
     const { newsapiResponse, articles } = state.newsfeed;
-    const userLocation = state.userLocation;
+    const userLocation = state.userData;
   
     return {
       sidebarTop: topLink,

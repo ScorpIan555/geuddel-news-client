@@ -211,7 +211,7 @@ class App extends Component {
 const stateToProps = state => {
   const { topLink, bottomLink } = state.sidebar;
   const { currentUser } = state.auth;
-  const userLocation = state.userLocation;
+  const userLocation = state.userData;
   const { newsapiResponse, articles } = state.newsfeed;
 
   return {

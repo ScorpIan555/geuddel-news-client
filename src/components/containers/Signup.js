@@ -303,7 +303,7 @@ import actions from '../../actions';
 }
 
 const stateToProps = (state) => {
-  const { userLocation } = state.userLocation;
+  const { userLocation } = state.userData;
 
   return {
     user: state.user,
