@@ -125,9 +125,18 @@ import actions from '../../actions';
   initializeUserProfile = () => {
     console.log('initializeUserProfile.state:::', this.state);
     console.log('initializeUserProfile.props:::', this.props);
+    console.log('this.props.userWhoWasJustCreated::', this.props.userWhoWasJustCreated);
 
-    if(this.props.userWhoWasJustCreated.userConfirmed === false) {
-      this.props.createUserDbInfo(this.state)
+    if(this.props.userWhoWasJustCreated != undefined) {
+      let initialUserSettings = {
+        email: this.state.email,
+        country: this.props.userLocation        
+      }
+      
+      this.props.createUserDbInfo(initialUserSettings);
+      // if(this.props.userWhoWasJustCreated.userConfirmed === false) {
+        
+      // }
     }
   }
 
@@ -294,10 +303,13 @@ import actions from '../../actions';
 }
 
 const stateToProps = (state) => {
+  const { userLocation } = state.userLocation;
+
   return {
     user: state.user,
     currentUser: state.auth.currentUser,
-    userWhoWasJustCreated: state.auth.userWhoWasJustCreated
+    userWhoWasJustCreated: state.auth.userWhoWasJustCreated,
+    userLocation: userLocation
   }
 }
 

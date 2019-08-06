@@ -150,6 +150,8 @@ class Settings extends Component {
      let { email, password, oldPassword, country, language, category, isLoading, confirmPassword } = this.state;
 
      let { currentUser } = this.props;
+
+     console.log('currentUser:::', currentUser);
     
     return (
       <div className="container col-md-5">

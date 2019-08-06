@@ -4,7 +4,7 @@ import { API } from 'aws-amplify';
 
 const get = async req => {
 
-    if(req.type == 'GET_USER_LOCATION') {
+    if(req.type === 'GET_USER_LOCATION') {
         console.log('GET_USER_LOCATION!:::', req);
 
         const usersCountryCode = await API.get('gNewsNotes', '/getPublicIp/fish')
@@ -23,7 +23,7 @@ const get = async req => {
         return usersCountryCode;
     }
 
-    if(req.type == 'GET_NEWS') {
+    if(req.type === 'GET_NEWS') {
         console.log('GETTING NEWS!:::', req);
         
         if(req.query !== undefined ) {
@@ -80,12 +80,13 @@ const post = async req => {
                body: {
                   // PRIMARY key is provided in request headers from Cognito ID
                   userId: req.body.email,
+                  email: req.body.email,
                   language: req.body.language,
                   country: req.body.country,  // RANGE key
                   category: req.body.category
                }
            })
-    
+           console.log('response:::', response);
             response['HttpResponse'] = 'Success';
             console.log('response:::', response);
         
@@ -104,6 +105,7 @@ const post = async req => {
            body: {
             // PRIMARY key is provided in request headers from Cognito ID
               userId: req.body.email,
+              email: req.body.email,
               language: req.body.language,
               country: req.body.country, // RANGE key
               category: req.body.category

@@ -40,8 +40,13 @@ export default (state = initialState, action) => {
           };
           return newState;
         }
-
-      newState.currentUser = payload;
+        if(payload.attributes != undefined) {
+          newState.currentUser = payload.attributes.email;
+        }
+        if(newState.currentUser == undefined || null) {
+          alert('newState.currentUser is null');
+          console.log('newState is null, need to check:::', newState);
+        }
 
       console.log('USER_SIGNED_IN!:::', newState.currentUser);
 
