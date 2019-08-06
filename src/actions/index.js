@@ -175,7 +175,7 @@ export default {
       console.log('actionsPostNote', req);
       return dispatch(
         HTTPClient.postAsync({
-          type: constants.POST_USER_DB_DATA,
+          type: constants.CREATE_USER_DB_INFO,
           endpoint: '/create',
           body: req
         })
@@ -195,5 +195,17 @@ export default {
       )
     }
   },
+
+  actionsResendConfirmationCode: (params) => {
+    return dispatch => {
+      console.log('actionsResendConfirmationCode:::', req);
+      return dispatch(
+        AwsAuthClient.postAsync({
+          type: constants.RESEND_CONFIRM_USER,
+          params
+        })
+      );
+    }
+  }
 
 };

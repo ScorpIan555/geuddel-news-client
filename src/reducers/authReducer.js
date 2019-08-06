@@ -12,7 +12,14 @@ export default (state = initialState, action) => {
 
     case constants.CREATE_USER:  // @TODO fix this
       // console.log('USER_CREATED!::', payload);
-      newState.currentUser = payload.user.email;
+      newState.currentUser = payload.user.username;
+      newState.userWhoWasJustCreated = {
+        user: payload.user,
+        username: payload.user.username,
+        userConfirmed: payload.userConfirmed,
+        userSub: payload.userSub
+
+      };
       console.log('newState.currentUser', newState.currentUser);
 
       return newState;
@@ -26,12 +33,29 @@ export default (state = initialState, action) => {
           };
           return newState;
         }
+        if(payload.message === 'An account with that given email already exists.') {
+          newState.signInError = payload;
+          newState.currentUser = { 
+            email: 'Account already exists' 
+          };
+          return newState;
+        }
 
       newState.currentUser = payload;
 
       console.log('USER_SIGNED_IN!:::', newState.currentUser);
 
       return newState;
+
+
+    case constants.GET_CURRENT_USER:
+        console.log('GET_CURRENT_USER!:::', payload);
+        newState.currentUser = payload;
+  
+        console.log('GET_CURRENT_USER!:::', newState.currentUser);
+  
+        return newState;
+        
 
       case constants.INCORRECT_PASSWORD:
           console.log('USER_SIGNED_IN!:::', payload);
@@ -62,13 +86,6 @@ export default (state = initialState, action) => {
       
       return newState;
 
-    case constants.GET_CURRENT_USER:
-      console.log('GET_CURRENT_USER!:::', payload);
-      newState.currentUser = payload;
-
-      console.log('GET_CURRENT_USER!:::', newState.currentUser);
-
-      return newState;
 
     case constants.AUTH_ANONYMOUS_USER:
       // store results for guest user session, not current user b/c that overrides other functionality
@@ -83,6 +100,9 @@ export default (state = initialState, action) => {
       console.log('GET_CURRENT_SESSION:::', newState);
 
       return newState;
+
+    case constants.GET_CURRENT_USER_DB_INFO:
+
 
     default:
       return newState;

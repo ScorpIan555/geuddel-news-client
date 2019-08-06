@@ -1,5 +1,12 @@
 import { Auth } from 'aws-amplify';
 
+const handleError = err => {
+  err['httpResponse'] = 'Error';      
+      console.log('err', err);
+      alert(err.message);
+      return err;
+}
+
 const get = async req => {
   if (req.type === 'GET_CURRENT_USER') {
     try {
@@ -10,6 +17,7 @@ const get = async req => {
       if(user.authenticationFlowType === 'USER_SRP_AUTH') {
         console.log('currentUser from Auth:::', user);
         let currentUser = user.attributes.email;
+        
         return currentUser;
       }
       if(user.authenticated === false) {
@@ -92,9 +100,10 @@ const post = async req => {
       return user;
 
     } catch (err) {
+      err['httpResponse'] = 'Error';      
       console.log('err', err);
       alert(err.message);
-      return;
+      return err;
     }
   }
 
@@ -109,9 +118,7 @@ const post = async req => {
 
       return user;
     } catch (err) {
-      alert(err.message);
-      console.log('err::', err);
-      return err;
+     return handleError;
     }
   }
 
@@ -127,7 +134,30 @@ const post = async req => {
 
       return user;
     } catch (err) {
+      err['httpResponse'] = 'Error';      
       console.log('err', err);
+      alert(err.message);
+    }
+  }
+
+  if (req.type === 'RESEND_CONFIRM_USER') {
+    console.log('CONFIRM_USER:::', req);
+    try {
+      const user = await Auth.resendSignUp(
+        req.params[0].username,
+        req.params[0].confirmationCode
+      );
+
+      console.log('AwsAuth.util.post.CONFIRM_USER:::', user);
+
+      user['httpResponse'] = 'Success';
+
+      return user;
+    } catch (err) {
+
+      err['httpResponse'] = 'Error';      
+      console.log('err', err);
+      alert(err.message);
     }
   }
 
@@ -156,13 +186,20 @@ const post = async req => {
         }
         
       }))
-      .catch(err => console.log(err));
+      .catch(err => {
+        err['httpResponse'] = 'Error';      
+        console.log('err', err);
+        alert(err.message);
+        
+      });
 
       console.log('AwsAuth.util.post.CONFIRM_USER:::', res);
 
       return res;
     } catch (err) {
+      err['httpResponse'] = 'Error';      
       console.log('err', err);
+      alert(err.message);
     }
   }
 
@@ -209,7 +246,7 @@ export default {
     return dispatch =>
       get(req)
       .then(responseFromThunkFunction => {
-        console.log('responseFromThunkFunction:::', this, responseFromThunkFunction);
+        console.log('responseFromThunkFunction:::', responseFromThunkFunction);
         if (req.type != null) {
           dispatch({
             type: req.type,
@@ -227,37 +264,53 @@ export default {
     return dispatch =>
       post(req)
         .then(response => {
-          console.log(
-            'post.asyncRes::::',
-            response
-          );
+          console.log('post.asyncRes::::', response);
+          // response must be handled
           if(response != undefined) {
+            // redux actions must have a valid type
             if (req.type != null) {
-              console.log('check the conditional', response);
-              dispatch({
+              // handle response for successfully changed password
+              if(response.message === 'Successfully changed password') {
+                alert(response.message);
+                console.log('successfully changed pw?:::', response);
+                  return dispatch({
+                    type: req.type,
+                    data: response
+                  });
+              }
+              // handle incorrect username/password
+              if(response.message === 'Incorrect username or password.') {
+                alert(response.message);
+                console.log('Incorrect username or password', response);
+                  return dispatch({
+                    type: 'INCORRECT_PASSWORD',
+                    data: response
+                  });
+              }
+              // handle user attempting to sign up with email address that already exists
+              if(response.message === 'An account with that given email already exists.') {
+                alert(response.message);
+                console.log('An account with that given email already exists', response);
+                  return dispatch({
+                    type: 'ACCOUNT_ALREADY_EXISTS',
+                    data: response
+                  });
+              }
+              if(response.httpResponse == 'Error') {
+                console.log('return error:::', response);
+                return response;
+              }
+              // passed error checks
+              console.log('all the way at the end!:::', req);
+              console.log('all the way at the end!:::', response);
+              return dispatch({
                 type: req.type,
                 data: response
               });
             }
+          // console.log('res', response);
+          // return response;
           }
-          if(response.message === 'Successfully changed password') {
-            alert(response.message);
-            console.log('check the conditional', response);
-              dispatch({
-                type: req.type,
-                data: response
-              });
-          }
-          if(response.message === 'Incorrect username or password.') {
-            alert(response.message);
-            console.log('check the conditional', response);
-              dispatch({
-                type: 'INCORRECT_PASSWORD',
-                data: response
-              });
-          }
-          console.log('res', response);
-          return response;
         })
         .catch(err => console.log('err', err));
   },

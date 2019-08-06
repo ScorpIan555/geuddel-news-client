@@ -14,6 +14,7 @@ import actions from '../../actions';
       password: "",
       confirmPassword: "",
       confirmationCode: "",
+      shouldResendConfirmation: false,
       newUser: null,
       wasError: false
     };
@@ -86,6 +87,17 @@ import actions from '../../actions';
       console.log('e::::', e);
       // inform user of error during signup process
       alert(e);
+
+      if(e.message === 'An account with that given email already exists.') {
+        // this tells the component not to render the confirmation form because their was an error in the Signup process
+        this.setState({
+          wasError: false
+        });
+        console.log('user exist in error?:::', user);
+        alert('Please check your email, confirmation code has been resent.');
+        this.handleResendUserConfirmationCode(user);
+        
+      }
       // this tells the component not to render the confirmation form because their was an error in the Signup process
       this.setState({
         wasError: true
@@ -99,13 +111,50 @@ import actions from '../../actions';
       })
     }// 
     if(this.state.wasError === false) {
+      this.initializeUserProfile();
       this.setState({
         newUser: 'new user created'
       })
+
     }
     console.log('signup finished:::', this);
     // with async redux action/call now complete, exit loader button's async-only state
     this.setState({ isLoading: false });
+  }
+
+  initializeUserProfile = () => {
+    console.log('initializeUserProfile.state:::', this.state);
+    console.log('initializeUserProfile.props:::', this.props);
+
+    if(this.props.userWhoWasJustCreated.userConfirmed === false) {
+      this.props.createUserDbInfo(this.state)
+    }
+  }
+
+  handleResendUserConfirmationCode = async event => {
+    // prevent default submit event/action
+    event.preventDefault();
+    // destructure state object
+    let { email, password, wasError, newUser } = this.state;
+      try {
+        let user = {
+          username: email,
+          password
+        };
+        // make request to Aws-Amplify Auth to resend the confirmation code
+        const response = await this.props.resendConfirmationCode(user);
+
+        if(response.httpResponse === 'Success') {
+          // this.initializeUserProfile(); // should have been created on the first go
+          this.setState({
+            newUser: 'new user created'
+          });
+        }
+        
+      } catch (e) {
+        alert(e.message);
+        this.setState({ isLoading: false });
+      }
   }
   
 
@@ -141,7 +190,7 @@ import actions from '../../actions';
     // deconstruct class methods
     let { handleChange, validateConfirmationForm, handleConfirmationSubmit } = this;
     // deconstruct properties from state object
-    let { isLoading, confirmationCode } = this.state;
+    let { isLoading, confirmationCode, shouldResendConfirmation } = this.state;
 
     return (
       <div className="container col-md-5">
@@ -247,15 +296,18 @@ import actions from '../../actions';
 const stateToProps = (state) => {
   return {
     user: state.user,
-    currentUser: state.currentUser
+    currentUser: state.auth.currentUser,
+    userWhoWasJustCreated: state.auth.userWhoWasJustCreated
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
     createUser: (...params) => dispatch(actions.actionCreateUser(...params)),
+    createUserDbInfo: (data) => dispatch(actions.actionsPostUserDbData(data)),
     confirmUser: (...params) => dispatch(actions.actionConfirmUser(...params)),
     signInUser: (...params) => dispatch(actions.actionSignInUser(...params)),
+    resendConfirmationCode: (...params) => diapatch(actions.actionsResendConfirmationCode(...params))
   }
 }
 

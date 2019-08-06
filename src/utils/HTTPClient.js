@@ -63,93 +63,34 @@ const get = async req => {
         }
     }
 
-    // if(req.type == 'GET_NEWS_BY_TOPIC') {  // delete if not needed
-    //     console.log('GET_NEWS_BY_TOPIC:::', req);
-
-    //     if(req.query !== undefined ) {
-    //         // let userLocation = req.query.userLocation;
-    //         console.log('getNewsByTopic.req.query', req.query);
-
-    //         let queryStringParameters = {
-    //             country: req.query.userLocation,
-    //             sources: req.query.sources,
-    //             q: req.query.searchTerms,
-    //             category: req.query.topic,
-    //             language: req.query.language
-    //         };
-
-    //         let myInit = {
-    //             queryStringParameters
-    //         };
-    //         console.log('myInit:::', myInit);
-
-    //         const articles = await API.get('gNewsNotes', '/getNews', myInit)
-    //         .then(response => {
-    //             console.log('response from Aws API module(news):::', response);
-    //             const apiNewsResults = response.data;
-    //             return apiNewsResults;
-    //         })
-    //         .catch(error => {
-    //             console.log('error from AWS API module(news)', error);
-    //             return error;
-    //         });
-
-    //         return articles;
-
-            
-    //         // uncomment these after commenting out the above to use dummy api data
-    //         // console.log('canned articles:::', topicArticles);
-    //         // return topicArticles;
-    //     }
-
-
-    // }
+  
 }
 
-// const post = async req => {
-//     console.log('GETTING NEWS!:::', type, endpoint, body);
-//     // if(type == 'GET_NEWS') {
-//         console.log('GETTING NEWS!:::', type, endpoint, body);
-        
-//         // try {
-//         //    let response = await API.post('getNews', "/getNews", { body: body })
-//         //     console.log('HTTPClient.post response:::', response);
-//         // } catch (error) {
-//         //     console.log('caught error::::', error);
-//         // }
-//         let apiPostRes = API.get('gNewsNotes', "/getNewsapi")
-//         .then(res => {
-//             console.log('apiPostRes', res);
-//             return  res;
-//         })
-//         .catch(err => console.log('API.get error::::', err));
-
-//         console.log('apiPostRes:::', apiPostRes);
-        
-//         return apiPostRes;
-// }
 
 const post = async req => {
     console.log('post:::', req);
 
-    // if(req.type === 'POST_NOTE') {
-    //     const response = await API.post('gNewsNotes', '/notes', {
-    //         body: {
-    //             userId: req.body.userId,
-    //             noteId: req.body.noteId
-    //         }
-    //     });
-    //     // .then(res => {
-    //     //     console.log('API.post response:::', res);
-    //     // })
-    //     // .catch(err => {
-    //     //     console.log('err:::', err);
-    //     // })
+    if(req.type === 'CREATE_USER_DB_INFO') {
+        console.log('post:::', req);
+        console.log('post:::', req.body.email);
+        console.log('post:::', req.body.language);
+        console.log('post:::', req.body.country);
+        console.log('post:::', req.body.category);
+           const response = await API.post('gNewsUser', '/user', {
+               body: {
+                  // PRIMARY key is provided in request headers from Cognito ID
+                  userId: req.body.email,
+                  language: req.body.language,
+                  country: req.body.country,  // RANGE key
+                  category: req.body.category
+               }
+           })
     
-    //     console.log('response:::', response);
-    
-    //     return response;
-    // }
+            response['HttpResponse'] = 'Success';
+            console.log('response:::', response);
+        
+            return response;
+       }
 
    if(req.type === 'UPDATE_USER_DB_INFO') {
     console.log('post:::', req);
@@ -157,15 +98,19 @@ const post = async req => {
     console.log('post:::', req.body.language);
     console.log('post:::', req.body.country);
     console.log('post:::', req.body.category);
-       const response = await API.post('gNewsNotes', '/notes', {
+
+    const path = '/user/' + req.body.email;
+       const response = await API.put('gNewsUser', path, {
            body: {
+            // PRIMARY key is provided in request headers from Cognito ID
               userId: req.body.email,
-              noteId: 'user setting',
               language: req.body.language,
-              country: req.body.country,
+              country: req.body.country, // RANGE key
               category: req.body.category
            }
        })
+
+        response['HttpResponse'] = 'Success';
         console.log('response:::', response);
     
         return response;

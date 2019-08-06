@@ -36,7 +36,7 @@ class Settings extends Component {
         });
       }
 
-      handleSubmitUserInfo = async event => {
+    handleSubmitUserInfo = async event => {
         event.preventDefault();
 
         console.log('event:::', event);
@@ -61,6 +61,10 @@ class Settings extends Component {
                     console.log('userData:::', userData);
     
                     let res = await this.props.updateUserData(userData);
+                    
+                    if(res.HttpResponse === 'Success') {
+                        alert('Profile updated!');
+                    }
                     console.log('res:::', res)
                     return;
     
@@ -70,19 +74,6 @@ class Settings extends Component {
                 }
             }
         }
-        
-        // if(event.target != null || undefined) {
-        //     if(event.target.id === 'changePassword') {
-        //         let currentUser = this.props.currentUser;
-        //         let { oldPassword, confirmPassword } = this.state;
-        //         let changePasswordRequest = {
-        //             currentUser,
-        //             oldPassword,
-        //             confirmPassword
-        //         }
-        //         await this.props.changeUserPassword(changePasswordRequest);
-        //     }
-        // }
     }
 
 
