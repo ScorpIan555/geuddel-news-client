@@ -40,6 +40,12 @@ class Login extends Component {
       await this.props.signInUser(user);
       
       if(this.props.currentUser.email !== 'No current user') { // fix error
+        console.log('this.props.currentUser.email', this.props.currentUser.email);
+        console.log('this.props.currentUser.email', this.props);
+        console.log('this.props.currentUser.email', this.state);
+        console.log('this.props.currentUser.email', user);
+
+        this.props.getCurrentUserDbInfo(email);
         this.props.userHasAuthenticated(true);
         this.props.history.push('/');
       }
@@ -112,7 +118,8 @@ const stateToProps = state => {
 const dispatchToProps = (dispatch) => {
   return {
 
-    signInUser: (user) => dispatch(actions.actionSignInUser(user))
+    signInUser: (user) => dispatch(actions.actionSignInUser(user)),
+    getCurrentUserDbInfo: (currentUser) => dispatch(actions.actionGetCurrentUserDbInfo(currentUser)),
   }
 }
 

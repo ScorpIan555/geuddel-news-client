@@ -4,6 +4,27 @@ import { API } from 'aws-amplify';
 
 const get = async req => {
 
+    if(req.type === 'GET_CURRENT_USER_DB_INFO') {
+        
+        console.log('GET_USER_LOCATION!:::', req);
+        const path = '/user/' + req.currentUser;
+
+        const currentUserData = await API.get('gNewsUser', path)
+        .then(response => {
+            console.log('response from Aws API module(userData):::', response);
+            // const countryCode = response.data.countryCode.toLowerCase();
+            // console.log('countryCode:::', countryCode);
+            return response;
+        })
+        .catch(error => {
+            console.log('error from AWS API module(userData)', error);
+            return error;
+        });
+        console.log('cC:::', currentUserData);
+        // return 
+        return currentUserData;
+    }
+
     if(req.type === 'GET_USER_LOCATION') {
         console.log('GET_USER_LOCATION!:::', req);
 

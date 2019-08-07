@@ -106,8 +106,6 @@ export default (state = initialState, action) => {
 
       return newState;
 
-    case constants.GET_CURRENT_USER_DB_INFO:
-
 
     default:
       return newState;

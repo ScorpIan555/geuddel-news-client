@@ -57,7 +57,9 @@ class App extends Component {
             // handle positive response from Auth call
             if(this.props.currentUser.email !== 'No current user') {
                 // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
-                console.log('App.componentDidMount.currentUser:::', this.props.currentUser);                
+                console.log('App.componentDidMount.currentUser:::', this.props.currentUser);
+                let currentUser = this.props.currentUser.email;
+                this.fetchCurrentUserData(currentUser);
                 this.userHasAuthenticated(true);
             }
             
@@ -68,7 +70,13 @@ class App extends Component {
 
     fetchCurrentSession = () => {
         // synchronous call to backend apit/Aws-Amplify Auth module 
-        this.props.getCurrentSession()
+        this.props.getCurrentSession();
+    }
+
+    fetchCurrentUserData = (user) => {
+        console.log('fetchCurrentUserData.props:::', this.props);
+        console.log('fetchCurrentUserData.user:::', user);
+        this.props.getCurrentUserDbInfo(user);
     }
 
     handleNewsResultsAfterComponentMounts = async () => {
@@ -143,17 +151,17 @@ class App extends Component {
         }
     }
 
-    postNote = event => {
-        event.preventDefault();
-        console.log('POST NOTE!');
+    // postNote = event => {
+    //     event.preventDefault();
+    //     console.log('POST NOTE!');
 
-        let body = {
-            userId: this.props.currentUser.email,
-            noteId: 'this is just a test!'
-        };
+    //     let body = {
+    //         userId: this.props.currentUser.email,
+    //         noteId: 'this is just a test!'
+    //     };
 
-        this.props.actionsPostNote(body);
-    }
+    //     this.props.actionsPostNote(body);
+    // }
     
     render() {
         // desconstruct and assign class methods
@@ -182,7 +190,6 @@ class App extends Component {
         <div className="container">
 
                         <Nav props={childProps} />
-                        <button onClick={this.postNote}>POST NOTEss!!!!</button>
             
             <div className="main-container">
                 <section>
@@ -234,7 +241,7 @@ const dispatchToProps = dispatch => {
     callCurrentCredentials: () => dispatch(actions.actionsCallCurrentCredentials()), // auth to allow non-logged in users access to api calls
     getCurrentSession: () => dispatch(actions.actionsGetCurrentSession()),
     actionsPostNote: (body) => dispatch(actions.actionsPostNote(body)),
-    getCurrentUserDbInfo: () => dispatch(actions.actionGetCurrentUserDbInfo()),
+    getCurrentUserDbInfo: (currentUser) => dispatch(actions.actionGetCurrentUserDbInfo(currentUser)),
   };
 };
 

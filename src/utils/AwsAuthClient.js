@@ -1,11 +1,8 @@
 import { Auth } from 'aws-amplify';
 
-const handleError = err => {
-  err['httpResponse'] = 'Error';      
-      console.log('err', err);
-      alert(err.message);
-      return err;
-}
+// const handleError = err => {
+
+// }
 
 const get = async req => {
   if (req.type === 'GET_CURRENT_USER') {
@@ -118,7 +115,11 @@ const post = async req => {
 
       return user;
     } catch (err) {
-     return handleError;
+    //  return handleError;
+      err['httpResponse'] = 'Error';      
+      console.log('err', err);
+      alert(err.message);
+      return err;
     }
   }
 
