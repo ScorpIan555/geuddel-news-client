@@ -35,7 +35,8 @@ class App extends Component {
         this.setState({ isAuthenticating: false });
         // make call for user location
         // @TODO need to build out user data, for instance, a logged in user should have a country/lang
-        await this.props.getUserLocation();
+        // await this.props.getUserLocation(); // moved this into initial auth function
+        console.log('this.propsbefore initial news results called:::', this.props);
         // get news results
         this.handleNewsResultsAfterComponentMounts();
 
@@ -46,6 +47,7 @@ class App extends Component {
     handleInitialAuthentication = async () => {
         try {
             // async call backend Aws-Amplify Auth module 
+            await this.props.getUserLocation();
             const user = await this.props.getCurrentUser();
             console.log('currentUser object from Auth:::', user);
             // handle negative response from Auth call, create anonymous auth credentials to allow guest users to see results
@@ -59,8 +61,11 @@ class App extends Component {
                 // if user is logged in, the Settings/Logout page should be rendered (not Signup/Login)
                 console.log('App.componentDidMount.currentUser:::', this.props.currentUser);
                 let currentUser = this.props.currentUser.email;
-                this.fetchCurrentUserData(currentUser);
+                if(this.props.currentUser !== undefined || null) {
+                    await this.fetchCurrentUserData(currentUser);
+                }
                 this.userHasAuthenticated(true);
+                console.log('ending.handleInitialAuthentication::::', this.props)
             }
             
         } catch (error) {
@@ -73,21 +78,44 @@ class App extends Component {
         this.props.getCurrentSession();
     }
 
-    fetchCurrentUserData = (user) => {
+    fetchCurrentUserData = async user => {
         console.log('fetchCurrentUserData.props:::', this.props);
         console.log('fetchCurrentUserData.user:::', user);
-        this.props.getCurrentUserDbInfo(user);
+        await this.props.getCurrentUserDbInfo(this.props.currentUser);
     }
 
     handleNewsResultsAfterComponentMounts = async () => {
-
-        console.log('this.props.location after call:::', this.props.userLocation);
+        console.log('handleNewsResultsAfterComponentMounts.this.props :::', this.props);
+        console.log('handleNewsResultsAfterComponentMounts.this.props.userLocation:::', this.props.userLocation);
         if(this.props.newsapiResponse == undefined) {
             if(this.props.articles !== this.state.articles) {
+                console.log('handleNewsResultsAfterComponentMounts.this.props :::', this.props);
                 console.log('this.props.newsapiRespons was undefined::::', this.props.userLocation);
-                let userLocation = this.props.userLocation;
+                console.log('this.props.newsapiRespons was undefined::::', this.props.userData);
+                let { userData, userLocation } = this.props;
+                // let userLocation = this.props.userLocation
                 
-                await this.props.getNews(userLocation);
+                let countryCode = (userData.country !== undefined || null) ? userLocation : 'uy';
+                // let category = (userData !== undefined || null ) ? userData
+
+                let category, country, language;
+
+                if(userData !== undefined || null) {
+                    category = userData.category
+                    country = userData.country
+                    language = userData.language
+                }
+
+
+                let newsRequestObject = {
+                    country: country !== undefined || null ? country : countryCode,
+                    category: category,
+                    language: language
+                }
+                
+
+                await this.props.getNews(newsRequestObject);
+                // await this.props.getNews(userLocation);
                 this.setState({
                     articles: this.props.newsapiResponse
                 })
@@ -114,6 +142,7 @@ class App extends Component {
         // console.log('prevProps:::', prevProps);
         // console.log('prevState:::', prevState);
         // console.log('snapshot:::', snapshot);
+        console.log('componentDidUpdate::::', this.props.userData);
       }
 
     userHasAuthenticated = authenticated => {
@@ -218,7 +247,7 @@ class App extends Component {
 const stateToProps = state => {
   const { topLink, bottomLink } = state.sidebar;
   const { currentUser } = state.auth;
-  const userLocation = state.userData;
+  const { userLocation, data } = state.userData;
   const { newsapiResponse, articles } = state.newsfeed;
 
   return {
@@ -226,6 +255,7 @@ const stateToProps = state => {
     sidebarBottom: bottomLink,
     currentUser: currentUser,
     userLocation: userLocation,
+    userData: data,
     newsapiResponse: newsapiResponse,
     articles: articles
   };

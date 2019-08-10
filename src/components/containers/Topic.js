@@ -11,14 +11,6 @@ class Topic extends Component {
         currentUser: ''
     };
 
-    // handleClick = event => {
-    //     console.log('Click');
-    //     let data = {
-    //         isItWorking: 'yes, it is working'
-    //     };
-        
-    // }
-
     componentDidMount() {
         console.log('Topic.componentDidMount:::', this.props);
 
@@ -26,38 +18,33 @@ class Topic extends Component {
         // this.props.getNews(this.props.userLocation);
     }
 
-    
-
-
     async componentDidUpdate(prevProps, prevState) {
-        // if component updates
-        if(prevProps.currentUser != this.props.currentUser) {
-            console.log('Topic.componentDidUpdate.currentUser', this.props.currentUser);
-            this.setState({
-                currentUser: this.props.currentUser
-            });
-        }
-       
-        if(prevProps.userLocation != this.props.userLocation) {
-            console.log('this.props.userLocation', this.props.userLocation);
-            // await this.getUserLocation();
-
-            console.log('usersCountry.lenght', this.props.userLocation);
-            
-        }
-
-        console.log('articles:::', this.props.newsapiResponse);
-      }
-
-
-      getUserLocation = async () => {
-        console.log('Topic.componentDidUpdate.userLocation', this.props.userLocation);
-        // this.setState({
-        //     usersCountryCode: this.props.userLocation
-        // });
-      }
+    // if component updates
+    if(prevProps.currentUser != this.props.currentUser) {
+        console.log('Topic.componentDidUpdate.currentUser', this.props.currentUser);
+        this.setState({
+            currentUser: this.props.currentUser
+        });
+    }
     
+    if(prevProps.userLocation != this.props.userLocation) {
+        console.log('this.props.userLocation', this.props.userLocation);
+        // await this.getUserLocation();
 
+        console.log('usersCountry.lenght', this.props.userLocation);
+        
+    }
+
+    console.log('articles:::', this.props.newsapiResponse);
+    }
+
+    getUserLocation = async () => {
+    console.log('Topic.componentDidUpdate.userLocation', this.props.userLocation);
+    // this.setState({
+    //     usersCountryCode: this.props.userLocation
+    // });
+    }
+    
     render() {
           // desconstruct and assign class methods
           let { handleClick } = this;

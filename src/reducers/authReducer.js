@@ -18,7 +18,6 @@ export default (state = initialState, action) => {
         username: payload.user.username,
         userConfirmed: payload.userConfirmed,
         userSub: payload.userSub
-
       };
       console.log('newState.currentUser', newState.currentUser);
 

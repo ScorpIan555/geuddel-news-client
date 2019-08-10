@@ -9,7 +9,11 @@ export default (state = initialState, action) => {
     switch (action.type) { 
         case constants.GET_CURRENT_USER_DB_INFO:
             console.log('GET_CURRENT_USER_DB_INFO::: ', payload);
-            newState.userData = payload;
+            newState.country = payload.data.country;
+            newState.language = payload.data.language;
+            newState.category = payload.data.category;
+            newState.email = payload.data.email;
+            newState.data = payload.data
             console.log('newState', newState);
             console.log('newState.userData', newState.userData);
         

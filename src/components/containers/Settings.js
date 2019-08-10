@@ -9,22 +9,24 @@ class Settings extends Component {
     // initialize state for form fields this component will control
     state = {
         isLoading: false,
-        email: "",
+        email: this.props.email,
         oldPassword: "",
         password: "",
         confirmPassword: "",
-        country: "",
-        language: "",
-        category: "",
+        country: this.props.country,
+        language: this.props.language,
+        category: this.props.category
     };
 
     async componentDidMount() {
+        console.log('Settings.componentDidMount.props.userData:::', this.props.userData);
 
-        try {
-            await this.props.getCurrentUserDbInfo
-        } catch (error) {
-            console.logl(error);
-        }
+        // try {
+        //     let res = await this.props.getCurrentUserDbInfo(this.props.currentUser);
+        //     console.log('Settings.componentDidMount:::', this.props.userData);
+        // } catch (error) {
+        //     console.logl(error);
+        // }
     }
 
     handleChange = event => {
@@ -149,7 +151,7 @@ class Settings extends Component {
      // deconstruct properties from state object
      let { email, password, oldPassword, country, language, category, isLoading, confirmPassword } = this.state;
 
-     let { currentUser } = this.props;
+     let { currentUser, userData } = this.props;
 
      console.log('currentUser:::', currentUser);
     
@@ -163,7 +165,7 @@ class Settings extends Component {
                     <Form.Control
                     autoFocus
                     type="email"
-                    value={currentUser}
+                    value={email}
                     onChange={handleChange}
                     />
                 </Form.Group>
@@ -250,23 +252,26 @@ class Settings extends Component {
 const stateToProps = state => {
     const { topLink, bottomLink } = state.sidebar;
     const { currentUser } = state.auth;
-    const userLocation = state.userData;
+    const { userLocation, country, email, category } = state.userData;
     const { newsapiResponse, articles } = state.newsfeed;
   
     return {
       sidebarTop: topLink,
       sidebarBottom: bottomLink,
       currentUser: currentUser,
+      email: email,
+      country: country,
+      category: category,
       userLocation: userLocation,
       newsapiResponse: newsapiResponse,
-      articles: articles
+      articles: articles,
     };
 };
   
 const dispatchToProps = dispatch => {
     return {
 
-      getCurrentUserDbInfo: () => dispatch(actions.actionGetCurrentUserDbInfo()),
+      getCurrentUserDbInfo: (currentUser) => dispatch(actions.actionGetCurrentUserDbInfo(currentUser)),
       changeUserPassword: (data) => dispatch(actions.actionChangeUserPassword(data)),
       updateUserData: (data) => dispatch(actions.actionsUpdateUserDbData(data))
     };

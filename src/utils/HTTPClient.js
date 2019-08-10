@@ -6,18 +6,25 @@ const get = async req => {
 
     if(req.type === 'GET_CURRENT_USER_DB_INFO') {
         
-        console.log('GET_USER_LOCATION!:::', req);
-        const path = '/user/' + req.currentUser;
+        console.log('GET_CURRENT_USER_DB_INFO!:::', req);
 
-        const currentUserData = await API.get('gNewsUser', path)
+        let myInit = {
+            response: true,
+            queryStringParameters: {
+                userId: req.data,
+                country: 'us'
+            }
+        };
+
+        const currentUserData = await API.get('gNewsUser', '/user', myInit)
         .then(response => {
-            console.log('response from Aws API module(userData):::', response);
+            console.log('GET_CURRENT_USER_DB_INFO.response from Aws API module(userData):::', response);
             // const countryCode = response.data.countryCode.toLowerCase();
             // console.log('countryCode:::', countryCode);
             return response;
         })
         .catch(error => {
-            console.log('error from AWS API module(userData)', error);
+            console.log('GET_CURRENT_USER_DB_INFO.error from AWS API module(userData)', error);
             return error;
         });
         console.log('cC:::', currentUserData);
@@ -82,9 +89,7 @@ const get = async req => {
             // return articles
             return articles;
         }
-    }
-
-  
+    }  
 }
 
 
