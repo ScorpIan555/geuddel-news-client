@@ -9,13 +9,13 @@ class Settings extends Component {
     // initialize state for form fields this component will control
     state = {
         isLoading: false,
-        email: this.props.email,
+        email: this.props.email || '',
         oldPassword: "",
         password: "",
         confirmPassword: "",
-        country: this.props.country,
+        country: this.props.country || '',
         language: this.props.language,
-        category: this.props.category
+        category: this.props.category || ''
     };
 
     async componentDidMount() {

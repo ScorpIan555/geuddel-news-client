@@ -11,8 +11,7 @@ const get = async req => {
         let myInit = {
             response: true,
             queryStringParameters: {
-                userId: req.data,
-                country: 'us'
+                userId: req.data
             }
         };
 
@@ -21,13 +20,25 @@ const get = async req => {
             console.log('GET_CURRENT_USER_DB_INFO.response from Aws API module(userData):::', response);
             // const countryCode = response.data.countryCode.toLowerCase();
             // console.log('countryCode:::', countryCode);
+            let userData = response.data
+            
+            if(userData.language === null || undefined) {
+                userData.language = ''
+            }
+            if(userData.category === null || undefined) {
+                userData.category = ''
+            }
+            if(userData.country === null || undefined) {
+                userData.category = ''
+            }
+            
             return response;
         })
         .catch(error => {
             console.log('GET_CURRENT_USER_DB_INFO.error from AWS API module(userData)', error);
             return error;
         });
-        console.log('cC:::', currentUserData);
+        console.log('currentUserData:::', currentUserData);
         // return 
         return currentUserData;
     }
@@ -59,7 +70,7 @@ const get = async req => {
             console.log('getNews.req.query', req.query);
 
             let queryStringParameters = {
-                country: req.query.userLocation,
+                country: req.query.country,
                 sources: req.query.sources,
                 q: req.query.searchTerms,
                 category: req.query.topic,

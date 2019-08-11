@@ -168,11 +168,13 @@ class App extends Component {
 
         try {
             // let oldTopic = this.state.oldTopic
+            
             let query = {
                 topic: pathArray[4],
                 userLocation: this.props.userLocation.userLocation
             };
-
+            console.log('Click.this.props', this.props);
+            console.log('Click.this.props', query);
             let topicResults = await this.props.getNews(query);
             console.log('topicResults', topicResults);
         } catch (error) {

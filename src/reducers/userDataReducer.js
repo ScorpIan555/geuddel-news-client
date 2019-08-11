@@ -1,6 +1,12 @@
 import constants from '../constants';
 
-const initialState = [];
+const initialState = {
+    country: '',
+    category: '',
+    email: '',
+    language: '',
+    data: ''
+}
 
 export default (state = initialState, action) => {
     const newState = Object.assign({}, state);
