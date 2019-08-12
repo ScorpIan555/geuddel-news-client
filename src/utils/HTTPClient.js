@@ -92,8 +92,6 @@ const get = async req => {
                 console.log('error from AWS API module(news)', error);
                 return error;
             });
-
-            
             // uncomment these after commenting out the above to use dummy api data
             // console.log('canned articles:::', articles);
     
