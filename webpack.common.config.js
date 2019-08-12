@@ -19,13 +19,14 @@ const config = {
       // meta: {
       //   viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
       // }
+      
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
     new CleanWebpackPlugin(),
-    new webpack.ProgressPlugin(progressHandler)
+    // new webpack.ProgressPlugin(progressHandler)
   ],
   // configuration of modules
   module: {

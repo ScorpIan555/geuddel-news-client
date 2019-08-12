@@ -11,8 +11,16 @@
       "prettier/prettier": "error",
       "max-len": ["error", 80]
     },
+    "parserOptions": {
+      "ecmaVersion": 9,
+      "ecmaFeatures": {
+        "esversion": 9,
+        "jsx": true,
+        "destructuring": true,
+      }
+    },
     "env": {
-      "browser": true  
+      "browser": true
     },
     "settings": {
       "import/resolver": {
@@ -21,4 +29,5 @@
         }
       }
     }
-  }
+
+}

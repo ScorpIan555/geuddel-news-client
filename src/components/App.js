@@ -13,6 +13,7 @@ class App extends Component {
         isAuthenticated: false,
         isAuthenticating: true,
         articles: [],
+        
         // currentTopic: 'home',
         // oldTopic: ''
     };

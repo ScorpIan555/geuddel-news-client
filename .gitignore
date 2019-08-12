@@ -4,3 +4,4 @@ generatewebpackconfig.js
 node_modules
 /Wingman Bootstrap Theme 1.3.0/
 .env
+.eslintroc

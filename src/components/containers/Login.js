@@ -10,14 +10,14 @@ class Login extends Component {
       isLoading: false,
       email: "",
       password: ""
-    };
+    }
 
   validateForm = () => {
     // console.log('validateForm - this.state:::', this.state);
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     // form input fields are components controlled by this container
     this.setState({
       [event.target.id]: event.target.value
