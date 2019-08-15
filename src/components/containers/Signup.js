@@ -1,30 +1,28 @@
-import React, { Component, Fragment } from "react";
-import { Form, Card } from "react-bootstrap";
+import React, { Component, Fragment } from 'react';
+import { Form, Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { LoaderButton } from "../presentation";
+import { LoaderButton } from '../presentation';
 import style from '../../../public/theme/scss/theme.scss';
 import actions from '../../actions';
 
-
- class Signup extends Component {
-    // initialize state for form fields this component will control
-    state = {
-      isLoading: false,
-      email: "",
-      password: "",
-      confirmPassword: "",
-      confirmationCode: "",
-      shouldResendConfirmation: false,
-      newUser: null,
-      wasError: false
-    };
+class Signup extends Component {
+  // initialize state for form fields this component will control
+  state = {
+    isLoading: false,
+    email: '',
+    password: '',
+    confirmPassword: '',
+    confirmationCode: '',
+    shouldResendConfirmation: false,
+    newUser: null,
+    wasError: false
+  };
 
   componentDidMount() {
     console.log('Signup.componentDidMount() :::', this.props);
     console.log('Signup.componentDidMount() :::', this.state);
   }
 
- 
   validateForm = () => {
     // submit button stays in disabled state until these conditions are TRUE
     return (
@@ -32,20 +30,20 @@ import actions from '../../actions';
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
     );
-  }
+  };
 
   validateConfirmationForm = () => {
     // submit button stays in disabled state until this condition is TRUE
     console.log('confirmationCode:::', this.state.confirmationCode);
     return this.state.confirmationCode.length > 0;
-  }
+  };
 
   handleChange = event => {
     // form input fields whose change is controlled by this container are handled here
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     // prevent default submit event/action
@@ -61,34 +59,34 @@ import actions from '../../actions';
         username: email,
         password
       };
-      // async redux action called from here 
-      await this.props.createUser(user)
-              .then(res => {
-                console.log('res', res)
-                if(res == undefined) {
-                  this.setState({
-                    wasError: true
-                  });
-                }
-              })
-              .catch(err => { 
-                console.log('err', err);
-                this.setState({
-                  wasError: true
-                });
-              });
+      // async redux action called from here
+      await this.props
+        .createUser(user)
+        .then(res => {
+          console.log('res', res);
+          if (res == undefined) {
+            this.setState({
+              wasError: true
+            });
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+          this.setState({
+            wasError: true
+          });
+        });
       // response to async redux call flows from redux cycle into this component's props
       //  capture the new current user value to be used locally and passed into component's state to trigger rerender
       // let newUser = this.props.currentUser;
       console.log('signup.this', this);
-
     } catch (e) {
       console.log('error.this', this);
       console.log('e::::', e);
       // inform user of error during signup process
       alert(e);
 
-      if(e.message === 'An account with that given email already exists.') {
+      if (e.message === 'An account with that given email already exists.') {
         // this tells the component not to render the confirmation form because their was an error in the Signup process
         this.setState({
           wasError: false
@@ -96,7 +94,6 @@ import actions from '../../actions';
         console.log('user exist in error?:::', user);
         alert('Please check your email, confirmation code has been resent.');
         this.handleResendUserConfirmationCode(user);
-        
       }
       // this tells the component not to render the confirmation form because their was an error in the Signup process
       this.setState({
@@ -104,68 +101,70 @@ import actions from '../../actions';
       });
     }
 
-    // 
-    if(this.state.wasError === true) {
+    //
+    if (this.state.wasError === true) {
       this.setState({
         newUser: null
-      })
-    }// 
-    if(this.state.wasError === false) {
+      });
+    } //
+    if (this.state.wasError === false) {
       this.initializeUserProfile();
       this.setState({
         newUser: 'new user created'
-      })
-
+      });
     }
     console.log('signup finished:::', this);
     // with async redux action/call now complete, exit loader button's async-only state
     this.setState({ isLoading: false });
-  }
+  };
 
   initializeUserProfile = () => {
     console.log('initializeUserProfile.state:::', this.state);
     console.log('initializeUserProfile.props:::', this.props);
-    console.log('this.props.userWhoWasJustCreated::', this.props.userWhoWasJustCreated);
+    console.log(
+      'this.props.userWhoWasJustCreated::',
+      this.props.userWhoWasJustCreated
+    );
 
-    if(this.props.userWhoWasJustCreated != undefined) {
+    if (this.props.userWhoWasJustCreated != undefined) {
       let initialUserSettings = {
         email: this.state.email,
-        country: this.props.userLocation        
-      }
-      
+        country: this.props.userLocation,
+        language: '',
+        category: ''
+      };
+
       this.props.createUserDbInfo(initialUserSettings);
       // if(this.props.userWhoWasJustCreated.userConfirmed === false) {
-        
+
       // }
     }
-  }
+  };
 
   handleResendUserConfirmationCode = async event => {
     // prevent default submit event/action
     event.preventDefault();
     // destructure state object
     let { email, password, wasError, newUser } = this.state;
-      try {
-        let user = {
-          username: email,
-          password
-        };
-        // make request to Aws-Amplify Auth to resend the confirmation code
-        const response = await this.props.resendConfirmationCode(user);
+    try {
+      let user = {
+        username: email,
+        password
+      };
+      // make request to Aws-Amplify Auth to resend the confirmation code
+      const response = await this.props.resendConfirmationCode(user);
 
-        if(response.httpResponse === 'Success') {
-          // this.initializeUserProfile(); // should have been created on the first go
-          this.setState({
-            newUser: 'new user created'
-          });
-        }
-        
-      } catch (e) {
-        alert(e.message);
-        this.setState({ isLoading: false });
+      if (response.httpResponse === 'Success') {
+        // this.initializeUserProfile(); // should have been created on the first go
+        this.setState({
+          newUser: 'new user created'
+        });
       }
-  }
-  
+    } catch (e) {
+      alert(e.message);
+      this.setState({ isLoading: false });
+    }
+  };
 
   handleConfirmationSubmit = async event => {
     event.preventDefault();
@@ -187,62 +186,66 @@ import actions from '../../actions';
 
       this.props.userHasAuthenticated(true);
 
-      this.props.history.push("/");
-
+      this.props.history.push('/');
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });
     }
-  }
+  };
 
   renderConfirmationForm = () => {
     // deconstruct class methods
-    let { handleChange, validateConfirmationForm, handleConfirmationSubmit } = this;
+    let {
+      handleChange,
+      validateConfirmationForm,
+      handleConfirmationSubmit
+    } = this;
     // deconstruct properties from state object
     let { isLoading, confirmationCode, shouldResendConfirmation } = this.state;
 
     return (
       <div className="container col-md-5">
-      <Card className="" >
-        <Card.Body>
-          <form onSubmit={handleConfirmationSubmit}>
-            <Form.Group controlId="confirmationCode" variant="large">
-              <Form.Label>Confirmation Code</Form.Label>
-              <Form.Control
-                autoFocus
-                type="tel"
-                value={confirmationCode}
-                onChange={handleChange}
+        <Card className="">
+          <Card.Body>
+            <form onSubmit={handleConfirmationSubmit}>
+              <Form.Group controlId="confirmationCode" variant="large">
+                <Form.Label>Confirmation Code</Form.Label>
+                <Form.Control
+                  autoFocus
+                  type="tel"
+                  value={confirmationCode}
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-muted">
+                  Please check your email for the code.
+                </Form.Text>
+              </Form.Group>
+              <LoaderButton
+                block
+                className="btn-lg"
+                disabled={!validateConfirmationForm()}
+                type="submit"
+                isLoading={isLoading}
+                text="Verify"
+                loadingText="Verifying…"
               />
-              <Form.Text className="text-muted">Please check your email for the code.</Form.Text>
-            </Form.Group>
-            <LoaderButton
-              block
-              className="btn-lg"
-              disabled={!validateConfirmationForm()}
-              type="submit"
-              isLoading={isLoading}
-              text="Verify"
-              loadingText="Verifying…"
-            />
-          </form>
+            </form>
           </Card.Body>
         </Card>
-
       </div>
     );
-  }
+  };
 
   renderForm = () => {
-     // deconstruct class methods
-     let { handleChange, handleSubmit, validateForm } = this;
-     // deconstruct properties from state object
-     let { email, password, isLoading, confirmPassword } = this.state;
-    
+    // deconstruct class methods
+    let { handleChange, handleSubmit, validateForm } = this;
+    // deconstruct properties from state object
+    let { email, password, isLoading, confirmPassword } = this.state;
+
     return (
       <div className="container col-md-8">
-      <Card className={style.Aligner} >
-        <Card.Body>
+        <Card className={style.Aligner}>
+          <Card.Body>
             <form onSubmit={handleSubmit}>
               <Form.Group controlId="email" variant="large">
                 <Form.Label>Email</Form.Label>
@@ -252,7 +255,7 @@ import actions from '../../actions';
                   value={email}
                   onChange={handleChange}
                 />
-            </Form.Group>
+              </Form.Group>
               <Form.Group controlId="password" variant="large">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
@@ -279,30 +282,27 @@ import actions from '../../actions';
                 loadingText="Signing up…"
               />
             </form>
-            </Card.Body>
+          </Card.Body>
         </Card>
-
       </div>
     );
-  }
+  };
 
   render() {
-     // deconstruct class methods
-     let { renderForm, renderConfirmationForm } = this;
-     // deconstruct properties from state object
-     let { newUser } = this.state;
+    // deconstruct class methods
+    let { renderForm, renderConfirmationForm } = this;
+    // deconstruct properties from state object
+    let { newUser } = this.state;
 
     return (
       <Fragment>
-        {newUser === null
-          ? renderForm()
-          : renderConfirmationForm()}
+        {newUser === null ? renderForm() : renderConfirmationForm()}
       </Fragment>
     );
   }
 }
 
-const stateToProps = (state) => {
+const stateToProps = state => {
   const { userLocation } = state.userData;
 
   return {
@@ -310,17 +310,21 @@ const stateToProps = (state) => {
     currentUser: state.auth.currentUser,
     userWhoWasJustCreated: state.auth.userWhoWasJustCreated,
     userLocation: userLocation
-  }
-}
+  };
+};
 
-const dispatchToProps = (dispatch) => {
+const dispatchToProps = dispatch => {
   return {
     createUser: (...params) => dispatch(actions.actionCreateUser(...params)),
-    createUserDbInfo: (data) => dispatch(actions.actionsPostUserDbData(data)),
+    createUserDbInfo: data => dispatch(actions.actionsPostUserDbData(data)),
     confirmUser: (...params) => dispatch(actions.actionConfirmUser(...params)),
     signInUser: (...params) => dispatch(actions.actionSignInUser(...params)),
-    resendConfirmationCode: (...params) => diapatch(actions.actionsResendConfirmationCode(...params))
-  }
-}
+    resendConfirmationCode: (...params) =>
+      diapatch(actions.actionsResendConfirmationCode(...params))
+  };
+};
 
-export default connect(stateToProps, dispatchToProps)(Signup);
+export default connect(
+  stateToProps,
+  dispatchToProps
+)(Signup);

@@ -1,280 +1,310 @@
-import React, { Component, Fragment } from "react";
-import { Form, Card } from "react-bootstrap";
+import React, { Component, Fragment } from 'react';
+import { Form, Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { LoaderButton } from "../presentation";
+import { LoaderButton } from '../presentation';
 import style from '../../../public/theme/scss/theme.scss';
 import actions from '../../actions';
 
 class Settings extends Component {
-    // initialize state for form fields this component will control
-    state = {
-        isLoading: false,
-        email: this.props.email || '',
-        oldPassword: "",
-        password: "",
-        confirmPassword: "",
-        country: this.props.country || '',
-        language: this.props.language,
-        category: this.props.category || ''
-    };
+  // initialize state for form fields this component will control
+  state = {
+    isLoading: false,
+    email: this.props.email,
+    oldPassword: '',
+    password: '',
+    confirmPassword: '',
+    country: this.props.country || '',
+    language: this.props.language || '',
+    category: this.props.category || ''
+  };
 
-    async componentDidMount() {
-        console.log('Settings.componentDidMount.props.userData:::', this.props.userData);
+  async componentDidMount() {
+    console.log('Settings.componentDidMount.state:::', this.state);
+    console.log('Settings.componentDidMount.props:::', this.props);
+    console.log('Settings.componentDidMount.props.email:::', this.props.email);
+    console.log(
+      'Settings.componentDidMount.props.country:::',
+      this.props.country
+    );
+    console.log(
+      'Settings.componentDidMount.props.language:::',
+      this.props.language
+    );
 
-        // try {
-        //     let res = await this.props.getCurrentUserDbInfo(this.props.currentUser);
-        //     console.log('Settings.componentDidMount:::', this.props.userData);
-        // } catch (error) {
-        //     console.logl(error);
-        // }
-    }
+    // try {
+    //   let res = await this.props.getCurrentUserDbInfo(this.props.currentUser);
+    //   console.log('Settings.componentDidMount:::', this.props.userData);
+    // } catch (error) {
+    //   console.logl(error);
+    // }
+  }
 
-    handleChange = event => {
-        // form input fields whose change is controlled by this container are handled here
-        console.log('eventtargetvalue:::', event.target.id)
-        console.log('eventtargetvalue:::', event.target.value)
-        this.setState({
-          [event.target.id]: event.target.value
-        });
-      }
+  handleChange = event => {
+    // form input fields whose change is controlled by this container are handled here
+    console.log('eventtargetvalue:::', event.target.id);
+    console.log('eventtargetvalue:::', event.target.value);
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  };
 
-    handleSubmitUserInfo = async event => {
-        event.preventDefault();
+  handleSubmitUserInfo = async event => {
+    event.preventDefault();
 
-        console.log('event:::', event);
-        console.log('event.target:::', event.target);
-        console.log('event.target.id:::', event.target.id);
-        console.log('event.currentTarget:::', event.currentTarget);
-        console.log('event.type:::', event.type);
+    console.log('event:::', event);
+    console.log('event.target:::', event.target);
+    console.log('event.target.id:::', event.target.id);
+    console.log('event.currentTarget:::', event.currentTarget);
+    console.log('event.type:::', event.type);
+    console.log('this.props:::', this);
+
+    if (event.target != null || undefined) {
+      if (event.target.id === 'userSettings') {
         console.log('this.props:::', this);
+        try {
+          console.log('UPDATE_USER_DB_INFO:::', this.state);
+          let { country, language, category } = this.state;
+          let email = this.props.currentUser;
+          let userData = {
+            email,
+            country,
+            language,
+            category
+          };
+          console.log('userData:::', userData);
 
-        if(event.target != null || undefined ) {
-            if(event.target.id === 'userSettings') {
-                console.log('this.props:::', this);
-                try{
-                    let { country, language, category } = this.state;
-                    let email = this.props.currentUser;
-                    let userData = {
-                        email,
-                        country,
-                        language,
-                        category
-                    }
-                    console.log('userData:::', userData);
-    
-                    let res = await this.props.updateUserData(userData);
-                    
-                    if(res.HttpResponse === 'Success') {
-                        alert('Profile updated!');
-                    }
-                    console.log('res:::', res)
-                    return;
-    
-                } catch (error) {
-                    alert(error);
-                    console.log('error:::', error);
-                }
-            }
+          let res = await this.props.updateUserData(userData);
+
+          if (res.HttpResponse === 'Success') {
+            alert('Profile updated!');
+          }
+          console.log('res:::', res);
+          return;
+        } catch (error) {
+          alert(error);
+          console.log('error:::', error);
         }
-    }
-
-
-    handleSubmitPasswordChangeRequest = async event => {
-        event.preventDefault();
-
-        console.log('event:::', event);
-        console.log('event.target:::', event.target);
-        console.log('event.target.id:::', event.target.id);
-        console.log('event.currentTarget:::', event.currentTarget);
-        console.log('event.type:::', event.type);
-
-        // if(event.target != null || undefined ) {
-        //     if(event.target.id === 'userSettings') {
-        //         try{
-        //             let { country, language, category } = this.state;
-        //             let email = this.props.currentUser.email;
-        //             let userData = {
-        //                 email,
-        //                 country,
-        //                 language,
-        //                 category
-        //             }
-    
-        //             let res = await this.props.updateUserData(userData);
-        //             console.log('res:::', res)
-        //             return;
-    
-        //         } catch (error) {
-        //             alert(error);
-        //             console.log('error:::', error);
-        //         }
-        //     }
-        // }
-        
-        if(event.target != null || undefined) {
-            if(event.target.id === 'changePassword') {
-                let currentUser = this.props.currentUser;
-                let { oldPassword, confirmPassword } = this.state;
-                let changePasswordRequest = {
-                    currentUser,
-                    oldPassword,
-                    confirmPassword
-                }
-                await this.props.changeUserPassword(changePasswordRequest);
-            }
-        }
-    }
-
-    validateChangeSettingsForm = () => {
-        // submit button stays in disabled state until these conditions are TRUE
-        // return (
-        // //   this.state.email.length > 0
-        // //   this.state.password.length > 0 &&
-        // //   this.state.password === this.state.confirmPassword
-        // );
-        return
       }
+    }
+  };
 
-    validateChangePasswordForm = () => {
-        // submit button stays in disabled state until these conditions are TRUE
-        return (
-        //   this.state.email.length > 0 && 
-        //   this.state.password.length > 0 &&
-          this.state.password === this.state.confirmPassword
-        );
+  handleSubmitPasswordChangeRequest = async event => {
+    event.preventDefault();
+
+    console.log('event:::', event);
+    console.log('event.target:::', event.target);
+    console.log('event.target.id:::', event.target.id);
+    console.log('event.currentTarget:::', event.currentTarget);
+    console.log('event.type:::', event.type);
+
+    // if(event.target != null || undefined ) {
+    //     if(event.target.id === 'userSettings') {
+    //         try{
+    //             let { country, language, category } = this.state;
+    //             let email = this.props.currentUser.email;
+    //             let userData = {
+    //                 email,
+    //                 country,
+    //                 language,
+    //                 category
+    //             }
+
+    //             let res = await this.props.updateUserData(userData);
+    //             console.log('res:::', res)
+    //             return;
+
+    //         } catch (error) {
+    //             alert(error);
+    //             console.log('error:::', error);
+    //         }
+    //     }
+    // }
+
+    if (event.target != null || undefined) {
+      if (event.target.id === 'changePassword') {
+        let currentUser = this.props.currentUser;
+        let { oldPassword, confirmPassword } = this.state;
+        let changePasswordRequest = {
+          currentUser,
+          oldPassword,
+          confirmPassword
+        };
+        await this.props.changeUserPassword(changePasswordRequest);
       }
+    }
+  };
 
+  validateChangeSettingsForm = () => {
+    // submit button stays in disabled state until these conditions are TRUE
+    // return (
+    // //   this.state.email.length > 0
+    // //   this.state.password.length > 0 &&
+    // //   this.state.password === this.state.confirmPassword
+    // );
+    return;
+  };
 
-    render() {
+  validateChangePasswordForm = () => {
+    // submit button stays in disabled state until these conditions are TRUE
+    return (
+      //   this.state.email.length > 0 &&
+      //   this.state.password.length > 0 &&
+      this.state.password === this.state.confirmPassword
+    );
+  };
+
+  render() {
     // deconstruct class methods
-     let { handleChange, handleSubmitUserInfo, handleSubmitPasswordChangeRequest, validateChangeSettingsForm, validateChangePasswordForm } = this;
-     // deconstruct properties from state object
-     let { email, password, oldPassword, country, language, category, isLoading, confirmPassword } = this.state;
+    let {
+      handleChange,
+      handleSubmitUserInfo,
+      handleSubmitPasswordChangeRequest,
+      validateChangeSettingsForm,
+      validateChangePasswordForm
+    } = this;
+    // deconstruct properties from state object
+    let {
+      email,
+      password,
+      oldPassword,
+      country,
+      language,
+      category,
+      isLoading,
+      confirmPassword
+    } = this.state;
 
-     let { currentUser, userData } = this.props;
+    let { currentUser, userData } = this.props;
 
-     console.log('currentUser:::', currentUser);
-    
+    console.log('currentUser:::', currentUser);
+
     return (
       <div className="container col-md-5">
-        <Card className={style.Aligner} >
-            <Card.Body>
-                <form onSubmit={handleSubmitUserInfo} id="userSettings">
-                <Form.Group controlId="email" variant="large">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                    autoFocus
-                    type="email"
-                    value={email}
-                    onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="country" variant="large">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control
-                    value={country}
-                    onChange={handleChange}
-                    type="country"
-                    />
-                </Form.Group>
-                <Form.Group controlId="language" variant="large">
-                    <Form.Label>Preferred Language</Form.Label>
-                    <Form.Control
-                    value={language}
-                    onChange={handleChange}
-                    type="language"
-                    />
-                </Form.Group>
-                <Form.Group controlId="category" variant="large">
-                    <Form.Label>Favorite Category</Form.Label>
-                    <Form.Control
-                    value={category}
-                    onChange={handleChange}
-                    type="category"
-                    />
-                </Form.Group>
-                <LoaderButton
-                    block
-                    className="btn-lg"
-                    type="submit"
-                    isLoading={isLoading}
-                    text="Update Info"
-                    loadingText="Updating up…"
+        <Card className={style.Aligner}>
+          <Card.Body>
+            <form onSubmit={handleSubmitUserInfo} id="userSettings">
+              <Form.Group controlId="email" variant="large">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  autoFocus
+                  type="email"
+                  value={email}
+                  onChange={handleChange}
                 />
-                </form>
-                </Card.Body>
-            </Card>
-        <Card className={style.Aligner} >
-            <Card.Body>
-                <form onSubmit={handleSubmitPasswordChangeRequest} id="changePassword">
-                
-                <Form.Group controlId="oldPassword" variant="large">
-                    <Form.Label>Old Password</Form.Label>
-                    <Form.Control
-                    value={oldPassword}
-                    onChange={handleChange}
-                    type="password"
-                    />
-                </Form.Group>
-                <Form.Group controlId="password" variant="large">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                    value={password}
-                    onChange={handleChange}
-                    type="password"
-                    />
-                </Form.Group>
-                <Form.Group controlId="confirmPassword" variant="large">
-                    <Form.Label>Confirm A Password</Form.Label>
-                    <Form.Control
-                    value={confirmPassword}
-                    onChange={handleChange}
-                    type="password"
-                    />
-                </Form.Group>
-                <LoaderButton
-                    block
-                    className="btn-lg"
-                    disabled={!validateChangePasswordForm()}
-                    type="submit"
-                    isLoading={isLoading}
-                    text="Change Password"
-                    loadingText="Submitting new password..."
+              </Form.Group>
+              <Form.Group controlId="country" variant="large">
+                <Form.Label>Country</Form.Label>
+                <Form.Control
+                  value={country}
+                  onChange={handleChange}
+                  type="country"
                 />
-                </form>
-            </Card.Body>
+              </Form.Group>
+              <Form.Group controlId="language" variant="large">
+                <Form.Label>Preferred Language</Form.Label>
+                <Form.Control
+                  value={language}
+                  onChange={handleChange}
+                  type="language"
+                />
+              </Form.Group>
+              <Form.Group controlId="category" variant="large">
+                <Form.Label>Favorite Category</Form.Label>
+                <Form.Control
+                  value={category}
+                  onChange={handleChange}
+                  type="category"
+                />
+              </Form.Group>
+              <LoaderButton
+                block
+                className="btn-lg"
+                type="submit"
+                isLoading={isLoading}
+                text="Update Info"
+                loadingText="Updating up…"
+              />
+            </form>
+          </Card.Body>
+        </Card>
+        <Card className={style.Aligner}>
+          <Card.Body>
+            <form
+              onSubmit={handleSubmitPasswordChangeRequest}
+              id="changePassword"
+            >
+              <Form.Group controlId="oldPassword" variant="large">
+                <Form.Label>Old Password</Form.Label>
+                <Form.Control
+                  value={oldPassword}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </Form.Group>
+              <Form.Group controlId="password" variant="large">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  value={password}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </Form.Group>
+              <Form.Group controlId="confirmPassword" variant="large">
+                <Form.Label>Confirm A Password</Form.Label>
+                <Form.Control
+                  value={confirmPassword}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </Form.Group>
+              <LoaderButton
+                block
+                className="btn-lg"
+                disabled={!validateChangePasswordForm()}
+                type="submit"
+                isLoading={isLoading}
+                text="Change Password"
+                loadingText="Submitting new password..."
+              />
+            </form>
+          </Card.Body>
         </Card>
       </div>
     );
-    }
+  }
 }
 
 const stateToProps = state => {
-    const { topLink, bottomLink } = state.sidebar;
-    const { currentUser } = state.auth;
-    const { userLocation, country, email, category } = state.userData;
-    const { newsapiResponse, articles } = state.newsfeed;
-  
-    return {
-      sidebarTop: topLink,
-      sidebarBottom: bottomLink,
-      currentUser: currentUser,
-      email: email,
-      country: country,
-      category: category,
-      userLocation: userLocation,
-      newsapiResponse: newsapiResponse,
-      articles: articles,
-    };
-};
-  
-const dispatchToProps = dispatch => {
-    return {
+  const { topLink, bottomLink } = state.sidebar;
+  const { currentUser } = state.auth;
+  const { userLocation, country, email, category, language } = state.userData;
+  const { newsapiResponse, articles } = state.newsfeed;
 
-      getCurrentUserDbInfo: (currentUser) => dispatch(actions.actionGetCurrentUserDbInfo(currentUser)),
-      changeUserPassword: (data) => dispatch(actions.actionChangeUserPassword(data)),
-      updateUserData: (data) => dispatch(actions.actionsUpdateUserDbData(data))
-    };
+  return {
+    sidebarTop: topLink,
+    sidebarBottom: bottomLink,
+    currentUser: currentUser,
+    email: email,
+    country: country,
+    category: category,
+    language: language,
+    userLocation: userLocation,
+    newsapiResponse: newsapiResponse,
+    articles: articles
   };
+};
 
-export default connect(stateToProps, dispatchToProps)(Settings);
+const dispatchToProps = dispatch => {
+  return {
+    getCurrentUserDbInfo: currentUser =>
+      dispatch(actions.actionGetCurrentUserDbInfo(currentUser)),
+    changeUserPassword: data =>
+      dispatch(actions.actionChangeUserPassword(data)),
+    updateUserData: data => dispatch(actions.actionsUpdateUserDbData(data))
+  };
+};
+
+export default connect(
+  stateToProps,
+  dispatchToProps
+)(Settings);
