@@ -208,11 +208,6 @@ class App extends Component {
         let topicResults = await this.props.getNews(query);
         console.log('topicResults', topicResults);
       }
-
-      //   console.log('Click.this.props', this.props);
-      //   console.log('Click.this.props', query);
-      //   let topicResults = await this.props.getNews(query);
-      //   console.log('topicResults', topicResults);
     } catch (error) {
       console.log('error:::', error);
     }

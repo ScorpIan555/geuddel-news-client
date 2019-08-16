@@ -4010,6 +4010,7 @@ input[type="button"].btn-block {
       transition: none; } }
 
 .progress-bar-striped {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 1rem 1rem; }
 
@@ -7847,6 +7848,7 @@ a.text-white {
   color: #fff; }
 
 .bg-gradient {
+  background: -webkit-linear-gradient(315deg, #6f42c1 0%, #4582EC 100%);
   background: linear-gradient(135deg, #6f42c1 0%, #4582EC 100%); }
 
 .text-blue {

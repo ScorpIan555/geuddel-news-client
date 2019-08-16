@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { Navbar, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default ({ props }) => {
   let { handleLogout, isAuthenticated } = props;
@@ -10,7 +10,7 @@ export default ({ props }) => {
     <div className="navbar-container balls">
       <Navbar expand="md">
         <Navbar.Brand as="ul" className="app-header" href="#home">
-          <Link to="/">G-News</Link>
+          <Link to="/">Geuddel News</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">

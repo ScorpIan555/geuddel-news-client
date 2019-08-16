@@ -7,7 +7,7 @@ const config = {
   mode: 'production', // default in webpack 4
   // options related to how webpack emits results
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public/dist'),
     filename: '[name].[contenthash].js',
     publicPath: '/'
   },

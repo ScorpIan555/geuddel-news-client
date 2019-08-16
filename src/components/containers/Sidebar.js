@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 
-export default ({props}) => {
+export default ({ props }) => {
   console.log('Sidebar.props', props);
   const sidebarTop = props.sidebarTop;
   const sidebarBottom = props.sidebarBottom;
@@ -18,35 +18,30 @@ export default ({props}) => {
         />
       </form>
       <nav className="nav flex-md-column">
+        {sidebarBottom.map((link, i) => {
+          let topic = sidebarBottom[i].name.toLowerCase();
 
-        {
-          sidebarBottom.map((link, i) => {
-            let topic = sidebarBottom[i].name.toLowerCase();
+          return (
+            <div
+              key={i * Math.random() * 100000000}
+              href={`/topic/${topic}`}
+              className="nav-link"
+            >
+              <i className="material-icons mr-1">
+                {props.sidebarBottom[i].icon}
+              </i>
 
-            return (
-              <div key={i*Math.random()*100000000} href={`/topic/${topic}`} className="nav-link">
-                <i className="material-icons mr-1">{props.sidebarBottom[i].icon}</i>
-                
-                  <LinkContainer
-                    
-                    to={`/topic/${topic}`}
-                    activeClassName="active"
-                    name={sidebarBottom[i].nam}
-                    onClick={handleClick}
-                  >
-                    
-                    <a className="ml-1">{ sidebarBottom[i].name }</a>
-                  
-                    
-                  </LinkContainer>
-                </div>
-                
-              
-            )
-          })
-        }
-        
-        
+              <LinkContainer
+                to={`/topic/${topic}`}
+                activeClassName="active"
+                name={sidebarBottom[i].nam}
+                onClick={handleClick}
+              >
+                <a className="ml-1">{sidebarBottom[i].name}</a>
+              </LinkContainer>
+            </div>
+          );
+        })}
       </nav>
     </div>
   );

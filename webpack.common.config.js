@@ -14,18 +14,14 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      inject: false,
+      inject: true,
       appMountId: 'app'
-      // meta: {
-      //   viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
-      // }
-      
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css'
+      chunkFilename: '[name].[id].css'
     }),
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin()
     // new webpack.ProgressPlugin(progressHandler)
   ],
   // configuration of modules
