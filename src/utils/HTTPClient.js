@@ -30,7 +30,7 @@ const get = async req => {
           userData.category = '';
         }
         if (userData.country === null || undefined) {
-          userData.category = '';
+          userData.country = '';
         }
 
         return response;
@@ -67,18 +67,30 @@ const get = async req => {
   }
 
   if (req.type === 'GET_NEWS') {
-    console.log('GETTING NEWS!:::', req);
+    console.log('GETTING NEWS.req!:::', req);
+    console.log('GETTING NEWS.req.userLocation!:::', req.userLocation);
 
     if (req.query !== undefined) {
       // let userLocation = req.query.userLocation;
       console.log('getNews.req.query', req.query);
+      let { country, sources, searchTerms, topic, language } = req.query;
+
+      if (
+        country === undefined ||
+        (null && language === undefined) ||
+        (null && category !== undefined) ||
+        null
+      ) {
+        country = req.query.userLocation;
+        console.log('GET_NEWS by topic.country:::', country);
+      }
 
       let queryStringParameters = {
-        country: req.query.country,
-        sources: req.query.sources,
-        q: req.query.searchTerms,
-        category: req.query.topic,
-        language: req.query.language
+        country: country,
+        sources: sources,
+        q: searchTerms,
+        category: topic,
+        language: language
       };
 
       let myInit = {
