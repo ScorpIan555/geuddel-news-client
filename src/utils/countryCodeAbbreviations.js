@@ -1,5 +1,1 @@
-const countryCodeAbbreviations = [
-    'ae',
-    'ar',
-    'at',
-]
+const countryCodeAbbreviations = ['ae', 'ar', 'at'];
