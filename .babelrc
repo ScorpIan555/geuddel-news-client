@@ -1,19 +1,20 @@
 {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "modules": false
-        }
-      ],
-      "@babel/preset-react"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false
+      }
     ],
-    // babel-specific webpack plugin"s
-    "plugins": [
-      "react-hot-loader/babel",
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-transform-runtime",
-      "@babel/plugin-syntax-dynamic-import"
-    ]
+    "@babel/preset-react"
+  ],
+  // babel-specific webpack plugin"s
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-dynamic-import",
+    "emotion"
+  ]
 }

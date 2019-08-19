@@ -3,16 +3,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routes from './Routes';
 import { Nav, Footer } from './presentation';
-import { Sidebar } from './containers'; // delete when done w/ dev
-// import { Sidebar, Topic, Signup, Login } from './containers';  // delete when done w/ dev
+import { Sidebar } from './containers';
 import actions from '../actions';
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'; // inject react-router props into component above client routing hierarchy
+import { css } from '@emotion/core';
+import { PacmanLoader } from 'react-spinners';
 
 class App extends Component {
   state = {
     isAuthenticated: false,
     isAuthenticating: true,
-    isWorking: false,
+    isWorking: true,
     articles: []
   };
 
@@ -240,6 +241,12 @@ class App extends Component {
       sidebarBottom
     };
 
+    const override = css`
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `;
+
     return (
       <div className="container">
         <Nav props={childProps} />
@@ -250,7 +257,20 @@ class App extends Component {
               <div className="row">
                 <Sidebar props={sidebarChildProps} handleClick={handleClick} />
 
-                <Routes childProps={childProps} />
+                {this.state.isWorking === true ||
+                this.state.isAuthenticating === true ? (
+                  <div className="sweet-loading">
+                    <PacmanLoader
+                      css={override}
+                      sizeUnit={'px'}
+                      size={100}
+                      color={'gold'}
+                      loading={this.state.isWorking}
+                    />
+                  </div>
+                ) : (
+                  <Routes childProps={childProps} />
+                )}
               </div>
             </div>
           </section>
