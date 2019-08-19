@@ -6,3 +6,5 @@ node_modules
 .env
 .eslintroc
 /src/utils/topicResults.js
+/zzzhit
+client_to_api_test

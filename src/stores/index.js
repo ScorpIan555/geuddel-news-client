@@ -2,7 +2,12 @@ import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { newsfeedReducer, sidebarReducer, authReducer, userDataReducer } from '../reducers';
+import {
+  newsfeedReducer,
+  sidebarReducer,
+  authReducer,
+  userDataReducer
+} from '../reducers';
 
 let store = [];
 export const history = createBrowserHistory();

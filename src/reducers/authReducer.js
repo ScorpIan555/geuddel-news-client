@@ -9,8 +9,7 @@ export default (state = initialState, action) => {
   const payload = action.data;
 
   switch (action.type) {
-
-    case constants.CREATE_USER:  // @TODO fix this
+    case constants.CREATE_USER: // @TODO fix this
       // console.log('USER_CREATED!::', payload);
       newState.currentUser = payload.user.username;
       newState.userWhoWasJustCreated = {
@@ -24,72 +23,71 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.SIGN_IN_USER:
-        console.log('USER_SIGNED_IN!:::', payload);
-        if(payload.message === 'Incorrect username or password.') {
-          newState.signInError = payload;
-          newState.currentUser = { 
-            email: 'No current user' 
-          };
-          return newState;
-        }
-        if(payload.message === 'An account with that given email already exists.') {
-          newState.signInError = payload;
-          newState.currentUser = { 
-            email: 'Account already exists' 
-          };
-          return newState;
-        }
-        if(payload.attributes != undefined) {
-          newState.currentUser = payload.attributes.email;
-        }
-        if(newState.currentUser == undefined || null) {
-          alert('newState.currentUser is null');
-          console.log('newState is null, need to check:::', newState);
-        }
+      console.log('USER_SIGNED_IN!:::', payload);
+      if (payload.message === 'Incorrect username or password.') {
+        newState.signInError = payload;
+        newState.currentUser = {
+          email: 'No current user'
+        };
+        return newState;
+      }
+      if (
+        payload.message === 'An account with that given email already exists.'
+      ) {
+        newState.signInError = payload;
+        newState.currentUser = {
+          email: 'Account already exists'
+        };
+        return newState;
+      }
+      if (payload.attributes != undefined) {
+        newState.currentUser = payload.attributes.email;
+      }
+      if (newState.currentUser == undefined || null) {
+        alert('newState.currentUser is null');
+        console.log('newState is null, need to check:::', newState);
+      }
 
       console.log('USER_SIGNED_IN!:::', newState.currentUser);
 
       return newState;
 
-
     case constants.GET_CURRENT_USER:
-        console.log('GET_CURRENT_USER!:::', payload);
-        newState.currentUser = payload;
-  
-        console.log('GET_CURRENT_USER!:::', newState.currentUser);
-  
-        return newState;
-        
+      console.log('GET_CURRENT_USER!:::', payload);
+      newState.currentUser = payload;
 
-      case constants.INCORRECT_PASSWORD:
-          console.log('USER_SIGNED_IN!:::', payload);
-          if(payload.message === 'Incorrect username or password.') {
-            newState.signInError = payload;
-            newState.currentUser = { 
-              email: 'No current user' 
-            };
-            return newState;
-          }
-  
-        newState.currentUser = payload;
-  
-        console.log('USER_SIGNED_IN!:::', newState.currentUser);
-        console.log('USER_SIGNED_IN!:::', newState);
-  
-        return newState;
+      console.log('GET_CURRENT_USER!:::', newState.currentUser);
 
-    case constants.SIGN_OUT_USER:  // @TODO fix this
+      return newState;
+
+    case constants.INCORRECT_PASSWORD:
+      console.log('USER_SIGNED_IN!:::', payload);
+      if (payload.message === 'Incorrect username or password.') {
+        newState.signInError = payload;
+        newState.currentUser = {
+          email: 'No current user'
+        };
+        return newState;
+      }
+
+      newState.currentUser = payload;
+
+      console.log('USER_SIGNED_IN!:::', newState.currentUser);
+      console.log('USER_SIGNED_IN!:::', newState);
+
+      return newState;
+
+    case constants.SIGN_OUT_USER: // @TODO fix this
       // console.log('USER_SIGNED_OUT', payload);
-      
+
       // const noCurrentUser = {  // needs to be repaced with actual newState.etc.etc
       //   email: 'No current user'
       // };
       newState.currentUser = payload;
 
       console.log('USER_SIGNED_OUT', newState);
-      
-      return newState;
 
+      return newState;
 
     case constants.AUTH_ANONYMOUS_USER:
       // store results for guest user session, not current user b/c that overrides other functionality
@@ -99,12 +97,10 @@ export default (state = initialState, action) => {
       return newState;
 
     case constants.GET_CURRENT_SESSION:
-      
       newState.currentSession = payload;
       console.log('GET_CURRENT_SESSION:::', newState);
 
       return newState;
-
 
     default:
       return newState;

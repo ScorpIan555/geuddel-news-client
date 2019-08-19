@@ -5,4 +5,12 @@ import Footer from './Footer';
 import LoaderButton from './LoaderButton';
 import Article from './Article';
 
-export {  Nav, AppliedRoute, AuthenticatedRoute, NotFound, Footer, LoaderButton, Article };
+export {
+  Nav,
+  AppliedRoute,
+  AuthenticatedRoute,
+  NotFound,
+  Footer,
+  LoaderButton,
+  Article
+};

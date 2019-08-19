@@ -10,25 +10,25 @@ export default (state = initialState, action) => {
     case constants.GET_NEWS:
       console.log('GET_NEWS from reducer:::', payload);
       newState.newsapiResponse = payload;
-      if(payload != undefined) {
+      if (payload != undefined) {
         newState.articles = payload.articles;
       } else {
         newState = null;
       }
 
       console.log('GET NEWS newState:::', newState);
-      
+
       return newState;
 
     case constants.GET_NEWS_BY_TOPIC:
       newState.newsapiResponse = payload;
 
-      if(payload != undefined) {
+      if (payload != undefined) {
         newState.articles = payload.articles;
       } else {
         newState = null;
       }
-      
+
       return newState;
 
     default:

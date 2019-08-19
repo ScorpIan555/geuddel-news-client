@@ -10,7 +10,6 @@ export default ({
   disabled = false,
   ...props
 }) => {
-
   return (
     <Button
       className={`LoaderButton ${className}`}

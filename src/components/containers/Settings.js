@@ -134,16 +134,6 @@ class Settings extends Component {
     }
   };
 
-  validateChangeSettingsForm = () => {
-    // submit button stays in disabled state until these conditions are TRUE
-    // return (
-    // //   this.state.email.length > 0
-    // //   this.state.password.length > 0 &&
-    // //   this.state.password === this.state.confirmPassword
-    // );
-    return;
-  };
-
   validateChangePasswordForm = () => {
     // submit button stays in disabled state until these conditions are TRUE
     return (

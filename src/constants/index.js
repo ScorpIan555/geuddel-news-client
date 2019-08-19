@@ -3,8 +3,7 @@ export default {
   GET_NEWS: 'GET_NEWS',
   GET_USER_LOCATION: 'GET_USER_LOCATION',
   GET_NEWS_BY_TOPIC: 'GET_NEWS_BY_TOPIC',
-  
-  
+
   /* Authentication constants */
   CREATE_USER: 'CREATE_USER',
   SIGN_IN_USER: 'SIGN_IN_USER',
@@ -16,6 +15,7 @@ export default {
   CHANGE_USER_PASSWORD: 'CHANGE_USER_PASSWORD',
   FORGOT_USER_PASSWORD: 'FORGOT_USER_PASSWORD',
   INCORRECT_PASSWORD: 'INCORRECT_PASSWORD',
+  DELETE_USER_ACCOUNT: 'DELETE_USER_ACCOUNT',
 
   /* Test constant for development */
   POST_NOTE: 'POST_NOTE',
@@ -25,5 +25,4 @@ export default {
 
   /* Not yet set up */
   DELETE_YOUR_PROFILE: 'DELETE_YOUR_PROFILE'
-
 };

@@ -15,15 +15,10 @@
 //             // country: // settigs
 //             // language: // settings
 //             // homepage: // settings
-//             // 
+//             //
 //         }
-    
+
 //     }
-
-    
-
-        
-    
 
 //     return user
 // }

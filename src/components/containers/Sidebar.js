@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export default ({ props }) => {

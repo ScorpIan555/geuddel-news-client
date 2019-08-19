@@ -2,18 +2,18 @@ import constants from '../constants';
 import { HTTPClient, AwsAuthClient } from '../utils';
 
 export default {
-
   actionGetNews: query => {
     console.log('actionGetNews!!::: ', query);
     return dispatch => {
       console.log('actionGetNews2!!::: ', query);
       return dispatch(
         HTTPClient.getAsync({
-          type: constants.GET_NEWS, 
+          type: constants.GET_NEWS,
           endpoint: '/getNews',
           query: query
-      })
-    )}
+        })
+      );
+    };
   },
 
   // actionGetNewsByTopic: query => { // delete if not needed
@@ -22,14 +22,14 @@ export default {
   //     console.log('actionGetNewsByTopic!!::: ', query);
   //     return dispatch(
   //       HTTPClient.getAsync({
-  //         type: constants.GET_NEWS_BY_TOPIC, 
+  //         type: constants.GET_NEWS_BY_TOPIC,
   //         endpoint: '/getNews',
   //         query: query
   //     })
   //   )}
   // },
 
-  actionCreateUser: (user) => {
+  actionCreateUser: user => {
     console.log('actionSigninUser.user', user);
     return dispatch => {
       return dispatch(
@@ -52,7 +52,8 @@ export default {
     };
   },
 
-  actionSignInUser: (user) => { // sending obj w/ username/password to AWS
+  actionSignInUser: user => {
+    // sending obj w/ username/password to AWS
     console.log('actionSigninUser.user', user);
     return dispatch => {
       return dispatch(
@@ -64,7 +65,8 @@ export default {
     };
   },
 
-  actionChangeUserPassword: (changePasswordRequest) => { // sending obj w/ username/password to AWS
+  actionChangeUserPassword: changePasswordRequest => {
+    // sending obj w/ username/password to AWS
     console.log('actionSigninUser.user', changePasswordRequest);
     return dispatch => {
       return dispatch(
@@ -76,7 +78,8 @@ export default {
     };
   },
 
-  actionUserForgotPassword: (user) => { // sending obj w/ username/password to AWS
+  actionUserForgotPassword: user => {
+    // sending obj w/ username/password to AWS
     console.log('actionSigninUser.user', user);
     return dispatch => {
       return dispatch(
@@ -89,7 +92,7 @@ export default {
   },
 
   actionSignOutUser: () => {
-    console.log('actionSignoutUser::::' )
+    console.log('actionSignoutUser::::');
     return dispatch => {
       return dispatch(
         AwsAuthClient.deleteAsync({
@@ -99,7 +102,7 @@ export default {
     };
   },
 
-  actionGetCurrentUser: (user) => {
+  actionGetCurrentUser: user => {
     return dispatch => {
       return dispatch(
         AwsAuthClient.getAsync({
@@ -110,7 +113,7 @@ export default {
     };
   },
 
-  actionGetUserLocation: (params) => {
+  actionGetUserLocation: params => {
     return dispatch => {
       console.log('actionGetLocation!!::: ');
       return dispatch(
@@ -124,7 +127,7 @@ export default {
 
   actionsCallCurrentCredentials: () => {
     return dispatch => {
-      console.log('actionsCallCurrentCredentials:::')
+      console.log('actionsCallCurrentCredentials:::');
       return dispatch(
         AwsAuthClient.getAsync({
           type: constants.AUTH_ANONYMOUS_USER
@@ -135,7 +138,7 @@ export default {
 
   actionsGetCurrentSession: () => {
     return dispatch => {
-      console.log('actionsGetCurrentSession:::')
+      console.log('actionsGetCurrentSession:::');
       return dispatch(
         AwsAuthClient.getAsync({
           type: constants.GET_CURRENT_SESSION
@@ -144,7 +147,7 @@ export default {
     };
   },
 
-  actionsPostNote: (req) => {
+  actionsPostNote: req => {
     return dispatch => {
       console.log('actionsPostNote', req);
       return dispatch(
@@ -153,11 +156,11 @@ export default {
           endpoint: '/create',
           body: req
         })
-      )
-    }
+      );
+    };
   },
 
-  actionGetCurrentUserDbInfo: (req) => {
+  actionGetCurrentUserDbInfo: req => {
     return dispatch => {
       console.log('actionsGetUserData', req);
       return dispatch(
@@ -166,11 +169,11 @@ export default {
           endpoint: '/user',
           data: req
         })
-      )
-    }
+      );
+    };
   },
 
-  actionsPostUserDbData: (req) => {
+  actionsPostUserDbData: req => {
     return dispatch => {
       console.log('actionsPostNote', req);
       return dispatch(
@@ -179,11 +182,11 @@ export default {
           endpoint: '/create',
           body: req
         })
-      )
-    }
+      );
+    };
   },
 
-  actionsUpdateUserDbData: (req) => {
+  actionsUpdateUserDbData: req => {
     return dispatch => {
       console.log('actionsPostNote', req);
       return dispatch(
@@ -192,11 +195,11 @@ export default {
           endpoint: '/create',
           body: req
         })
-      )
-    }
+      );
+    };
   },
 
-  actionsResendConfirmationCode: (params) => {
+  actionsResendConfirmationCode: params => {
     return dispatch => {
       console.log('actionsResendConfirmationCode:::', req);
       return dispatch(
@@ -205,7 +208,6 @@ export default {
           params
         })
       );
-    }
+    };
   }
-
 };

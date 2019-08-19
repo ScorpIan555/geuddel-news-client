@@ -12,10 +12,8 @@ class App extends Component {
   state = {
     isAuthenticated: false,
     isAuthenticating: true,
+    isWorking: false,
     articles: []
-
-    // currentTopic: 'home',
-    // oldTopic: ''
   };
 
   async componentDidMount() {
@@ -33,7 +31,10 @@ class App extends Component {
       console.log('error:::', error);
     }
     // intial authentication process complete
-    this.setState({ isAuthenticating: false });
+    this.setState({
+      isAuthenticating: false,
+      isWorking: true
+    });
     // make call for user location
     // @TODO need to build out user data, for instance, a logged in user should have a country/lang
     // await this.props.getUserLocation(); // moved this into initial auth function
@@ -138,6 +139,7 @@ class App extends Component {
         await this.props.getNews(newsRequestObject);
         // await this.props.getNews(userLocation);
         this.setState({
+          isWorking: false,
           articles: this.props.newsapiResponse
         });
       }
@@ -173,6 +175,7 @@ class App extends Component {
   };
 
   handleLogout = async event => {
+    event.preventDefault();
     await this.props.signOut();
 
     this.userHasAuthenticated(false);

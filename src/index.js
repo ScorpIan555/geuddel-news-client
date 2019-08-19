@@ -22,14 +22,14 @@ import App from './components/App';
 // connects this client to the serverless/AWS Lambda back-end
 Amplify.configure({
   //  // uncomment when client-api troubleshooting is done
-  Auth: awsConfig.Auth,  // AWS Amplify Cognito authorization module
-  Storage: awsConfig.Storage,  // AWS Amplify S3 asset storage module
-  API: awsConfig.API   // AWS Amplify API Gateway api connection module
+  Auth: awsConfig.Auth, // AWS Amplify Cognito authorization module
+  Storage: awsConfig.Storage, // AWS Amplify S3 asset storage module
+  API: awsConfig.API // AWS Amplify API Gateway api connection module
 });
 
 // app instance
 const app = (
-  <Provider store={store.configure(null)}> 
+  <Provider store={store.configure(null)}>
     <Router>
       <App />
     </Router>
