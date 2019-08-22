@@ -11,6 +11,7 @@
   "scripts": {
     "build": "npm clean; webpack --config webpack.prod.config.js",
     "clean": "rm -rf dist/*",
+    "check-size": "npx bundlesize",
     "dev": "webpack --config webpack.dev.config.js",
     "lint": "eslint src -c .eslintrc --ext js,jsx",
     "pkg:lint": "eslint --no-eslintrc  --ext js,jsx",
@@ -18,6 +19,24 @@
     "start-dev": "webpack-dev-server --config webpack.dev.server.js",
     "prod": "npm run build; npx serve public/dist"
   },
+  "bundlesize": [
+    {
+      "path": "./public/dist/main.*.css",
+      "maxSize": "244 KB"
+    },
+    {
+      "path": "./public/dist/main.*.js",
+      "maxSize": "244 KB"
+    },
+    {
+      "path": "./public/dist/runtime.*.js",
+      "maxSize": "244 KB"
+    },
+    {
+      "path": "./public/dist/vendors.*.js",
+      "maxSize": "244 KB"
+    }
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -33,6 +52,7 @@
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "bundlesize": "^0.18.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.0.0",
     "eslint": "^6.1.0",
@@ -54,7 +74,9 @@
     "style-loader": "^0.23.1",
     "url-loader": "^2.0.0",
     "webpack": "^4.35.0",
+    "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.4",
+    "webpack-dashboard": "^3.0.7",
     "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.1"
   },

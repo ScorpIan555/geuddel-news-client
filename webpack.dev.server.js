@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const devServerConfig = require('./webpack.dev.config');
 
 // Set port to serve development server
-const Port = 3000;
+const Port = 8000;
 const Host = 'localhost';
 
 // Set server options
@@ -35,7 +35,7 @@ const options = {
 };
 
 // configure webpack development server application with config & server options at entry points
-WebpackDevServer.addDevServerEntrypoints(devServerConfig, options);  // double check that this isn't duplicating/interfering
+WebpackDevServer.addDevServerEntrypoints(devServerConfig, options); // double check that this isn't duplicating/interfering
 // load compiler with configuration
 const compiler = webpack(devServerConfig);
 // instantiate dev server object with compiler library + options

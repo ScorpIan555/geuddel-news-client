@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.config.js');
 const path = require('path');
-
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 // webpack dev server config object
 // https://webpack.js.org/configuration/
@@ -25,12 +25,14 @@ const config = {
     filename: 'devBundle.js'
   },
   devServer: {
-    contentBase: './public',
+    contentBase: './public'
     // historyApiFallback: true,
     // hot: true
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new DashboardPlugin()
+    // https://infrequently.org/2017/10/can-you-afford-it-real-world-web-performance-budgets/
   ]
 };
 

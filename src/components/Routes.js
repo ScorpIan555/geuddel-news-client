@@ -37,6 +37,7 @@ export default ({ childProps }) => {
         return (
           <AppliedRoute
             path={`/topic/${topic}`}
+            // as={`/topic/${topic}`}
             key={i * Math.random() * 100000000}
             pageTitle={link.name}
             exact

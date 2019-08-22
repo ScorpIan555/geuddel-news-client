@@ -1,13 +1,13 @@
-const webpack = require('webpack');
-const template = require('html-webpack-template');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const progressHandler = (percentage, message, ...args) => {
-  // e.g. Output each progress message directly to the console:
-  console.info(percentage, message, ...args);
-};
+// const progressHandler = (percentage, message, ...args) => {
+//   // e.g. Output each progress message directly to the console:
+//   console.info(percentage, message, ...args);
+// };
+
+// @TODO https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze
 
 const config = {
   // define and configure plugins
