@@ -76,10 +76,9 @@ const get = async req => {
       let { country, sources, searchTerms, topic, language } = req.query;
 
       if (
-        country === undefined ||
-        (null && language === undefined) ||
-        (null && category !== undefined) ||
-        null
+        (country === undefined || null) &&
+        (language === undefined || null) &&
+        (category !== undefined || null)
       ) {
         country = req.query.userLocation;
         console.log('GET_NEWS by topic.country:::', country);

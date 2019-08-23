@@ -100,57 +100,57 @@ class App extends Component {
       'handleNewsResultsAfterComponentMounts.userLocation:::',
       this.props.userLocation
     );
-    if (this.props.newsapiResponse == undefined) {
-      if (this.props.articles !== this.state.articles) {
-        console.log(
-          'handleNewsResultsAfterComponentMounts.this.props :::',
-          this.props
-        );
-        console.log(
-          'this.props.newsapiRespons was undefined::::',
-          this.props.userLocation
-        );
-        console.log(
-          'this.props.newsapiRespons was undefined::::',
-          this.props.userData
-        );
-        let { userData, userLocation } = this.props;
-        // let userLocation = this.props.userLocation
-
-        let countryCode =
-          userData.country !== undefined || null
-            ? userData.country
-            : userLocation;
-        // let category = (userData !== undefined || null ) ? userData
-
-        let category, country, language;
-
-        if (userData !== undefined || null) {
-          category = userData.category;
-          country = userData.country;
-          language = userData.language;
-        }
-
-        let newsRequestObject = {
-          country: country !== undefined || null ? country : countryCode,
-          category: category,
-          language: language
-        };
-
-        await this.props.getNews(newsRequestObject);
-        // await this.props.getNews(userLocation);
-        this.setState({
-          isWorking: false,
-          articles: this.props.newsapiResponse
-        });
-      }
-    }
-    if (this.props.newsapiResponse !== undefined) {
+    // if (this.props.newsapiResponse == undefined) {
+    if (this.props.articles !== this.state.articles) {
       console.log(
-        'DIDNT MAKE A CALL DUE TO CONDITIONAL!!!!',
-        this.props.newsapiResponse
+        'handleNewsResultsAfterComponentMounts.this.props :::',
+        this.props
       );
+      console.log(
+        'this.props.newsapiRespons was undefined::::',
+        this.props.userLocation
+      );
+      console.log(
+        'this.props.newsapiRespons was undefined::::',
+        this.props.userData
+      );
+      let { userData, userLocation } = this.props;
+      // let userLocation = this.props.userLocation
+
+      let countryCode =
+        userData.country !== undefined || null
+          ? userData.country
+          : userLocation;
+      // let category = (userData !== undefined || null ) ? userData
+
+      let category, country, language;
+
+      if (userData !== undefined || null) {
+        category = userData.category;
+        country = userData.country;
+        language = userData.language;
+      }
+
+      let newsRequestObject = {
+        country: country !== undefined || null ? country : countryCode,
+        category: category,
+        language: language
+      };
+
+      await this.props.getNews(newsRequestObject);
+      // await this.props.getNews(userLocation);
+      this.setState({
+        isWorking: false,
+        articles: this.props.newsapiResponse
+      });
     }
+    // }
+    // if (this.props.newsapiResponse !== undefined) {
+    //   console.log(
+    //     'DIDNT MAKE A CALL DUE TO CONDITIONAL!!!!',
+    //     this.props.newsapiResponse
+    //   );
+    // }
   };
 
   async shouldComponentUpdate(nextProps, nextState, snapshot) {
@@ -184,6 +184,9 @@ class App extends Component {
 
   handleClick = async event => {
     event.preventDefault();
+    this.setState({
+      isWorking: true
+    });
     console.log('Click', event.target);
     console.log('Click.this.props', this);
 
@@ -192,16 +195,18 @@ class App extends Component {
     console.log('pathArray:::', pathArray[4]);
 
     try {
-      if (this.props.userData.language !== undefined || null) {
-        let query = {
-          topic: pathArray[4],
-          // userLocation: this.props.userLocation
-          language: this.props.userData.language
-        };
-        console.log('Click.this.props', this.props);
-        console.log('Click.this.props', query);
-        let topicResults = await this.props.getNews(query);
-        console.log('topicResults', topicResults);
+      if (this.props.userData !== undefined || null) {
+        if (this.props.userData.language !== undefined || null) {
+          let query = {
+            topic: pathArray[4],
+            // userLocation: this.props.userLocation
+            language: this.props.userData.language
+          };
+          console.log('Click.this.props', this.props);
+          console.log('Click.this.props', query);
+          let topicResults = await this.props.getNews(query);
+          console.log('topicResults', topicResults);
+        }
       } else {
         let query = {
           topic: pathArray[4],
@@ -215,6 +220,9 @@ class App extends Component {
     } catch (error) {
       console.log('error:::', error);
     }
+    this.setState({
+      isWorking: false
+    });
   };
 
   render() {
