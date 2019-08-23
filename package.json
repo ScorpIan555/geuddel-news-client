@@ -86,12 +86,7 @@
     "aws-amplify": "^1.1.30",
     "babel-plugin-emotion": "^10.0.16",
     "bootstrap": "~4.3.1",
-    "flatpickr": "~4.5.7",
-    "flickity": "~2.2.0",
-    "jarallax": "~1.10.7",
-    "jquery": "~3.4.1",
-    "popper.js": "~1.15.0",
-    "prismjs": "~1.16.0",
+    "jquery": "^3.4.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
     "react-dom": "^16.8.6",
@@ -104,10 +99,6 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "scrollmonitor": "~1.2.4",
-    "smartwizard": "~4.3.1",
-    "smooth-scroll": "~16.0.3",
-    "socicon": "~3.0.5",
     "zoom-vanilla.js": "~2.0.6"
   }
 }
