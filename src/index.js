@@ -11,7 +11,7 @@ import { awsConfig } from './utils'; // uncomment when client-api troubleshootin
 import store from './stores';
 // import static assets
 import 'bootstrap';
-import 'jquery';
+// import 'jquery';
 // import 'popper';
 import '../public/theme/scss/theme.scss'; // app theme
 import '../public/theme/js/bootstrap/dropdown'; // theme's dropdown

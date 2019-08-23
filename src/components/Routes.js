@@ -1,7 +1,34 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { AppliedRoute, AuthenticatedRoute, NotFound } from './presentation';
-import { Topic, Signup, Login, Settings, ForgotPassword } from './containers';
+import Loadable from 'react-loadable';
+import {
+  AppliedRoute,
+  AuthenticatedRoute,
+  NotFound,
+  LoadingComponent
+} from './presentation';
+
+import { Topic } from './containers';
+
+const AsyncSettings = Loadable({
+  loader: () => import('./containers/Settings'),
+  loading: LoadingComponent
+});
+
+const AsyncSignup = Loadable({
+  loader: () => import('./containers/Signup'),
+  loading: LoadingComponent
+});
+
+const AsyncLogin = Loadable({
+  loader: () => import('./containers/Login'),
+  loading: LoadingComponent
+});
+
+const AsumcForgotPassword = Loadable({
+  loader: () => import('./containers/ForgotPassword'),
+  loading: LoadingComponent
+});
 
 export default ({ childProps }) => {
   const sidebarTop = childProps.sidebarTop;
@@ -14,20 +41,25 @@ export default ({ childProps }) => {
       <AppliedRoute
         exact
         path="/signup"
-        component={Signup}
+        component={AsyncSignup}
         props={childProps}
       />
-      <AppliedRoute exact path="/login" component={Login} props={childProps} />
+      <AppliedRoute
+        exact
+        path="/login"
+        component={AsyncLogin}
+        props={childProps}
+      />
       <AuthenticatedRoute
         exact
         path="/settings"
-        component={Settings}
+        component={AsyncSettings}
         props={childProps}
       />
       <AuthenticatedRoute
         exact
         path="/forgot-password"
-        component={ForgotPassword}
+        component={AsumcForgotPassword}
         props={childProps}
       />
       {/* <AppliedRoute exact path={`/topic/${topic}`} component={Topic} props={childProps} /> */}

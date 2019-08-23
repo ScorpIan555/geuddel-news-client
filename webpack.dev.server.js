@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const devServerConfig = require('./webpack.dev.config');
 
 // Set port to serve development server
-const Port = 8000;
+const Port = 3000;
 const Host = 'localhost';
 
 // Set server options
