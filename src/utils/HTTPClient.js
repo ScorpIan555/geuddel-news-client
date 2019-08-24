@@ -47,6 +47,7 @@ const get = async req => {
     return currentUserData;
   }
 
+  /* */
   if (req.type === 'GET_USER_LOCATION') {
     console.log('GET_USER_LOCATION!:::', req);
 
@@ -66,37 +67,61 @@ const get = async req => {
     return usersCountryCode;
   }
 
-  if (req.type === 'GET_NEWS') {
+  if (req.type === 'GET_NEWS_FOR_AUTHORIZED_USER') {
     console.log('GETTING NEWS.req!:::', req);
     console.log('GETTING NEWS.req.userLocation!:::', req.userLocation);
+    console.log('GETTING NEWS.req.country!:::', req.country);
 
     if (req.query !== undefined) {
       // let userLocation = req.query.userLocation;
       console.log('getNews.req.query', req.query);
-      let {
-        country,
-        sources,
-        category,
-        searchTerms,
-        topic,
-        language
-      } = req.query;
-
-      if (
-        (country === undefined || null) &&
-        (language === undefined || null) &&
-        (category !== undefined || null)
-      ) {
-        country = req.query.userLocation;
-        console.log('GET_NEWS by topic.country:::', country);
-      }
+      let { userLocation } = req;
+      let { country, sources, category, searchTerms, language } = req.query;
 
       let queryStringParameters = {
-        country: country,
+        country: country || userLocation,
         sources: sources,
         q: searchTerms,
-        category: topic,
+        category: category,
         language: language
+      };
+
+      let myInit = {
+        queryStringParameters
+      };
+      console.log('myInit:::', myInit);
+
+      const articles = await API.get('gNewsNotes', '/getNews', myInit)
+        .then(response => {
+          console.log('response from Aws API module(news):::', response);
+          const apiNewsResults = response.data;
+          return apiNewsResults;
+        })
+        .catch(error => {
+          console.log('error from AWS API module(news)', error);
+          return error;
+        });
+      // uncomment these after commenting out the above to use dummy api data
+      // console.log('canned articles:::', articles);
+
+      // return articles
+      return articles;
+    }
+  }
+  if (req.type === 'GET_NEWS_FOR_UNAUTHORIZED_USER') {
+    console.log('GETTING NEWS.req!:::', req);
+    console.log('GETTING NEWS.req.userLocation!:::', req.query.userLocation);
+
+    if (req.query !== undefined) {
+      // let userLocation = req.query.userLocation;
+      console.log('getNews.req.query', req.query);
+      let { category, searchTerms, userLocation, sources } = req.query;
+
+      let queryStringParameters = {
+        country: userLocation,
+        sources: sources,
+        q: searchTerms,
+        category: category
       };
 
       let myInit = {

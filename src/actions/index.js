@@ -2,14 +2,28 @@ import constants from '../constants';
 import { HTTPClient, AwsAuthClient } from '../utils';
 
 export default {
-  actionGetNews: query => {
+  actionGetNewsForAuthorizedUser: query => {
     console.log('actionGetNews!!::: ', query);
     return dispatch => {
       console.log('actionGetNews2!!::: ', query);
       return dispatch(
         HTTPClient.getAsync({
-          type: constants.GET_NEWS,
-          endpoint: '/getNews',
+          type: constants.GET_NEWS_FOR_AUTHORIZED_USER,
+          endpoint: '/auth/getNews',
+          query: query
+        })
+      );
+    };
+  },
+
+  actionGetNewsForUnauthorizedUser: query => {
+    console.log('actionGetNews!!::: ', query);
+    return dispatch => {
+      console.log('actionGetNews2!!::: ', query);
+      return dispatch(
+        HTTPClient.getAsync({
+          type: constants.GET_NEWS_FOR_UNAUTHORIZED_USER,
+          endpoint: '/auth/getNews',
           query: query
         })
       );

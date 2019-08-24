@@ -44,10 +44,60 @@ class App extends Component {
     // await this.props.getUserLocation(); // moved this into initial auth function
     console.log('this.propsbefore initial news results called:::', this.props);
     // get news results
-    this.handleNewsResultsAfterComponentMounts();
+    this.state.isAuthenticated === true
+      ? this.fetchNewsForAuthorizedUser()
+      : this.fetchNewsForUnauthorizedUser();
+
+    // this.handleNewsResultsAfterComponentMounts();
 
     // console.log('App.componentDidMount().articles', this.props.newsapiResponse);
   }
+
+  fetchNewsForAuthorizedUser = async () => {
+    console.log('fetchNewsForAuthorizedUser:::', this.props);
+    try {
+      // destructure and assign props for request
+      let { country, category, language } = this.props;
+      // request needs to be sent in a single object
+      let newsRequestObject = {
+        country,
+        category,
+        language
+      };
+      // make action request
+      this.props.getNewsForAuthorizedUser(newsRequestObject);
+    } catch (error) {
+      console.log('fetchNewsForAuthorizedUser'), error;
+    }
+    console.log('fetchNewsForAuthorizedUser.props:::', this.props);
+    console.log('fetchNewsForAuthorizedUser.state:::', this.state);
+    this.setState({
+      isWorking: false,
+      articles: this.props.newsapiResponse
+    });
+  };
+
+  fetchNewsForUnauthorizedUser = async () => {
+    console.log('fetchNewsForAuthorizedUser:::', this.props);
+    try {
+      // destructure and assign props for request
+      let { userLocation } = this.props;
+      // request needs to be sent in a single object
+      let newsRequestObject = {
+        userLocation
+      };
+      // make action request
+      this.props.getNewsForUnauthorizedUser(newsRequestObject);
+    } catch (error) {
+      console.log('fetchNewsForAuthorizedUser'), error;
+    }
+    console.log('fetchNewsForAuthorizedUser.props:::', this.props);
+    console.log('fetchNewsForAuthorizedUser.state:::', this.state);
+    this.setState({
+      isWorking: false,
+      articles: this.props.newsapiResponse
+    });
+  };
 
   handleInitialAuthentication = async () => {
     try {
@@ -113,11 +163,8 @@ class App extends Component {
         'this.props.newsapiRespons was undefined::::',
         this.props.userLocation
       );
-      console.log(
-        'this.props.newsapiRespons was undefined::::',
-        this.props.userData
-      );
-      let { userData, userLocation } = this.props;
+
+      let { userLocation } = this.props;
       // let userLocation = this.props.userLocation
 
       let countryCode =
@@ -140,7 +187,7 @@ class App extends Component {
         language: language
       };
 
-      await this.props.getNews(newsRequestObject);
+      await this.props.getNewsForUnauthorizedUser(newsRequestObject);
       // await this.props.getNews(userLocation);
       this.setState({
         isWorking: false,
@@ -198,28 +245,27 @@ class App extends Component {
     console.log('pathArray:::', pathArray[4]);
 
     try {
-      if (this.props.userData !== undefined || null) {
-        if (this.props.userData.language !== undefined || null) {
-          let query = {
-            topic: pathArray[4],
-            // userLocation: this.props.userLocation
-            language: this.props.userData.language
-          };
-          console.log('Click.this.props', this.props);
-          console.log('Click.this.props', query);
-          let topicResults = await this.props.getNews(query);
-          console.log('topicResults', topicResults);
-        }
-      } else {
+      if (this.props.language.length > 0) {
         let query = {
-          topic: pathArray[4],
-          userLocation: this.props.userLocation
+          category: pathArray[4],
+          // userLocation: this.props.userLocation
+          language: this.props.language
         };
         console.log('Click.this.props', this.props);
         console.log('Click.this.props', query);
         let topicResults = await this.props.getNews(query);
         console.log('topicResults', topicResults);
       }
+
+      console.log('hit ELSE WRAPPER:::', this.props.userData);
+      let query = {
+        category: pathArray[4],
+        userLocation: this.props.userLocation
+      };
+      console.log('Click.this.props', this.props);
+      console.log('Click.this.props', query);
+      let topicResults = await this.props.getNews(query);
+      console.log('topicResults', topicResults);
     } catch (error) {
       console.log('error:::', error);
     }
@@ -296,7 +342,7 @@ class App extends Component {
 const stateToProps = state => {
   const { topLink, bottomLink } = state.sidebar;
   const { currentUser } = state.auth;
-  const { userLocation, data } = state.userData;
+  const { userLocation, data, language, category, country } = state.userData;
   const { newsapiResponse, articles } = state.newsfeed;
 
   return {
@@ -304,7 +350,9 @@ const stateToProps = state => {
     sidebarBottom: bottomLink,
     currentUser: currentUser,
     userLocation: userLocation,
-    userData: data,
+    language: language,
+    country: country,
+    category: category,
     newsapiResponse: newsapiResponse,
     articles: articles
   };
@@ -312,7 +360,10 @@ const stateToProps = state => {
 
 const dispatchToProps = dispatch => {
   return {
-    getNews: data => dispatch(actions.actionGetNews(data)),
+    getNewsForAuthorizedUser: data =>
+      dispatch(actions.actionGetNewsForAuthorizedUser(data)),
+    getNewsForUnauthorizedUser: data =>
+      dispatch(actions.actionGetNewsForUnauthorizedUser(data)),
     // getNewsByTopic: (data) => dispatch(actions.actionGetNewsByTopic(data)), delete if not needed
     getCurrentUser: () => dispatch(actions.actionGetCurrentUser()),
     signOut: () => dispatch(actions.actionSignOutUser()),

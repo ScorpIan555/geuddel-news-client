@@ -1,6 +1,0 @@
-# This directory contains routes to back-end services (from the client)
-
-# Routing components used in client-side routing are in the /components directory
-
-# check components/Routes.js and its dependencies for client-side component routes used by React-Router
-

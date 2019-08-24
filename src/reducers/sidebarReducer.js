@@ -9,8 +9,6 @@ const initialState = {
   ],
   bottomLink: [
     { name: 'US', icon: 'flag' },
-    { name: 'World', icon: 'public' },
-    { name: 'Local', icon: 'place' },
     { name: 'Business', icon: 'domain' },
     { name: 'Technology', icon: 'memory' },
     { name: 'Entertainment', icon: 'theaters' },

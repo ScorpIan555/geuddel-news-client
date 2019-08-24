@@ -7,7 +7,20 @@ export default (state = initialState, action) => {
   const payload = action.data;
 
   switch (action.type) {
-    case constants.GET_NEWS:
+    case constants.GET_NEWS_FOR_AUTHORIZED_USER:
+      console.log('GET_NEWS from reducer:::', payload);
+      newState.newsapiResponse = payload;
+      if (payload != undefined) {
+        newState.articles = payload.articles;
+      } else {
+        newState = null;
+      }
+
+      console.log('GET NEWS newState:::', newState);
+
+      return newState;
+
+    case constants.GET_NEWS_FOR_UNAUTHORIZED_USER:
       console.log('GET_NEWS from reducer:::', payload);
       newState.newsapiResponse = payload;
       if (payload != undefined) {
