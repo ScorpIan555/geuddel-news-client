@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.config');
@@ -27,7 +28,14 @@ const config = {
   },
   // https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze
   // https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318
-  plugins: [new BundleAnalyzerPlugin()]
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_STAGE': "'prod'",
+      REACT_APP_STAGE: "'prod'",
+      NODE_ENV: '"prod"'
+    })
+    // new BundleAnalyzerPlugin()
+  ]
 };
 
 module.exports = merge(common, config);

@@ -13,6 +13,10 @@ export default (state = initialState, action) => {
   const payload = action.data;
 
   switch (action.type) {
+    // write in a case for when the user is initialized in the db so that their data is updated in state
+    //
+    //
+
     case constants.GET_CURRENT_USER_DB_INFO:
       console.log('GET_CURRENT_USER_DB_INFO.payload::: ', payload);
       newState.country = payload.data.country;

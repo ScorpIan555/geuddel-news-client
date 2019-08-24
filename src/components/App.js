@@ -18,6 +18,9 @@ class App extends Component {
   };
 
   async componentDidMount() {
+    // console.log('process.env.REACT_APP_STAGE:::', process.env.REACT_APP_STAGE);
+    // console.log('process.env:::', process.env);
+
     // when user navigates to the app, this component will always need to mount, therefore
     // we want the component to check for a currentUser
     try {

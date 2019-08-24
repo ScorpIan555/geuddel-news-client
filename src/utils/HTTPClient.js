@@ -73,7 +73,14 @@ const get = async req => {
     if (req.query !== undefined) {
       // let userLocation = req.query.userLocation;
       console.log('getNews.req.query', req.query);
-      let { country, sources, searchTerms, topic, language } = req.query;
+      let {
+        country,
+        sources,
+        category,
+        searchTerms,
+        topic,
+        language
+      } = req.query;
 
       if (
         (country === undefined || null) &&

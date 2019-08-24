@@ -74,12 +74,21 @@ const config = {
 
           MiniCssExtractPlugin.loader,
           // need style-loader, too????  why not????
-          'css-loader', // look up using oblect syntax to add the option in for this
-          'postcss-loader',
-          'sass-loader'
-          // {
-          //   loader: 'css-loader', options: { sourceMap: true }
-          // },
+          // 'css-loader', // look up using oblect syntax to add the option in for this
+          // 'postcss-loader',
+          // 'sass-loader'
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'postcss-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true }
+          }
         ]
       },
       {
