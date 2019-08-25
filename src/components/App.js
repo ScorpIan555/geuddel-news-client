@@ -65,7 +65,7 @@ class App extends Component {
         language
       };
       // make action request
-      this.props.getNewsForAuthorizedUser(newsRequestObject);
+      await this.props.getNewsForAuthorizedUser(newsRequestObject);
     } catch (error) {
       console.log('fetchNewsForAuthorizedUser'), error;
     }
@@ -87,7 +87,7 @@ class App extends Component {
         userLocation
       };
       // make action request
-      this.props.getNewsForUnauthorizedUser(newsRequestObject);
+      await this.props.getNewsForUnauthorizedUser(newsRequestObject);
     } catch (error) {
       console.log('fetchNewsForAuthorizedUser'), error;
     }
@@ -144,81 +144,6 @@ class App extends Component {
     await this.props.getCurrentUserDbInfo(this.props.currentUser);
   };
 
-  handleNewsResultsAfterComponentMounts = async () => {
-    console.log(
-      'handleNewsResultsAfterComponentMounts.this.props :::',
-      this.props
-    );
-    console.log(
-      'handleNewsResultsAfterComponentMounts.userLocation:::',
-      this.props.userLocation
-    );
-    // if (this.props.newsapiResponse == undefined) {
-    if (this.props.articles !== this.state.articles) {
-      console.log(
-        'handleNewsResultsAfterComponentMounts.this.props :::',
-        this.props
-      );
-      console.log(
-        'this.props.newsapiRespons was undefined::::',
-        this.props.userLocation
-      );
-
-      let { userLocation } = this.props;
-      // let userLocation = this.props.userLocation
-
-      let countryCode =
-        userData.country !== undefined || null
-          ? userData.country
-          : userLocation;
-      // let category = (userData !== undefined || null ) ? userData
-
-      let category, country, language;
-
-      if (userData !== undefined || null) {
-        category = userData.category;
-        country = userData.country;
-        language = userData.language;
-      }
-
-      let newsRequestObject = {
-        country: country !== undefined || null ? country : countryCode,
-        category: category,
-        language: language
-      };
-
-      await this.props.getNewsForUnauthorizedUser(newsRequestObject);
-      // await this.props.getNews(userLocation);
-      this.setState({
-        isWorking: false,
-        articles: this.props.newsapiResponse
-      });
-    }
-    // }
-    // if (this.props.newsapiResponse !== undefined) {
-    //   console.log(
-    //     'DIDNT MAKE A CALL DUE TO CONDITIONAL!!!!',
-    //     this.props.newsapiResponse
-    //   );
-    // }
-  };
-
-  async shouldComponentUpdate(nextProps, nextState, snapshot) {
-    // console.log('shouldComponentUpdate.this.props:::', this.props);
-    // console.log('shouldComponentUpdate.nextProps.:::', nextProps);
-    // console.log('shouldComponentUpdate.nextState:::', nextState);
-    // console.log('shouldComponentUpdate.snapshot:::', snapshot);
-
-    return true;
-  }
-
-  async componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log('prevProps:::', prevProps);
-    // console.log('prevState:::', prevState);
-    // console.log('snapshot:::', snapshot);
-    console.log('componentDidUpdate::::', this.props.userData);
-  }
-
   userHasAuthenticated = authenticated => {
     this.setState({
       isAuthenticated: authenticated
@@ -234,38 +159,21 @@ class App extends Component {
 
   handleClick = async event => {
     event.preventDefault();
+    //
     this.setState({
       isWorking: true
     });
-    console.log('Click', event.target);
-    console.log('Click.this.props', this);
 
     let pathArray = event.target.href.split('/');
-    console.log('pathArray:::', pathArray);
-    console.log('pathArray:::', pathArray[4]);
 
     try {
-      if (this.props.language.length > 0) {
-        let query = {
-          category: pathArray[4],
-          // userLocation: this.props.userLocation
-          language: this.props.language
-        };
-        console.log('Click.this.props', this.props);
-        console.log('Click.this.props', query);
-        let topicResults = await this.props.getNews(query);
-        console.log('topicResults', topicResults);
-      }
-
-      console.log('hit ELSE WRAPPER:::', this.props.userData);
       let query = {
         category: pathArray[4],
         userLocation: this.props.userLocation
       };
-      console.log('Click.this.props', this.props);
-      console.log('Click.this.props', query);
-      let topicResults = await this.props.getNews(query);
-      console.log('topicResults', topicResults);
+      this.state.isAuthenticated === true
+        ? await this.props.getNewsForAuthorizedUser(query)
+        : await this.props.getNewsForUnauthorizedUser(query);
     } catch (error) {
       console.log('error:::', error);
     }

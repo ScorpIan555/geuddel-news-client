@@ -69,13 +69,11 @@ const get = async req => {
 
   if (req.type === 'GET_NEWS_FOR_AUTHORIZED_USER') {
     console.log('GETTING NEWS.req!:::', req);
-    console.log('GETTING NEWS.req.userLocation!:::', req.userLocation);
-    console.log('GETTING NEWS.req.country!:::', req.country);
 
     if (req.query !== undefined) {
       // let userLocation = req.query.userLocation;
       console.log('getNews.req.query', req.query);
-      let { userLocation } = req;
+
       let { country, sources, category, searchTerms, language } = req.query;
 
       let queryStringParameters = {
